@@ -4,6 +4,8 @@ import midtransClient from 'midtrans-client';
 
 const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic';
+
 // Inisialisasi Midtrans Snap Client
 const snap = new midtransClient.Snap({
   isProduction: false,

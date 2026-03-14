@@ -4,6 +4,8 @@ import crypto from 'crypto';
 
 const prisma = new PrismaClient();
 
+export const dynamic = 'force-dynamic';
+
 // Fungsi untuk memverifikasi Signature Key dari Midtrans
 const verifySignature = (
   orderId: string,
