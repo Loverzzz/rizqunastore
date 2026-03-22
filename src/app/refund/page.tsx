@@ -35,7 +35,7 @@ export default function RefundPolicyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 leading-relaxed">
               <li>Fasilitas taman bermain ditutup pada hari/jam operasional karena masalah teknis teknis mendadak dari pihak Rizquna.</li>
-              <li>Adanya kondisi cuaca buruk (Force Majeure) jika area Playground mencakup area outdoor yang tidak dapat digunakan.</li>
+              <li>Keadaan Kahar (Force Majeure) seperti bencana alam, kebakaran, pemadaman listrik berkepanjangan, atau kondisi darurat lain yang menyebabkan area operasional Playground indoor terpaksa ditutup sepenuhnya.</li>
             </ul>
           </section>
 
