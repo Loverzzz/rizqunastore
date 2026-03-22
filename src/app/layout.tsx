@@ -20,7 +20,14 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col`} suppressHydrationWarning>
-        <Script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY} strategy="beforeInteractive" />
+        <Script 
+          src={process.env.MIDTRANS_IS_PRODUCTION === 'true' 
+            ? 'https://app.midtrans.com/snap/snap.js'
+            : 'https://app.sandbox.midtrans.com/snap/snap.js'
+          } 
+          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY} 
+          strategy="beforeInteractive" 
+        />
         <Navbar />
         <main className="flex-grow">
           {children}

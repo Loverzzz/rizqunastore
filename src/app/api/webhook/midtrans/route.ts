@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import crypto from 'crypto';
-
-const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
-// Fungsi untuk memverifikasi Signature Key dari Midtrans
+// Verifikasi Signature Key dari Midtrans
 const verifySignature = (
   orderId: string,
   statusCode: string,
@@ -33,9 +31,9 @@ export async function POST(request: Request) {
       fraud_status,
     } = payload;
 
-    const serverKey = process.env.MIDTRANS_SERVER_KEY || 'SB-Mid-server-xW0LgT8Xh0-Yf0nE40tA2J-h';
+    const serverKey = process.env.MIDTRANS_SERVER_KEY!;
 
-    // 1. Verifikasi Signature Key untuk memastikan request asli dari Midtrans
+    // 1. Verifikasi Signature Key
     const isValidSignature = verifySignature(
       order_id,
       status_code,
@@ -53,58 +51,124 @@ export async function POST(request: Request) {
     let finalStatus = 'PENDING';
     
     if (transaction_status == 'capture') {
-        if (fraud_status == 'challenge'){
-            finalStatus = 'PENDING'; // Menunggu verifikasi manual dari dashboard Midtrans
-        } else if (fraud_status == 'accept'){
-            finalStatus = 'PAID';
-        }
-    } else if (transaction_status == 'settlement'){
+      if (fraud_status == 'accept') {
         finalStatus = 'PAID';
-    } else if (transaction_status == 'cancel' || transaction_status == 'deny' || transaction_status == 'expire'){
-        finalStatus = 'CANCELLED';
-    } else if (transaction_status == 'pending'){
-        finalStatus = 'PENDING';
+      }
+      // fraud_status == 'challenge' → tetap PENDING
+    } else if (transaction_status == 'settlement') {
+      finalStatus = 'PAID';
+    } else if (transaction_status == 'cancel' || transaction_status == 'deny' || transaction_status == 'expire') {
+      finalStatus = 'CANCELLED';
+    } else if (transaction_status == 'pending') {
+      finalStatus = 'PENDING';
     }
 
-    // Karena format Booking ID dan Order ID sama (UUID), kita tidak tahu pasti ini pesanan yang mana
-    // Jadi kita coba update Order dulu, jika tidak ada, baru coba Booking
+    // 3. Cari transaksi berdasarkan midtransOrderId
+    //    order_id dari webhook = midtransOrderId yang kita generate (FORMAT: "ORDER-xxx" atau "BOOK-xxx")
     
     try {
-      // Coba cari di model Booking terlebih dahulu (asumsi jika ID ditemukan, itu booking)
-      const booking = await prisma.booking.findUnique({
-        where: { id: order_id }
-      });
+      // Cek apakah ini Booking (prefix "BOOK-")
+      if (order_id.startsWith('BOOK-')) {
+        const booking = await prisma.booking.findUnique({
+          where: { midtransOrderId: order_id }
+        });
 
-      if (booking) {
-        // Ini adalah transaksi Booking Playground
+        if (!booking) {
+          console.warn(`Webhook: Booking with midtransOrderId ${order_id} not found.`);
+          return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+        }
+
         await prisma.booking.update({
-          where: { id: order_id },
+          where: { id: booking.id },
           data: { 
-            // Ubah PAID jadi CONFIRMED khusus untuk terminology booking
             status: finalStatus === 'PAID' ? 'CONFIRMED' : finalStatus 
           }
         });
-        console.log(`Midtrans Webhook: Booking ${order_id} updated to ${finalStatus}`);
+
+        console.log(`Webhook: Booking ${booking.id} updated to ${finalStatus}`);
         return NextResponse.json({ success: true, message: 'Booking status updated' });
       }
 
-      // Jika bukan booking, coba cari di model Order
-      const order = await prisma.order.findUnique({
-        where: { id: order_id }
-      });
-
-      if (order) {
-        // Ini adalah transaksi Order Toko
-        await prisma.order.update({
-          where: { id: order_id },
-          data: { status: finalStatus }
+      // Cek apakah ini Order (prefix "ORDER-")
+      if (order_id.startsWith('ORDER-')) {
+        const order = await prisma.order.findUnique({
+          where: { midtransOrderId: order_id },
+          include: { items: true }
         });
-        console.log(`Midtrans Webhook: Order ${order_id} updated to ${finalStatus}`);
+
+        if (!order) {
+          console.warn(`Webhook: Order with midtransOrderId ${order_id} not found.`);
+          return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+        }
+
+        // Jika CANCELLED → kembalikan stok produk
+        if (finalStatus === 'CANCELLED' && order.status !== 'CANCELLED') {
+          await prisma.$transaction(async (tx) => {
+            // Restore stock
+            for (const item of order.items) {
+              await tx.product.update({
+                where: { id: item.productId },
+                data: { stock: { increment: item.quantity } }
+              });
+            }
+            // Update order status
+            await tx.order.update({
+              where: { id: order.id },
+              data: { status: finalStatus }
+            });
+          });
+          console.log(`Webhook: Order ${order.id} CANCELLED → stock restored`);
+        } else {
+          // Update status saja (PAID, PENDING, dll)
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: finalStatus }
+          });
+          console.log(`Webhook: Order ${order.id} updated to ${finalStatus}`);
+        }
+
         return NextResponse.json({ success: true, message: 'Order status updated' });
       }
 
-      console.warn(`Midtrans Webhook: Order/Booking ID ${order_id} not found in database.`);
-      return NextResponse.json({ error: 'Order not found' }, { status: 404 });
+      // Fallback: coba cari langsung di kedua tabel (untuk backward compatibility)
+      const booking = await prisma.booking.findUnique({ where: { id: order_id } });
+      if (booking) {
+        await prisma.booking.update({
+          where: { id: order_id },
+          data: { status: finalStatus === 'PAID' ? 'CONFIRMED' : finalStatus }
+        });
+        return NextResponse.json({ success: true, message: 'Booking status updated (legacy)' });
+      }
+
+      const order = await prisma.order.findUnique({
+        where: { id: order_id },
+        include: { items: true }
+      });
+      if (order) {
+        if (finalStatus === 'CANCELLED' && order.status !== 'CANCELLED') {
+          await prisma.$transaction(async (tx) => {
+            for (const item of order.items) {
+              await tx.product.update({
+                where: { id: item.productId },
+                data: { stock: { increment: item.quantity } }
+              });
+            }
+            await tx.order.update({
+              where: { id: order.id },
+              data: { status: finalStatus }
+            });
+          });
+        } else {
+          await prisma.order.update({
+            where: { id: order_id },
+            data: { status: finalStatus }
+          });
+        }
+        return NextResponse.json({ success: true, message: 'Order status updated (legacy)' });
+      }
+
+      console.warn(`Webhook: ID ${order_id} not found in any table.`);
+      return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
 
     } catch (dbError) {
       console.error("Database error during webhook update:", dbError);

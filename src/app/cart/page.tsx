@@ -71,22 +71,18 @@ export default function CartPage() {
           if (token && window.snap) {
             window.snap.pay(token, {
               onSuccess: async function() {
-                // Database update is now handled by Midtrans webhook
-                // await updateOrderStatus(result.orderId, "PAID");
-                alert("Pembayaran Berhasil diproses! Terima kasih.");
                 clearCart();
-                router.push("/products");
+                router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=order`);
               },
               onPending: function() {
-                alert("Menunggu pembayaran Anda.");
                 clearCart();
-                router.push("/products");
+                router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=order`);
               },
-              onError: function(result: any) {
-                alert("Pembayaran Gagal. Silakan coba lagi.");
+              onError: function() {
+                alert("Pembayaran gagal. Silakan coba lagi.");
               },
               onClose: function() {
-                alert("Anda menutup jendela pembayaran sebelum menyelesaikan transaksi.");
+                // User menutup pop-up, tidak perlu action
               }
             });
           } else {

@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { 
   Package, 
   ShoppingBag, 
@@ -8,7 +8,6 @@ import {
   CreditCard
 } from "lucide-react";
 
-const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 

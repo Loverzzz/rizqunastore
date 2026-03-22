@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -25,17 +25,18 @@ model Product {
 }
 
 model Order {
-  id            String   @id @default(uuid())
-  customerName  String
-  customerPhone String
-  customerEmail String?
-  totalAmount   Float
-  status        String   @default("PENDING") // PENDING, PAID, CANCELLED, COMPLETED
-  paymentLink   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(uuid())
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  totalAmount     Float
+  status          String   @default("PENDING") // PENDING, PAID, CANCELLED, COMPLETED
+  paymentLink     String?
+  midtransOrderId String?  @unique // Format: "ORDER-{shortId}-{timestamp}"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  items         OrderItem[]
+  items           OrderItem[]
 }
 
 model OrderItem {
@@ -50,15 +51,16 @@ model OrderItem {
 }
 
 model Booking {
-  id            String   @id @default(uuid())
-  customerName  String
-  customerPhone String
-  date          DateTime
-  timeSlot      String   // e.g., "09:00 - 10:00"
-  guests        Int      @default(1)
-  status        String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
-  totalAmount   Float
-  paymentLink   String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default(uuid())
+  customerName    String
+  customerPhone   String
+  date            DateTime
+  timeSlot        String   // e.g., "09:00 - 10:00"
+  guests          Int      @default(1)
+  status          String   @default("PENDING") // PENDING, CONFIRMED, COMPLETED, CANCELLED
+  totalAmount     Float
+  paymentLink     String?
+  midtransOrderId String?  @unique // Format: "BOOK-{shortId}-{timestamp}"
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

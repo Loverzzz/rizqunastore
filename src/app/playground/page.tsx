@@ -46,20 +46,16 @@ export default function PlaygroundPage() {
           if (token && window.snap) {
             window.snap.pay(token, {
               onSuccess: async function() {
-                // Database update is now handled by Midtrans webhook
-                // await updateBookingStatus(result.bookingId, "CONFIRMED");
-                alert("Booking & Pembayaran Berhasil! Sampai jumpa di area bermain.");
-                setIsBooked(true); // Show success screen
+                router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=booking`);
               },
               onPending: function() {
-                alert("Menunggu pembayaran Anda.");
-                setIsBooked(true);
+                router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=booking`);
               },
               onError: function() {
-                alert("Pembayaran Gagal. Silakan coba lagi.");
+                alert("Pembayaran gagal. Silakan coba lagi.");
               },
               onClose: function() {
-                alert("Jendela pembayaran ditutup.");
+                // User menutup pop-up, tidak perlu action
               }
             });
           }

@@ -1,16 +1,14 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import prisma from '@/lib/prisma';
 import midtransClient from 'midtrans-client';
-
-const prisma = new PrismaClient();
 
 export const dynamic = 'force-dynamic';
 
 // Inisialisasi Midtrans Snap Client
 const snap = new midtransClient.Snap({
-  isProduction: false,
-  serverKey: process.env.MIDTRANS_SERVER_KEY || 'SB-Mid-server-xW0LgT8Xh0-Yf0nE40tA2J-h',
-  clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-rF2m0nQ9R4c4X6L_',
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION === 'true',
+  serverKey: process.env.MIDTRANS_SERVER_KEY!,
+  clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY!,
 });
 
 export async function POST(request: Request) {
@@ -29,9 +27,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Booking tidak ditemukan' }, { status: 404 });
     }
 
+    // Generate unique Midtrans order ID
+    const midtransOrderId = `BOOK-${booking.id.split('-')[0]}-${Date.now()}`;
+
     const parameter = {
       transaction_details: {
-        order_id: booking.id, // Midtrans requires unique ID, Using Prisma's UUID
+        order_id: midtransOrderId,
         gross_amount: Math.round(booking.totalAmount), 
       },
       customer_details: {
@@ -40,17 +41,21 @@ export async function POST(request: Request) {
       },
       item_details: [{
         id: "TICKET-PLAYGROUND",
-        price: Math.round(booking.totalAmount / booking.guests), // Harga Satuan Integer
+        price: Math.round(booking.totalAmount / booking.guests),
         quantity: booking.guests,
-        name: `Tiket PG (${booking.timeSlot})`, // Keep it short, max 50 chars
+        name: `Tiket PG (${booking.timeSlot})`,
       }]
     };
 
     const transaction = await snap.createTransaction(parameter);
     
+    // Simpan midtransOrderId dan payment link
     await prisma.booking.update({
       where: { id: booking.id },
-      data: { paymentLink: transaction.redirect_url }
+      data: { 
+        paymentLink: transaction.redirect_url,
+        midtransOrderId: midtransOrderId,
+      }
     });
 
     return NextResponse.json({ 
