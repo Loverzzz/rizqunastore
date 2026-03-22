@@ -30,10 +30,14 @@ export async function POST(request: Request) {
     // Generate unique Midtrans order ID
     const midtransOrderId = `BOOK-${booking.id.split('-')[0]}-${Date.now()}`;
 
+    // Hindari selisih pembulatan (misal 100 / 3 tamu = 33)
+    const itemPriceRound = Math.round(booking.totalAmount / booking.guests);
+    const calculatedGrossAmount = itemPriceRound * booking.guests;
+
     const parameter = {
       transaction_details: {
         order_id: midtransOrderId,
-        gross_amount: Math.round(booking.totalAmount), 
+        gross_amount: calculatedGrossAmount, 
       },
       customer_details: {
         first_name: booking.customerName,
@@ -41,7 +45,7 @@ export async function POST(request: Request) {
       },
       item_details: [{
         id: "TICKET-PLAYGROUND",
-        price: Math.round(booking.totalAmount / booking.guests),
+        price: itemPriceRound,
         quantity: booking.guests,
         name: `Tiket PG (${booking.timeSlot})`,
       }]

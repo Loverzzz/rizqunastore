@@ -36,22 +36,27 @@ export async function POST(request: Request) {
     // Generate unique Midtrans order ID (untuk menghindari duplikat jika user retry)
     const midtransOrderId = `ORDER-${order.id.split('-')[0]}-${Date.now()}`;
 
+    // Hitung gross_amount pasti berdasarkan item_details agar tidak ditolak Midtrans
+    const itemDetails = order.items.map(item => ({
+      id: item.productId.substring(0, 50),
+      price: Math.round(item.price),
+      quantity: item.quantity,
+      name: item.product.name.substring(0, 50),
+    }));
+
+    const calculatedGrossAmount = itemDetails.reduce((total, item) => total + (item.price * item.quantity), 0);
+
     // Siapkan parameter transaksi untuk Midtrans
     const parameter = {
       transaction_details: {
         order_id: midtransOrderId,
-        gross_amount: Math.round(order.totalAmount),
+        gross_amount: calculatedGrossAmount,
       },
       customer_details: {
         first_name: order.customerName,
         phone: order.customerPhone,
       },
-      item_details: order.items.map(item => ({
-        id: item.productId.substring(0, 50),
-        price: Math.round(item.price),
-        quantity: item.quantity,
-        name: item.product.name.substring(0, 50),
-      }))
+      item_details: itemDetails
     };
 
     // Minta Token Snap dari Midtrans
