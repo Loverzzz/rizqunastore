@@ -1,14 +1,13 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { updateProduct } from "@/actions/product";
 import Link from "next/link";
 import { ArrowLeft, Save } from "lucide-react";
 import { redirect } from "next/navigation";
 
-const prisma = new PrismaClient();
-
-export default async function EditProductPage({ params }: { params: { id: string } }) {
+export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const product = await prisma.product.findUnique({
-    where: { id: params.id },
+    where: { id },
   });
 
   if (!product) {
