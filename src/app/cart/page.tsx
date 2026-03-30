@@ -71,10 +71,13 @@ export default function CartPage() {
           if (token && window.snap) {
             window.snap.pay(token, {
               onSuccess: async function() {
+                // Update status order ke PAID langsung dari klien
+                await updateOrderStatus(result.orderId!, "PAID");
                 clearCart();
                 router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=order`);
               },
               onPending: function() {
+                // Status tetap PENDING, cukup redirect
                 clearCart();
                 router.push(`/order-success?name=${encodeURIComponent(customerName)}&type=order`);
               },
