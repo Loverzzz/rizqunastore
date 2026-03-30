@@ -53,11 +53,7 @@ export async function createOrder(data: {
           price: product.price, // harga resmi dari DB
         });
 
-        // Kurangi stok secara atomik di dalam transaction yang sama
-        await tx.product.update({
-          where: { id: item.productId },
-          data: { stock: { decrement: item.quantity } },
-        });
+        // Stok TIDAK dikurangi di sini — hanya dikurangi saat status berubah ke PAID
       }
 
       // Buat order dengan total yang dihitung server
@@ -91,13 +87,58 @@ export async function createOrder(data: {
 
 export async function updateOrderStatus(orderId: string, status: string) {
   try {
-    await prisma.order.update({
-      where: { id: orderId },
-      data: { status },
+    const result = await prisma.$transaction(async (tx) => {
+      // Ambil order beserta items dan status saat ini
+      const order = await tx.order.findUnique({
+        where: { id: orderId },
+        include: { items: true },
+      });
+
+      if (!order) {
+        throw new Error("Pesanan tidak ditemukan.");
+      }
+
+      // Jika status berubah ke PAID dan sebelumnya BUKAN PAID → kurangi stok
+      if (status === "PAID" && order.status !== "PAID") {
+        for (const item of order.items) {
+          const product = await tx.product.findUnique({
+            where: { id: item.productId },
+          });
+          if (!product || product.stock < item.quantity) {
+            throw new Error(
+              `Stok "${product?.name || 'produk'}" tidak cukup untuk memproses pembayaran.`
+            );
+          }
+          await tx.product.update({
+            where: { id: item.productId },
+            data: { stock: { decrement: item.quantity } },
+          });
+        }
+      }
+
+      // Jika status berubah ke CANCELLED dan sebelumnya PAID → kembalikan stok
+      if (status === "CANCELLED" && order.status === "PAID") {
+        for (const item of order.items) {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: { stock: { increment: item.quantity } },
+          });
+        }
+      }
+
+      // Update status order
+      return tx.order.update({
+        where: { id: orderId },
+        data: { status },
+      });
     });
+
     revalidatePath("/admin/orders");
+    revalidatePath("/products");
     return { success: true };
   } catch (error) {
-    return { success: false, error: "Gagal mengubah status pesanan." };
+    console.error("Error updating order status:", error);
+    const message = error instanceof Error ? error.message : "Gagal mengubah status pesanan.";
+    return { success: false, error: message };
   }
 }

@@ -101,25 +101,38 @@ export async function POST(request: Request) {
           return NextResponse.json({ error: 'Order not found' }, { status: 404 });
         }
 
-        // Jika CANCELLED → kembalikan stok produk
-        if (finalStatus === 'CANCELLED' && order.status !== 'CANCELLED') {
+        // Jika PAID dan sebelumnya bukan PAID → kurangi stok
+        if (finalStatus === 'PAID' && order.status !== 'PAID') {
           await prisma.$transaction(async (tx) => {
-            // Restore stock
+            for (const item of order.items) {
+              await tx.product.update({
+                where: { id: item.productId },
+                data: { stock: { decrement: item.quantity } }
+              });
+            }
+            await tx.order.update({
+              where: { id: order.id },
+              data: { status: finalStatus }
+            });
+          });
+          console.log(`Webhook: Order ${order.id} PAID → stock decremented`);
+        } else if (finalStatus === 'CANCELLED' && order.status === 'PAID') {
+          // Jika CANCELLED dari PAID → kembalikan stok
+          await prisma.$transaction(async (tx) => {
             for (const item of order.items) {
               await tx.product.update({
                 where: { id: item.productId },
                 data: { stock: { increment: item.quantity } }
               });
             }
-            // Update order status
             await tx.order.update({
               where: { id: order.id },
               data: { status: finalStatus }
             });
           });
-          console.log(`Webhook: Order ${order.id} CANCELLED → stock restored`);
+          console.log(`Webhook: Order ${order.id} CANCELLED from PAID → stock restored`);
         } else {
-          // Update status saja (PAID, PENDING, dll)
+          // Update status saja (PENDING, CANCELLED dari PENDING, dll)
           await prisma.order.update({
             where: { id: order.id },
             data: { status: finalStatus }
