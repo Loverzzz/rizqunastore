@@ -54,9 +54,16 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="relative rounded-3xl overflow-hidden shadow-2xl aspect-video lg:aspect-square"
             >
-              {/* placeholder for store image */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-900 to-accent-900 flex items-center justify-center">
-                 <img src="/rizquna.jpg" alt="Rizquna Store Front" className="object-cover w-full h-full opacity-80" />
+              {/* Store hero image */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-brand-900 to-accent-900">
+                 <Image
+                   src="/rizquna.jpg"
+                   alt="Tampak depan toko Rizquna Store"
+                   fill
+                   className="object-cover opacity-80"
+                   priority
+                   sizes="(max-width: 1024px) 100vw, 50vw"
+                 />
                  <div className="absolute inset-0 bg-black/20" />
               </div>
             </motion.div>
@@ -147,7 +154,7 @@ export default function Home() {
                 </div>
               </div>
               
-              <p className="mt-8 text-brand-100">Store dan Playground buka sepanjang minggu. Kunjungi kami untuk pengalaman balanja dan bermain terbaik.</p>
+              <p className="mt-8 text-brand-100">Store dan Playground buka sepanjang minggu. Kunjungi kami untuk pengalaman belanja dan bermain terbaik.</p>
             </div>
           </motion.div>
         </div>

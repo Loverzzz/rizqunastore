@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: "Rizquna Store & Playground Happy Kids",
-  description: "General store and interactive kids playground. Book tickets and buy items online.",
+  description: "Rizquna Store & Playground Happy Kids — Toko kebutuhan sehari-hari, alat tulis, sembako, dan jajanan. Pesan tiket playground anak secara online. Bayar mudah via Midtrans.",
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col`} suppressHydrationWarning>
         <Script 
-          src={process.env.MIDTRANS_IS_PRODUCTION === 'true' 
+          src={process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === 'true' 
             ? 'https://app.midtrans.com/snap/snap.js'
             : 'https://app.sandbox.midtrans.com/snap/snap.js'
           } 

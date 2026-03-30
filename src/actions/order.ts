@@ -6,49 +6,69 @@ import { revalidatePath } from "next/cache";
 export async function createOrder(data: {
   customerName: string;
   customerPhone: string;
+  // totalAmount dari klien hanya sebagai estimasi — server akan hitung ulang dari DB
   totalAmount: number;
   items: {
     productId: string;
     quantity: number;
+    // price dari klien diabaikan untuk keamanan — server fetch dari DB
     price: number;
   }[];
 }) {
   try {
-    // 1. Validasi stok semua produk sebelum membuat order
-    for (const item of data.items) {
-      const product = await prisma.product.findUnique({
-        where: { id: item.productId },
-      });
-      if (!product) {
-        return { success: false, error: `Produk tidak ditemukan.` };
-      }
-      if (product.stock < item.quantity) {
-        return {
-          success: false,
-          error: `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`,
-        };
-      }
+    // Validasi input dasar
+    if (!data.customerName?.trim() || !data.customerPhone?.trim()) {
+      return { success: false, error: "Nama dan nomor telepon wajib diisi." };
+    }
+    if (!data.items || data.items.length === 0) {
+      return { success: false, error: "Keranjang belanja kosong." };
     }
 
-    // 2. Gunakan transaction untuk atomic: kurangi stok + buat order
+    // Semua logika (validasi stok + hitung harga + buat order) di dalam satu transaction
+    // untuk mencegah race condition dan manipulasi harga dari klien
     const order = await prisma.$transaction(async (tx) => {
-      // Kurangi stok setiap produk
+      let serverCalculatedTotal = 0;
+      const trustedItems: { productId: string; quantity: number; price: number }[] = [];
+
       for (const item of data.items) {
+        // Fetch harga & stok resmi dari database (JANGAN percaya price dari klien)
+        const product = await tx.product.findUnique({
+          where: { id: item.productId },
+        });
+
+        if (!product) {
+          throw new Error(`Produk tidak ditemukan.`);
+        }
+        if (product.stock < item.quantity) {
+          throw new Error(
+            `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`
+          );
+        }
+
+        // Gunakan harga dari database, bukan dari klien
+        serverCalculatedTotal += product.price * item.quantity;
+        trustedItems.push({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: product.price, // harga resmi dari DB
+        });
+
+        // Kurangi stok secara atomik di dalam transaction yang sama
         await tx.product.update({
           where: { id: item.productId },
           data: { stock: { decrement: item.quantity } },
         });
       }
 
-      // Buat order + order items
+      // Buat order dengan total yang dihitung server
       return tx.order.create({
         data: {
-          customerName: data.customerName,
-          customerPhone: data.customerPhone,
-          totalAmount: data.totalAmount,
+          customerName: data.customerName.trim(),
+          customerPhone: data.customerPhone.trim(),
+          totalAmount: serverCalculatedTotal, // total dari server, bukan klien
           status: "PENDING",
           items: {
-            create: data.items.map((item) => ({
+            create: trustedItems.map((item) => ({
               productId: item.productId,
               quantity: item.quantity,
               price: item.price,
@@ -64,7 +84,8 @@ export async function createOrder(data: {
     return { success: true, orderId: order.id };
   } catch (error) {
     console.error("Error creating order:", error);
-    return { success: false, error: "Gagal membuat pesanan." };
+    const message = error instanceof Error ? error.message : "Gagal membuat pesanan.";
+    return { success: false, error: message };
   }
 }
 
