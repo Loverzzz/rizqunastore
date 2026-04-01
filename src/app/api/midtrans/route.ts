@@ -4,21 +4,18 @@ import midtransClient from "midtrans-client";
 
 export const dynamic = "force-dynamic";
 
-const serverKey = process.env.MIDTRANS_SERVER_KEY;
-const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
-
-if (!serverKey || !clientKey) {
-  throw new Error(
-    "MIDTRANS_SERVER_KEY and NEXT_PUBLIC_MIDTRANS_CLIENT_KEY must be configured.",
-  );
+function getSnap() {
+  const serverKey = process.env.MIDTRANS_SERVER_KEY;
+  const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+  if (!serverKey || !clientKey) {
+    throw new Error("MIDTRANS_SERVER_KEY and NEXT_PUBLIC_MIDTRANS_CLIENT_KEY must be configured.");
+  }
+  return new midtransClient.Snap({
+    isProduction: process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true",
+    serverKey,
+    clientKey,
+  });
 }
-
-// Inisialisasi Midtrans Snap Client
-const snap = new midtransClient.Snap({
-  isProduction: process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true",
-  serverKey,
-  clientKey,
-});
 
 export async function POST(request: Request) {
   try {
@@ -78,6 +75,7 @@ export async function POST(request: Request) {
     };
 
     // Minta Token Snap dari Midtrans
+    const snap = getSnap();
     const transaction = await snap.createTransaction(parameter);
 
     // Simpan midtransOrderId dan payment link ke database

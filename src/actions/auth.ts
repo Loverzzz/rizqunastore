@@ -3,12 +3,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-if (!ADMIN_PASSWORD) {
-  throw new Error("ADMIN_PASSWORD environment variable is not configured.");
-}
-
 export async function loginAdmin(formData: FormData) {
+  const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+  if (!ADMIN_PASSWORD) {
+    return { error: "Password admin belum dikonfigurasi di server." };
+  }
+
   const password = formData.get("password") as string;
 
   if (password === ADMIN_PASSWORD) {
