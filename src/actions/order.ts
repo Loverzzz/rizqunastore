@@ -23,12 +23,21 @@ export async function createOrder(data: {
     if (!data.items || data.items.length === 0) {
       return { success: false, error: "Keranjang belanja kosong." };
     }
+    for (const item of data.items) {
+      if (!item.quantity || item.quantity < 1) {
+        return { success: false, error: "Jumlah item harus minimal 1." };
+      }
+    }
 
     // Semua logika (validasi stok + hitung harga + buat order) di dalam satu transaction
     // untuk mencegah race condition dan manipulasi harga dari klien
     const order = await prisma.$transaction(async (tx) => {
       let serverCalculatedTotal = 0;
-      const trustedItems: { productId: string; quantity: number; price: number }[] = [];
+      const trustedItems: {
+        productId: string;
+        quantity: number;
+        price: number;
+      }[] = [];
 
       for (const item of data.items) {
         // Fetch harga & stok resmi dari database (JANGAN percaya price dari klien)
@@ -41,7 +50,7 @@ export async function createOrder(data: {
         }
         if (product.stock < item.quantity) {
           throw new Error(
-            `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`
+            `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`,
           );
         }
 
@@ -80,7 +89,8 @@ export async function createOrder(data: {
     return { success: true, orderId: order.id };
   } catch (error) {
     console.error("Error creating order:", error);
-    const message = error instanceof Error ? error.message : "Gagal membuat pesanan.";
+    const message =
+      error instanceof Error ? error.message : "Gagal membuat pesanan.";
     return { success: false, error: message };
   }
 }
@@ -106,7 +116,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
           });
           if (!product || product.stock < item.quantity) {
             throw new Error(
-              `Stok "${product?.name || 'produk'}" tidak cukup untuk memproses pembayaran.`
+              `Stok "${product?.name || "produk"}" tidak cukup untuk memproses pembayaran.`,
             );
           }
           await tx.product.update({
@@ -138,7 +148,8 @@ export async function updateOrderStatus(orderId: string, status: string) {
     return { success: true };
   } catch (error) {
     console.error("Error updating order status:", error);
-    const message = error instanceof Error ? error.message : "Gagal mengubah status pesanan.";
+    const message =
+      error instanceof Error ? error.message : "Gagal mengubah status pesanan.";
     return { success: false, error: message };
   }
 }

@@ -36,8 +36,12 @@ export default function AdminLogin() {
           <div className="w-16 h-16 bg-brand-100 dark:bg-brand-900/40 rounded-full flex items-center justify-center mx-auto mb-4">
             <Lock className="w-8 h-8 text-brand-600 dark:text-brand-400" />
           </div>
-          <h1 className="text-2xl font-black text-gray-900 dark:text-white">Admin Login</h1>
-          <p className="text-gray-500 mt-2">Masuk untuk mengelola toko Rizquna.</p>
+          <h1 className="text-2xl font-black text-gray-900 dark:text-white">
+            Admin Login
+          </h1>
+          <p className="text-gray-500 mt-2">
+            Masuk untuk mengelola toko Rizquna.
+          </p>
         </div>
 
         {error && (
@@ -46,14 +50,12 @@ export default function AdminLogin() {
           </div>
         )}
 
-        {/* Note to the user about the dummy password */}
-        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 rounded-xl text-xs text-center">
-          <strong>Info Demo:</strong> Password default adalah <code>admin123</code>
-        </div>
-
         <form action={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+            >
               Password
             </label>
             <input
@@ -70,7 +72,10 @@ export default function AdminLogin() {
         </form>
 
         <div className="mt-8 text-center">
-          <Link href="/" className="text-sm text-brand-600 dark:text-brand-400 hover:underline font-medium">
+          <Link
+            href="/"
+            className="text-sm text-brand-600 dark:text-brand-400 hover:underline font-medium"
+          >
             &larr; Kembali ke Beranda
           </Link>
         </div>

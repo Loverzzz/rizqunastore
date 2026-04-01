@@ -3,9 +3,18 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
+async function requireAdmin() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("admin_token");
+  if (!token || token.value !== "authenticated") {
+    throw new Error("Unauthorized: Admin access required.");
+  }
+}
 
 export async function createProduct(formData: FormData) {
+  await requireAdmin();
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = Number(formData.get("price"));
@@ -34,15 +43,28 @@ export async function createProduct(formData: FormData) {
 }
 
 export async function deleteProduct(id: string) {
+  await requireAdmin();
+
+  // Check if product has associated order items
+  const orderItemCount = await prisma.orderItem.count({
+    where: { productId: id },
+  });
+  if (orderItemCount > 0) {
+    throw new Error(
+      "Produk ini tidak bisa dihapus karena sudah ada dalam riwayat pesanan.",
+    );
+  }
+
   await prisma.product.delete({
     where: { id },
   });
-  
+
   revalidatePath("/admin/products");
   revalidatePath("/products");
 }
 
 export async function updateProduct(id: string, formData: FormData) {
+  await requireAdmin();
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const price = Number(formData.get("price"));

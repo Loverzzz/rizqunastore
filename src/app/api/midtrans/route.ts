@@ -1,14 +1,23 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
-import midtransClient from 'midtrans-client';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import midtransClient from "midtrans-client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
+
+const serverKey = process.env.MIDTRANS_SERVER_KEY;
+const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
+
+if (!serverKey || !clientKey) {
+  throw new Error(
+    "MIDTRANS_SERVER_KEY and NEXT_PUBLIC_MIDTRANS_CLIENT_KEY must be configured.",
+  );
+}
 
 // Inisialisasi Midtrans Snap Client
 const snap = new midtransClient.Snap({
-  isProduction: process.env.MIDTRANS_IS_PRODUCTION === 'true',
-  serverKey: process.env.MIDTRANS_SERVER_KEY!,
-  clientKey: process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY!,
+  isProduction: process.env.MIDTRANS_IS_PRODUCTION === "true",
+  serverKey,
+  clientKey,
 });
 
 export async function POST(request: Request) {
@@ -16,7 +25,10 @@ export async function POST(request: Request) {
     const { orderId } = await request.json();
 
     if (!orderId) {
-      return NextResponse.json({ error: 'Order ID is required' }, { status: 400 });
+      return NextResponse.json(
+        { error: "Order ID is required" },
+        { status: 400 },
+      );
     }
 
     // Ambil detail pesanan dari database
@@ -24,27 +36,33 @@ export async function POST(request: Request) {
       where: { id: orderId },
       include: {
         items: {
-          include: { product: true }
-        }
-      }
+          include: { product: true },
+        },
+      },
     });
 
     if (!order) {
-      return NextResponse.json({ error: 'Pesanan tidak ditemukan' }, { status: 404 });
+      return NextResponse.json(
+        { error: "Pesanan tidak ditemukan" },
+        { status: 404 },
+      );
     }
 
     // Generate unique Midtrans order ID (untuk menghindari duplikat jika user retry)
-    const midtransOrderId = `ORDER-${order.id.split('-')[0]}-${Date.now()}`;
+    const midtransOrderId = `ORDER-${order.id.split("-")[0]}-${Date.now()}`;
 
     // Hitung gross_amount pasti berdasarkan item_details agar tidak ditolak Midtrans
-    const itemDetails = order.items.map(item => ({
+    const itemDetails = order.items.map((item) => ({
       id: item.productId.substring(0, 50),
       price: Math.round(item.price),
       quantity: item.quantity,
       name: item.product.name.substring(0, 50),
     }));
 
-    const calculatedGrossAmount = itemDetails.reduce((total, item) => total + (item.price * item.quantity), 0);
+    const calculatedGrossAmount = itemDetails.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0,
+    );
 
     // Siapkan parameter transaksi untuk Midtrans
     const parameter = {
@@ -56,28 +74,30 @@ export async function POST(request: Request) {
         first_name: order.customerName,
         phone: order.customerPhone,
       },
-      item_details: itemDetails
+      item_details: itemDetails,
     };
 
     // Minta Token Snap dari Midtrans
     const transaction = await snap.createTransaction(parameter);
-    
+
     // Simpan midtransOrderId dan payment link ke database
     await prisma.order.update({
       where: { id: order.id },
-      data: { 
+      data: {
         paymentLink: transaction.redirect_url,
         midtransOrderId: midtransOrderId,
-      }
+      },
     });
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       token: transaction.token,
-      redirect_url: transaction.redirect_url 
+      redirect_url: transaction.redirect_url,
     });
-
   } catch (error) {
-    console.error('Error saat membuat transaksi Midtrans:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    console.error("Error saat membuat transaksi Midtrans:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 },
+    );
   }
 }

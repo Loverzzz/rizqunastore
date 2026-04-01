@@ -8,7 +8,6 @@ import { Suspense } from "react";
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
-  const name = searchParams.get("name") || "Pelanggan";
   const type = searchParams.get("type") || "order"; // "order" or "booking"
 
   return (
@@ -18,7 +17,12 @@ function OrderSuccessContent() {
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 15,
+            delay: 0.1,
+          }}
           className="relative mx-auto mb-8"
         >
           <div className="w-28 h-28 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-green-500/30">
@@ -42,16 +46,15 @@ function OrderSuccessContent() {
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             {type === "booking" ? "Booking Berhasil!" : "Pembayaran Berhasil!"}
           </h1>
-          
+
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-            Terima kasih, <span className="font-bold text-brand-600 dark:text-brand-400">{name}</span>!
+            Terima kasih atas {type === "booking" ? "booking" : "pesanan"} Anda!
           </p>
-          
+
           <p className="text-gray-500 dark:text-gray-500 mb-10 max-w-sm mx-auto">
-            {type === "booking" 
+            {type === "booking"
               ? "Tiket playground Anda sudah tercatat. Kami tunggu kedatangannya ya!"
-              : "Pesanan Anda sedang diproses. Kami akan segera menyiapkan barang-barang Anda."
-            }
+              : "Pesanan Anda sedang diproses. Kami akan segera menyiapkan barang-barang Anda."}
           </p>
         </motion.div>
 
@@ -63,14 +66,16 @@ function OrderSuccessContent() {
         >
           <div className="flex items-center justify-center gap-3 text-green-600 dark:text-green-400 mb-3">
             <CheckCircle2 className="w-5 h-5" />
-            <span className="font-semibold text-sm">Status: Pembayaran Diterima</span>
+            <span className="font-semibold text-sm">
+              Status: Pembayaran Diterima
+            </span>
           </div>
           <p className="text-xs text-gray-400">
             Konfirmasi pembayaran dikirim otomatis oleh sistem Midtrans.
           </p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
@@ -98,11 +103,13 @@ function OrderSuccessContent() {
 
 export default function OrderSuccessPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-gray-400">Memuat...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+          <div className="text-gray-400">Memuat...</div>
+        </div>
+      }
+    >
       <OrderSuccessContent />
     </Suspense>
   );

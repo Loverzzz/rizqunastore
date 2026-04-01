@@ -3,12 +3,14 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-// Hardcoded for demonstration. In production, use env variables or DB.
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+if (!ADMIN_PASSWORD) {
+  throw new Error("ADMIN_PASSWORD environment variable is not configured.");
+}
 
 export async function loginAdmin(formData: FormData) {
   const password = formData.get("password") as string;
-  
+
   if (password === ADMIN_PASSWORD) {
     const cookieStore = await cookies();
     cookieStore.set("admin_token", "authenticated", {
@@ -17,7 +19,7 @@ export async function loginAdmin(formData: FormData) {
       maxAge: 60 * 60 * 24, // 1 day
       path: "/",
     });
-    
+
     redirect("/admin");
   } else {
     return { error: "Password salah!" };
