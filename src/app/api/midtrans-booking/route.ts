@@ -15,7 +15,7 @@ if (!serverKey || !clientKey) {
 
 // Inisialisasi Midtrans Snap Client
 const snap = new midtransClient.Snap({
-  isProduction: process.env.MIDTRANS_IS_PRODUCTION === "true",
+  isProduction: process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true",
   serverKey,
   clientKey,
 });
