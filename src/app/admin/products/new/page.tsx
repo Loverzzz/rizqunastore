@@ -2,8 +2,9 @@
 
 import { createProduct } from "@/actions/product";
 import Link from "next/link";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Sparkles, Upload, ImageIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
+import { useState } from "react";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -20,6 +21,65 @@ function SubmitButton() {
 }
 
 export default function NewProductPage() {
+  const [description, setDescription] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Preview
+    const reader = new FileReader();
+    reader.onloadend = () => setImagePreview(reader.result as string);
+    reader.readAsDataURL(file);
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.url) {
+        setImageUrl(data.url);
+      } else {
+        alert(data.error || "Upload gagal");
+        setImagePreview(null);
+      }
+    } catch {
+      alert("Upload gagal");
+      setImagePreview(null);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const generateDescription = async () => {
+    const nameInput = document.getElementById("name") as HTMLInputElement;
+    const categoryInput = document.getElementById("category") as HTMLSelectElement;
+    if (!nameInput?.value) return;
+    
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/generate-description", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          productName: nameInput.value, 
+          category: categoryInput?.value 
+        }),
+      });
+      const data = await res.json();
+      setDescription(data.description || "");
+    } catch {
+      // silent fail
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4 mb-8">
@@ -73,13 +133,26 @@ export default function NewProductPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Deskripsi
-            </label>
+            <div className="flex items-center justify-between">
+              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Deskripsi
+              </label>
+              <button
+                type="button"
+                onClick={generateDescription}
+                disabled={aiLoading}
+                className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-purple-600 dark:text-purple-400 rounded-lg transition-colors disabled:opacity-50"
+              >
+                <Sparkles className="w-3 h-3" />
+                {aiLoading ? "Generating..." : "AI Generate"}
+              </button>
+            </div>
             <textarea
               id="description"
               name="description"
               rows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow resize-none"
               placeholder="Jelaskan detail produk ini..."
             />
@@ -118,16 +191,39 @@ export default function NewProductPage() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="imageUrl" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              URL Gambar (Opsional)
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Gambar Produk (Opsional)
             </label>
-            <input
-              type="url"
-              id="imageUrl"
-              name="imageUrl"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
-              placeholder="https://example.com/image.jpg"
-            />
+            <input type="hidden" name="imageUrl" value={imageUrl} />
+            {imagePreview ? (
+              <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => { setImagePreview(null); setImageUrl(""); }}
+                  className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
+                >
+                  ×
+                </button>
+              </div>
+            ) : (
+              <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
+                <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                <span className="text-sm text-gray-500">Klik untuk upload gambar</span>
+                <span className="text-xs text-gray-400 mt-1">JPG, PNG, WebP (maks 5MB)</span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
+            )}
           </div>
 
           <div className="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-4">

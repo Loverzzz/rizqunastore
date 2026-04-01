@@ -8,7 +8,9 @@ function getSnap() {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
   const clientKey = process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY;
   if (!serverKey || !clientKey) {
-    throw new Error("MIDTRANS_SERVER_KEY and NEXT_PUBLIC_MIDTRANS_CLIENT_KEY must be configured.");
+    throw new Error(
+      "MIDTRANS_SERVER_KEY and NEXT_PUBLIC_MIDTRANS_CLIENT_KEY must be configured.",
+    );
   }
   return new midtransClient.Snap({
     isProduction: process.env.NEXT_PUBLIC_MIDTRANS_IS_PRODUCTION === "true",

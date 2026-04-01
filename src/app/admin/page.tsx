@@ -29,6 +29,57 @@ export default async function AdminDashboard() {
   });
 
   const totalRevenue = (paidOrders._sum.totalAmount || 0) + (paidBookings._sum.totalAmount || 0);
+
+  // Produk terlaris
+  const topProducts = await prisma.orderItem.groupBy({
+    by: ['productId'],
+    _sum: { quantity: true },
+    orderBy: { _sum: { quantity: 'desc' } },
+    take: 5,
+  });
+  const topProductIds = topProducts.map(tp => tp.productId);
+  const topProductDetails = await prisma.product.findMany({
+    where: { id: { in: topProductIds } },
+    select: { id: true, name: true, imageUrl: true, price: true },
+  });
+  const topProductsWithNames = topProducts.map(tp => ({
+    ...tp,
+    product: topProductDetails.find(p => p.id === tp.productId),
+  }));
+
+  // Pendapatan 7 hari terakhir
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+
+  const recentPaidOrders = await prisma.order.findMany({
+    where: { status: "PAID", updatedAt: { gte: sevenDaysAgo } },
+    select: { totalAmount: true, updatedAt: true },
+  });
+  const recentPaidBookings = await prisma.booking.findMany({
+    where: { status: "CONFIRMED", updatedAt: { gte: sevenDaysAgo } },
+    select: { totalAmount: true, updatedAt: true },
+  });
+
+  // Build 7-day chart data
+  const dailyRevenue: { date: string; amount: number }[] = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateStr = d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' });
+    const dayStart = new Date(d); dayStart.setHours(0, 0, 0, 0);
+    const dayEnd = new Date(d); dayEnd.setHours(23, 59, 59, 999);
+    
+    let dayAmount = 0;
+    for (const o of recentPaidOrders) {
+      if (o.updatedAt >= dayStart && o.updatedAt <= dayEnd) dayAmount += o.totalAmount;
+    }
+    for (const b of recentPaidBookings) {
+      if (b.updatedAt >= dayStart && b.updatedAt <= dayEnd) dayAmount += b.totalAmount;
+    }
+    dailyRevenue.push({ date: dateStr, amount: dayAmount });
+  }
+  const maxRevenue = Math.max(...dailyRevenue.map(d => d.amount), 1);
   
   const recentOrders = await prisma.order.findMany({
     take: 5,
@@ -109,19 +160,53 @@ export default async function AdminDashboard() {
           )}
         </div>
 
-        {/* Quick Actions Placeholder */}
+        {/* Revenue Chart - 7 Days */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Aksi Cepat</h2>
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl transition-colors text-gray-900 dark:text-white font-medium border border-gray-200 dark:border-slate-600">
-              <Package className="w-8 h-8 text-brand-500" />
-              Tambah Produk
-            </button>
-            <button className="flex flex-col items-center justify-center gap-3 p-6 bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 rounded-xl transition-colors text-gray-900 dark:text-white font-medium border border-gray-200 dark:border-slate-600">
-              <CreditCard className="w-8 h-8 text-accent-500" />
-              Seting Pembayaran
-            </button>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Pendapatan 7 Hari Terakhir</h2>
+          <div className="flex items-end gap-2 h-48">
+            {dailyRevenue.map((day, i) => (
+              <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                <span className="text-[10px] text-gray-500 font-medium">
+                  {day.amount > 0 ? formatRupiah(day.amount) : '-'}
+                </span>
+                <div className="w-full relative flex items-end" style={{ height: '140px' }}>
+                  <div
+                    className="w-full bg-gradient-to-t from-brand-500 to-brand-400 rounded-t-lg transition-all"
+                    style={{ height: `${Math.max((day.amount / maxRevenue) * 100, 4)}%` }}
+                  />
+                </div>
+                <span className="text-[10px] text-gray-500 font-medium">{day.date}</span>
+              </div>
+            ))}
           </div>
+        </div>
+
+        {/* Top Products */}
+        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">Produk Terlaris</h2>
+          {topProductsWithNames.length > 0 ? (
+            <div className="space-y-4">
+              {topProductsWithNames.map((item, i) => (
+                <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-xl transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-xs font-bold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                    <div>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm">{item.product?.name || 'Produk dihapus'}</p>
+                      <p className="text-xs text-gray-500">{formatRupiah(item.product?.price || 0)}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-bold text-brand-600 dark:text-brand-400">{item._sum.quantity}x terjual</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Package className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
+              <p className="text-gray-500">Belum ada data penjualan.</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

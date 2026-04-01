@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { CheckCircle2, ShoppingBag, Home, PartyPopper } from "lucide-react";
+import { CheckCircle2, ShoppingBag, Home, PartyPopper, MessageCircle } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -81,6 +81,19 @@ function OrderSuccessContent() {
           transition={{ delay: 0.7 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
+          <a
+            href={`https://wa.me/6281915967694?text=${encodeURIComponent(
+              type === "booking" 
+                ? "Halo Rizquna, saya baru saja melakukan booking tiket playground. Mohon konfirmasinya. Terima kasih!"
+                : "Halo Rizquna, saya baru saja melakukan pemesanan produk. Mohon konfirmasinya. Terima kasih!"
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-green-500 hover:bg-green-600 text-white font-medium transition-all shadow-lg hover:shadow-green-500/30"
+          >
+            <MessageCircle className="w-5 h-5" />
+            Konfirmasi via WhatsApp
+          </a>
           <Link
             href="/products"
             className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-medium transition-all shadow-lg hover:shadow-brand-500/30"

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { PackageSearch } from "lucide-react";
+import { PackageSearch, Search } from "lucide-react";
 
 interface Product {
   id: string;
@@ -16,16 +16,24 @@ interface Product {
 
 export default function ProductList({ products }: { products: Product[] }) {
   const [activeCategory, setActiveCategory] = useState("Semua");
+  const [searchQuery, setSearchQuery] = useState("");
   
   const categories = ["Semua", ...Array.from(new Set(products.map(p => p.category)))];
 
-  const filteredProducts = activeCategory === "Semua" 
-    ? products 
-    : products.filter(p => p.category === activeCategory);
+  const filteredProducts = products.filter(p => {
+    const matchCategory = activeCategory === "Semua" || p.category === activeCategory;
+    const query = searchQuery.toLowerCase();
+    const matchSearch = !query || 
+      p.name.toLowerCase().includes(query) || 
+      (p.description && p.description.toLowerCase().includes(query)) ||
+      p.category.toLowerCase().includes(query) ||
+      p.price.toString().includes(query);
+    return matchCategory && matchSearch;
+  });
 
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
         <div>
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
             Katalog Rizquna
@@ -34,8 +42,22 @@ export default function ProductList({ products }: { products: Product[] }) {
             Temukan berbagai kebutuhan harian Anda. Mulai dari alat tulis sekolah, sembako dapur, hingga aneka jajanan anak.
           </p>
         </div>
-        
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative mb-6">
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Cari produk... (nama, kategori, deskripsi)"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+        />
+      </div>
+
+      {/* Category Filter */}
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-8">
           {categories.map((cat, i) => (
             <button 
               key={i}

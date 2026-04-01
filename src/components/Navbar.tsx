@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/store/cartStore';
@@ -9,11 +9,29 @@ import { useCartStore } from '@/store/cartStore';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   const totalItems = useCartStore(state => state.getTotalItems());
 
   useEffect(() => {
     setMounted(true);
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
   }, []);
+
+  const toggleDarkMode = () => {
+    const next = !darkMode;
+    setDarkMode(next);
+    if (next) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 glass bg-white/70 dark:bg-slate-900/70 border-b border-gray-200 dark:border-slate-800">
@@ -33,7 +51,16 @@ export default function Navbar() {
             <Link href="/playground" className="text-gray-700 dark:text-gray-300 hover:text-accent-500 transition-colors px-3 py-2 rounded-md text-sm font-medium">Playground</Link>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {mounted && (
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800"
+                aria-label="Toggle dark mode"
+              >
+                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+            )}
             <Link href="/cart" className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors">
               <ShoppingCart className="w-6 h-6" />
               {mounted && totalItems > 0 && (
