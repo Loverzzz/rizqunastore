@@ -17,14 +17,19 @@ interface Product {
 export default function ProductList({ products }: { products: Product[] }) {
   const [activeCategory, setActiveCategory] = useState("Semua");
   const [searchQuery, setSearchQuery] = useState("");
-  
-  const categories = ["Semua", ...Array.from(new Set(products.map(p => p.category)))];
 
-  const filteredProducts = products.filter(p => {
-    const matchCategory = activeCategory === "Semua" || p.category === activeCategory;
+  const categories = [
+    "Semua",
+    ...Array.from(new Set(products.map((p) => p.category))),
+  ];
+
+  const filteredProducts = products.filter((p) => {
+    const matchCategory =
+      activeCategory === "Semua" || p.category === activeCategory;
     const query = searchQuery.toLowerCase();
-    const matchSearch = !query || 
-      p.name.toLowerCase().includes(query) || 
+    const matchSearch =
+      !query ||
+      p.name.toLowerCase().includes(query) ||
       (p.description && p.description.toLowerCase().includes(query)) ||
       p.category.toLowerCase().includes(query) ||
       p.price.toString().includes(query);
@@ -39,7 +44,8 @@ export default function ProductList({ products }: { products: Product[] }) {
             Katalog Rizquna
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-            Temukan berbagai kebutuhan harian Anda. Mulai dari alat tulis sekolah, sembako dapur, hingga aneka jajanan anak.
+            Temukan berbagai kebutuhan harian Anda. Mulai dari alat tulis
+            sekolah, sembako dapur, hingga aneka jajanan anak.
           </p>
         </div>
       </div>
@@ -58,19 +64,19 @@ export default function ProductList({ products }: { products: Product[] }) {
 
       {/* Category Filter */}
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-8">
-          {categories.map((cat, i) => (
-            <button 
-              key={i}
-              onClick={() => setActiveCategory(cat)}
-              className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                activeCategory === cat 
-                ? 'bg-brand-600 text-white shadow-md' 
-                : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-brand-50 hover:text-brand-600 border border-gray-200 dark:border-slate-700'
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
+        {categories.map((cat, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveCategory(cat)}
+            className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+              activeCategory === cat
+                ? "bg-brand-600 text-white shadow-md"
+                : "bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-brand-50 hover:text-brand-600 border border-gray-200 dark:border-slate-700"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
       </div>
 
       {filteredProducts.length > 0 ? (
@@ -82,8 +88,12 @@ export default function ProductList({ products }: { products: Product[] }) {
       ) : (
         <div className="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-slate-700">
           <PackageSearch className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Tidak ada produk</h3>
-          <p className="text-gray-500 mt-2">Kategori ini belum memiliki produk.</p>
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Tidak ada produk
+          </h3>
+          <p className="text-gray-500 mt-2">
+            Kategori ini belum memiliki produk.
+          </p>
         </div>
       )}
     </>

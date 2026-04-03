@@ -36,7 +36,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col`}
+        className={`${inter.variable} font-sans antialiased min-h-screen flex flex-col bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-50`}
         suppressHydrationWarning
       >
         <Script
