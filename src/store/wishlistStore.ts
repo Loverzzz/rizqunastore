@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface WishlistStore {
   items: string[]; // product IDs
@@ -21,6 +21,6 @@ export const useWishlistStore = create<WishlistStore>()(
       },
       isWishlisted: (id) => get().items.includes(id),
     }),
-    { name: 'rizquna-wishlist' }
-  )
+    { name: "rizquna-wishlist" },
+  ),
 );

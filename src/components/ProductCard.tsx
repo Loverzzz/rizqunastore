@@ -66,7 +66,9 @@ export default function ProductCard({ product }: { product: Product }) {
           className="absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full border border-gray-100 dark:border-slate-600 hover:scale-110 transition-transform z-10"
           aria-label="Wishlist"
         >
-          <Heart className={`w-4 h-4 ${wishlisted ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
+          <Heart
+            className={`w-4 h-4 ${wishlisted ? "fill-red-500 text-red-500" : "text-gray-400"}`}
+          />
         </button>
       </div>
 

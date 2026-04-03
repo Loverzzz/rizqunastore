@@ -2,7 +2,13 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { CheckCircle2, ShoppingBag, Home, PartyPopper, MessageCircle } from "lucide-react";
+import {
+  CheckCircle2,
+  ShoppingBag,
+  Home,
+  PartyPopper,
+  MessageCircle,
+} from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
@@ -83,9 +89,9 @@ function OrderSuccessContent() {
         >
           <a
             href={`https://wa.me/6281915967694?text=${encodeURIComponent(
-              type === "booking" 
+              type === "booking"
                 ? "Halo Rizquna, saya baru saja melakukan booking tiket playground. Mohon konfirmasinya. Terima kasih!"
-                : "Halo Rizquna, saya baru saja melakukan pemesanan produk. Mohon konfirmasinya. Terima kasih!"
+                : "Halo Rizquna, saya baru saja melakukan pemesanan produk. Mohon konfirmasinya. Terima kasih!",
             )}`}
             target="_blank"
             rel="noopener noreferrer"

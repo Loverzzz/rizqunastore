@@ -40,7 +40,10 @@ export default function NewProductPage() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
       const data = await res.json();
       if (data.url) {
         setImageUrl(data.url);
@@ -58,17 +61,19 @@ export default function NewProductPage() {
 
   const generateDescription = async () => {
     const nameInput = document.getElementById("name") as HTMLInputElement;
-    const categoryInput = document.getElementById("category") as HTMLSelectElement;
+    const categoryInput = document.getElementById(
+      "category",
+    ) as HTMLSelectElement;
     if (!nameInput?.value) return;
-    
+
     setAiLoading(true);
     try {
       const res = await fetch("/api/generate-description", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          productName: nameInput.value, 
-          category: categoryInput?.value 
+        body: JSON.stringify({
+          productName: nameInput.value,
+          category: categoryInput?.value,
         }),
       });
       const data = await res.json();
@@ -83,24 +88,30 @@ export default function NewProductPage() {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4 mb-8">
-        <Link 
+        <Link
           href="/admin/products"
           className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white bg-white dark:bg-slate-800 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors border border-gray-200 dark:border-slate-700"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Tambah Produk Baru</h1>
-          <p className="text-gray-500 mt-1">Masukkan informasi detail produk yang akan dijual.</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Tambah Produk Baru
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Masukkan informasi detail produk yang akan dijual.
+          </p>
         </div>
       </div>
 
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden p-6 md:p-8">
         <form action={createProduct} className="space-y-6">
-          
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="name"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Nama Produk *
               </label>
               <input
@@ -112,9 +123,12 @@ export default function NewProductPage() {
                 placeholder="Contoh: Beras Premium 5Kg"
               />
             </div>
-            
+
             <div className="space-y-2">
-              <label htmlFor="category" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="category"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Kategori *
               </label>
               <select
@@ -134,7 +148,10 @@ export default function NewProductPage() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label htmlFor="description" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="description"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Deskripsi
               </label>
               <button
@@ -160,7 +177,10 @@ export default function NewProductPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label htmlFor="price" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="price"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Harga (Rp) *
               </label>
               <input
@@ -173,9 +193,12 @@ export default function NewProductPage() {
                 placeholder="Contoh: 15000"
               />
             </div>
-            
+
             <div className="space-y-2">
-              <label htmlFor="stock" className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              <label
+                htmlFor="stock"
+                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
+              >
                 Stok Awal *
               </label>
               <input
@@ -197,7 +220,11 @@ export default function NewProductPage() {
             <input type="hidden" name="imageUrl" value={imageUrl} />
             {imagePreview ? (
               <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
-                <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
                 {uploading && (
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                     <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -205,7 +232,10 @@ export default function NewProductPage() {
                 )}
                 <button
                   type="button"
-                  onClick={() => { setImagePreview(null); setImageUrl(""); }}
+                  onClick={() => {
+                    setImagePreview(null);
+                    setImageUrl("");
+                  }}
                   className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs flex items-center justify-center hover:bg-red-600"
                 >
                   ×
@@ -214,8 +244,12 @@ export default function NewProductPage() {
             ) : (
               <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
                 <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                <span className="text-sm text-gray-500">Klik untuk upload gambar</span>
-                <span className="text-xs text-gray-400 mt-1">JPG, PNG, WebP (maks 5MB)</span>
+                <span className="text-sm text-gray-500">
+                  Klik untuk upload gambar
+                </span>
+                <span className="text-xs text-gray-400 mt-1">
+                  JPG, PNG, WebP (maks 5MB)
+                </span>
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
@@ -227,7 +261,7 @@ export default function NewProductPage() {
           </div>
 
           <div className="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-4">
-            <Link 
+            <Link
               href="/admin/products"
               className="px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
             >
@@ -235,7 +269,6 @@ export default function NewProductPage() {
             </Link>
             <SubmitButton />
           </div>
-
         </form>
       </div>
     </div>

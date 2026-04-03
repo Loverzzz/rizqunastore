@@ -12,7 +12,11 @@ interface Message {
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: "assistant", content: "Halo! Saya asisten virtual Rizquna. Ada yang bisa saya bantu? 😊" }
+    {
+      role: "assistant",
+      content:
+        "Halo! Saya asisten virtual Rizquna. Ada yang bisa saya bantu? 😊",
+    },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +31,7 @@ export default function ChatWidget() {
     if (!trimmed || isLoading) return;
 
     const userMessage: Message = { role: "user", content: trimmed };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
@@ -38,9 +42,18 @@ export default function ChatWidget() {
         body: JSON.stringify({ message: trimmed }),
       });
       const data = await res.json();
-      setMessages(prev => [...prev, { role: "assistant", content: data.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.reply },
+      ]);
     } catch {
-      setMessages(prev => [...prev, { role: "assistant", content: "Maaf, terjadi kesalahan. Coba lagi nanti ya." }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Maaf, terjadi kesalahan. Coba lagi nanti ya.",
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
@@ -81,10 +94,15 @@ export default function ChatWidget() {
                 </div>
                 <div>
                   <h3 className="font-bold text-sm">Asisten Rizquna</h3>
-                  <p className="text-[10px] text-white/80">Siap membantu Anda</p>
+                  <p className="text-[10px] text-white/80">
+                    Siap membantu Anda
+                  </p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="p-1 hover:bg-white/20 rounded-lg transition-colors">
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -92,12 +110,17 @@ export default function ChatWidget() {
             {/* Messages */}
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                    msg.role === "user"
-                      ? "bg-brand-500 text-white rounded-br-md"
-                      : "bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded-bl-md"
-                  }`}>
+                <div
+                  key={i}
+                  className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                      msg.role === "user"
+                        ? "bg-brand-500 text-white rounded-br-md"
+                        : "bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded-bl-md"
+                    }`}
+                  >
                     {msg.content}
                   </div>
                 </div>
@@ -106,9 +129,18 @@ export default function ChatWidget() {
                 <div className="flex justify-start">
                   <div className="bg-gray-100 dark:bg-slate-700 px-4 py-3 rounded-2xl rounded-bl-md">
                     <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <span
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "0ms" }}
+                      />
+                      <span
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "150ms" }}
+                      />
+                      <span
+                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        style={{ animationDelay: "300ms" }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -118,7 +150,13 @@ export default function ChatWidget() {
 
             {/* Input */}
             <div className="p-3 border-t border-gray-200 dark:border-slate-700 flex-shrink-0">
-              <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex gap-2">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSend();
+                }}
+                className="flex gap-2"
+              >
                 <input
                   type="text"
                   value={input}
