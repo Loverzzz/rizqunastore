@@ -71,7 +71,6 @@ export default function ProductList({ products }: { products: Product[] }) {
               {cat}
             </button>
           ))}
-        </div>
       </div>
 
       {filteredProducts.length > 0 ? (
