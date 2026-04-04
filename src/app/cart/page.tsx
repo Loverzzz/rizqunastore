@@ -79,17 +79,19 @@ export default function CartPage() {
             window.snap.pay(token, {
               onSuccess: async function () {
                 clearCart();
-                router.push(`/order-success?type=order`);
+                router.push(`/order-success?type=order&status=paid`);
               },
               onPending: function () {
                 clearCart();
-                router.push(`/order-success?type=order`);
+                router.push(`/order-success?type=order&status=pending`);
               },
               onError: function () {
                 alert("Pembayaran gagal. Silakan coba lagi.");
               },
               onClose: function () {
-                // User menutup pop-up, tidak perlu action
+                alert(
+                  "Popup pembayaran ditutup. Transaksi Anda belum selesai dibayar.",
+                );
               },
             });
           } else {

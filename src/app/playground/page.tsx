@@ -54,16 +54,18 @@ export default function PlaygroundPage() {
           if (token && window.snap) {
             window.snap.pay(token, {
               onSuccess: async function () {
-                router.push(`/order-success?type=booking`);
+                router.push(`/order-success?type=booking&status=paid`);
               },
               onPending: function () {
-                router.push(`/order-success?type=booking`);
+                router.push(`/order-success?type=booking&status=pending`);
               },
               onError: function () {
                 alert("Pembayaran gagal. Silakan coba lagi.");
               },
               onClose: function () {
-                // User menutup pop-up, tidak perlu action
+                alert(
+                  "Popup pembayaran ditutup. Booking Anda belum selesai dibayar.",
+                );
               },
             });
           }

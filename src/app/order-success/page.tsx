@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   CheckCircle2,
+  Clock3,
   ShoppingBag,
   Home,
   PartyPopper,
@@ -15,6 +16,8 @@ import { Suspense } from "react";
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "order"; // "order" or "booking"
+  const status = searchParams.get("status") || "paid";
+  const isPaid = status === "paid";
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4">
@@ -31,17 +34,29 @@ function OrderSuccessContent() {
           }}
           className="relative mx-auto mb-8"
         >
-          <div className="w-28 h-28 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-2xl shadow-green-500/30">
-            <CheckCircle2 className="w-14 h-14 text-white" />
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: -10 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-            className="absolute -top-2 -right-2"
+          <div
+            className={`w-28 h-28 rounded-full flex items-center justify-center mx-auto shadow-2xl ${
+              isPaid
+                ? "bg-gradient-to-br from-green-400 to-emerald-600 shadow-green-500/30"
+                : "bg-gradient-to-br from-amber-400 to-orange-500 shadow-amber-500/30"
+            }`}
           >
-            <PartyPopper className="w-8 h-8 text-accent-500" />
-          </motion.div>
+            {isPaid ? (
+              <CheckCircle2 className="w-14 h-14 text-white" />
+            ) : (
+              <Clock3 className="w-14 h-14 text-white" />
+            )}
+          </div>
+          {isPaid && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: -10 }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="absolute -top-2 -right-2"
+            >
+              <PartyPopper className="w-8 h-8 text-accent-500" />
+            </motion.div>
+          )}
         </motion.div>
 
         <motion.div
@@ -50,17 +65,25 @@ function OrderSuccessContent() {
           transition={{ delay: 0.3 }}
         >
           <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-            {type === "booking" ? "Booking Berhasil!" : "Pembayaran Berhasil!"}
+            {isPaid
+              ? type === "booking"
+                ? "Booking Berhasil!"
+                : "Pembayaran Berhasil!"
+              : "Menunggu Pembayaran"}
           </h1>
 
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
-            Terima kasih atas {type === "booking" ? "booking" : "pesanan"} Anda!
+            {isPaid
+              ? `Terima kasih atas ${type === "booking" ? "booking" : "pesanan"} Anda!`
+              : `Transaksi ${type === "booking" ? "booking" : "pesanan"} Anda sudah dibuat.`}
           </p>
 
           <p className="text-gray-500 dark:text-gray-500 mb-10 max-w-sm mx-auto">
-            {type === "booking"
-              ? "Tiket playground Anda sudah tercatat. Kami tunggu kedatangannya ya!"
-              : "Pesanan Anda sedang diproses. Kami akan segera menyiapkan barang-barang Anda."}
+            {isPaid
+              ? type === "booking"
+                ? "Tiket playground Anda sudah tercatat. Kami tunggu kedatangannya ya!"
+                : "Pesanan Anda sedang diproses. Kami akan segera menyiapkan barang-barang Anda."
+              : "Silakan lanjutkan pembayaran terlebih dahulu. Pesanan belum dianggap lunas sampai Midtrans mengirim konfirmasi pembayaran."}
           </p>
         </motion.div>
 
@@ -70,14 +93,28 @@ function OrderSuccessContent() {
           transition={{ delay: 0.5 }}
           className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm mb-8"
         >
-          <div className="flex items-center justify-center gap-3 text-green-600 dark:text-green-400 mb-3">
-            <CheckCircle2 className="w-5 h-5" />
+          <div
+            className={`flex items-center justify-center gap-3 mb-3 ${
+              isPaid
+                ? "text-green-600 dark:text-green-400"
+                : "text-amber-600 dark:text-amber-400"
+            }`}
+          >
+            {isPaid ? (
+              <CheckCircle2 className="w-5 h-5" />
+            ) : (
+              <Clock3 className="w-5 h-5" />
+            )}
             <span className="font-semibold text-sm">
-              Status: Pembayaran Diterima
+              {isPaid
+                ? "Status: Pembayaran Diterima"
+                : "Status: Menunggu Pembayaran"}
             </span>
           </div>
           <p className="text-xs text-gray-400">
-            Konfirmasi pembayaran dikirim otomatis oleh sistem Midtrans.
+            {isPaid
+              ? "Konfirmasi pembayaran dikirim otomatis oleh sistem Midtrans."
+              : "Jika Anda tadi menutup popup Midtrans, buka kembali checkout untuk menyelesaikan pembayaran atau cek instruksi pembayaran dari Midtrans."}
           </p>
         </motion.div>
 
@@ -90,15 +127,19 @@ function OrderSuccessContent() {
           <a
             href={`https://wa.me/6281915967694?text=${encodeURIComponent(
               type === "booking"
-                ? "Halo Rizquna, saya baru saja melakukan booking tiket playground. Mohon konfirmasinya. Terima kasih!"
-                : "Halo Rizquna, saya baru saja melakukan pemesanan produk. Mohon konfirmasinya. Terima kasih!",
+                ? isPaid
+                  ? "Halo Rizquna, saya baru saja melakukan booking tiket playground. Mohon konfirmasinya. Terima kasih!"
+                  : "Halo Rizquna, saya sudah membuat booking tiket playground tetapi pembayaran saya masih pending. Mohon bantu cek ya. Terima kasih!"
+                : isPaid
+                  ? "Halo Rizquna, saya baru saja melakukan pemesanan produk. Mohon konfirmasinya. Terima kasih!"
+                  : "Halo Rizquna, saya sudah membuat pesanan produk tetapi pembayaran saya masih pending. Mohon bantu cek ya. Terima kasih!",
             )}`}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-green-500 hover:bg-green-600 text-white font-medium transition-all shadow-lg hover:shadow-green-500/30"
           >
             <MessageCircle className="w-5 h-5" />
-            Konfirmasi via WhatsApp
+            {isPaid ? "Konfirmasi via WhatsApp" : "Tanya Status via WhatsApp"}
           </a>
           <Link
             href="/products"
