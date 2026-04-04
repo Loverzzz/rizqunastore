@@ -26,6 +26,10 @@ export default function PlaygroundPage() {
 
   const ticketPrice = 25000; // Harga tiket contoh
 
+  // Get today's date in local timezone (YYYY-MM-DD)
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault();
     if (!date || !time || !customerName || !customerPhone) return;
@@ -235,7 +239,7 @@ export default function PlaygroundPage() {
                       required
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
-                      min={new Date().toISOString().split("T")[0]}
+                      min={todayStr}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                     />
                   </div>
