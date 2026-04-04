@@ -53,8 +53,7 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     const description =
-      data.choices?.[0]?.message?.content ||
-      `${productName} berkualitas.`;
+      data.choices?.[0]?.message?.content || `${productName} berkualitas.`;
 
     return NextResponse.json({ description });
   } catch (error) {

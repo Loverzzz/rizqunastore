@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import { loginAdmin } from "@/actions/auth";
 import { Lock } from "lucide-react";
 import Link from "next/link";
