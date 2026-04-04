@@ -31,6 +31,10 @@ model Order {
   customerEmail   String?
   totalAmount     Float
   status          String   @default("PENDING") // PENDING, PAID, CANCELLED, COMPLETED
+  deliveryMethod  String   @default("pickup")  // pickup, delivery
+  deliveryAddress String?
+  deliveryFee     Float    @default(0)
+  deliveryDistance Float?   // in km
   paymentLink     String?
   midtransOrderId String?  @unique // Format: "ORDER-{shortId}-{timestamp}"
   createdAt       DateTime @default(now())

@@ -58,6 +58,16 @@ export async function POST(request: Request) {
       name: item.product.name.substring(0, 50),
     }));
 
+    // Tambahkan ongkir sebagai item jika ada
+    if (order.deliveryFee && order.deliveryFee > 0) {
+      itemDetails.push({
+        id: "DELIVERY-FEE",
+        price: Math.round(order.deliveryFee),
+        quantity: 1,
+        name: `Ongkir (${order.deliveryDistance || 0} km)`.substring(0, 50),
+      });
+    }
+
     const calculatedGrossAmount = itemDetails.reduce(
       (total, item) => total + item.price * item.quantity,
       0,

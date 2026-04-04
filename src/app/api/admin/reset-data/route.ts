@@ -20,7 +20,9 @@ export async function POST(request: Request) {
     // Delete order items first (FK constraint)
     const deletedItems = await prisma.orderItem.deleteMany({});
     const deletedOrders = await prisma.order.deleteMany({});
-    results.push(`${deletedOrders.count} pesanan & ${deletedItems.count} item dihapus`);
+    results.push(
+      `${deletedOrders.count} pesanan & ${deletedItems.count} item dihapus`,
+    );
   }
 
   if (target === "bookings" || target === "all") {

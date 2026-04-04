@@ -12,6 +12,9 @@ import {
   Mail,
   CreditCard,
   Calendar,
+  MapPin,
+  Store,
+  Truck,
 } from "lucide-react";
 
 type OrderItem = {
@@ -28,6 +31,10 @@ type Order = {
   customerEmail: string | null;
   totalAmount: number;
   status: string;
+  deliveryMethod: string;
+  deliveryAddress: string | null;
+  deliveryFee: number;
+  deliveryDistance: number | null;
   paymentLink: string | null;
   midtransOrderId: string | null;
   createdAt: string;
@@ -132,6 +139,17 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                       </div>
                       <div className="text-sm text-brand-600 dark:text-brand-400 mt-0.5">
                         {order.customerPhone}
+                      </div>
+                      <div className="mt-1">
+                        {order.deliveryMethod === "delivery" ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                            <Truck className="w-3 h-3" /> Dikirim
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400">
+                            <Store className="w-3 h-3" /> Ambil di Toko
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
@@ -247,6 +265,48 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                 </div>
               </div>
 
+              {/* Pengiriman */}
+              <div className="bg-gray-50 dark:bg-slate-900/50 rounded-xl p-4 space-y-3">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                  {selectedOrder.deliveryMethod === "delivery" ? (
+                    <>
+                      <Truck className="w-4 h-4 text-blue-500" /> Pengiriman
+                    </>
+                  ) : (
+                    <>
+                      <Store className="w-4 h-4 text-green-500" /> Ambil di Toko
+                    </>
+                  )}
+                </h3>
+                {selectedOrder.deliveryMethod === "delivery" && (
+                  <div className="space-y-2 text-sm">
+                    {selectedOrder.deliveryAddress && (
+                      <div className="flex items-start gap-2 text-gray-600 dark:text-gray-400">
+                        <MapPin className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
+                        <span>{selectedOrder.deliveryAddress}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <span>Jarak</span>
+                      <span className="font-medium">
+                        {selectedOrder.deliveryDistance ?? "-"} km
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <span>Ongkos kirim</span>
+                      <span className="font-bold text-brand-600 dark:text-brand-400">
+                        {formatRupiah(selectedOrder.deliveryFee)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {selectedOrder.deliveryMethod === "pickup" && (
+                  <p className="text-sm text-gray-500">
+                    Pelanggan akan mengambil pesanan langsung di toko.
+                  </p>
+                )}
+              </div>
+
               {/* Midtrans ID */}
               {selectedOrder.midtransOrderId && (
                 <div className="bg-gray-50 dark:bg-slate-900/50 rounded-xl p-4">
@@ -293,13 +353,31 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
               </div>
 
               {/* Total */}
-              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-slate-700">
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  Total Pembayaran
-                </span>
-                <span className="text-xl font-bold text-brand-600 dark:text-brand-400">
-                  {formatRupiah(selectedOrder.totalAmount)}
-                </span>
+              <div className="pt-4 border-t border-gray-200 dark:border-slate-700 space-y-2">
+                {selectedOrder.deliveryFee > 0 && (
+                  <>
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                      <span>Subtotal produk</span>
+                      <span>
+                        {formatRupiah(
+                          selectedOrder.totalAmount - selectedOrder.deliveryFee,
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                      <span>Ongkos kirim</span>
+                      <span>{formatRupiah(selectedOrder.deliveryFee)}</span>
+                    </div>
+                  </>
+                )}
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-gray-900 dark:text-white">
+                    Total Pembayaran
+                  </span>
+                  <span className="text-xl font-bold text-brand-600 dark:text-brand-400">
+                    {formatRupiah(selectedOrder.totalAmount)}
+                  </span>
+                </div>
               </div>
             </div>
 

@@ -6,12 +6,14 @@ import { revalidatePath } from "next/cache";
 export async function createOrder(data: {
   customerName: string;
   customerPhone: string;
-  // totalAmount dari klien hanya sebagai estimasi — server akan hitung ulang dari DB
   totalAmount: number;
+  deliveryMethod?: string;
+  deliveryAddress?: string;
+  deliveryFee?: number;
+  deliveryDistance?: number;
   items: {
     productId: string;
     quantity: number;
-    // price dari klien diabaikan untuk keamanan — server fetch dari DB
     price: number;
   }[];
 }) {
@@ -65,12 +67,28 @@ export async function createOrder(data: {
         // Stok TIDAK dikurangi di sini — hanya dikurangi saat status berubah ke PAID
       }
 
-      // Buat order dengan total yang dihitung server
+      // Validasi dan hitung ongkir di server
+      const deliveryFee =
+        data.deliveryMethod === "delivery"
+          ? Math.max(0, data.deliveryFee || 0)
+          : 0;
+
+      // Buat order dengan total yang dihitung server + ongkir
       return tx.order.create({
         data: {
           customerName: data.customerName.trim(),
           customerPhone: data.customerPhone.trim(),
-          totalAmount: serverCalculatedTotal, // total dari server, bukan klien
+          totalAmount: serverCalculatedTotal + deliveryFee,
+          deliveryMethod: data.deliveryMethod || "pickup",
+          deliveryAddress:
+            data.deliveryMethod === "delivery"
+              ? data.deliveryAddress?.trim() || null
+              : null,
+          deliveryFee: deliveryFee,
+          deliveryDistance:
+            data.deliveryMethod === "delivery"
+              ? data.deliveryDistance || null
+              : null,
           status: "PENDING",
           items: {
             create: trustedItems.map((item) => ({

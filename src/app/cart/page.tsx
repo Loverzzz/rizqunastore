@@ -8,6 +8,9 @@ import {
   Plus,
   Minus,
   CreditCard,
+  MapPin,
+  Store,
+  Truck,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
 import { useState, useEffect, useTransition } from "react";
@@ -18,6 +21,40 @@ declare global {
   interface Window {
     snap: any;
   }
+}
+
+// Koordinat toko Rizquna
+const STORE_LAT = -7.0267455;
+const STORE_LNG = 112.0983932;
+
+// Ongkir per km (Rp)
+const ONGKIR_PER_KM = 3000;
+const ONGKIR_MIN = 5000;
+const ONGKIR_MAX = 50000;
+const MAX_DELIVERY_KM = 15;
+
+function haversineDistance(
+  lat1: number,
+  lng1: number,
+  lat2: number,
+  lng2: number,
+): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function calculateOngkir(distanceKm: number): number {
+  const fee = Math.round(distanceKm * ONGKIR_PER_KM);
+  return Math.min(Math.max(fee, ONGKIR_MIN), ONGKIR_MAX);
 }
 
 export default function CartPage() {
@@ -31,9 +68,69 @@ export default function CartPage() {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
 
+  // Delivery State
+  const [deliveryMethod, setDeliveryMethod] = useState<"pickup" | "delivery">(
+    "pickup",
+  );
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [deliveryDistance, setDeliveryDistance] = useState<number | null>(null);
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [isLocating, setIsLocating] = useState(false);
+  const [locationError, setLocationError] = useState("");
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Browser Anda tidak mendukung geolokasi.");
+      return;
+    }
+    setIsLocating(true);
+    setLocationError("");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const dist = haversineDistance(
+          STORE_LAT,
+          STORE_LNG,
+          position.coords.latitude,
+          position.coords.longitude,
+        );
+        const roundedDist = Math.round(dist * 10) / 10;
+        setDeliveryDistance(roundedDist);
+        if (roundedDist > MAX_DELIVERY_KM) {
+          setLocationError(
+            `Jarak ${roundedDist} km melebihi batas pengiriman (maks ${MAX_DELIVERY_KM} km). Silakan pilih Ambil di Toko.`,
+          );
+          setDeliveryFee(0);
+        } else {
+          setDeliveryFee(calculateOngkir(roundedDist));
+          setLocationError("");
+        }
+        setIsLocating(false);
+      },
+      () => {
+        setLocationError(
+          "Gagal mendapatkan lokasi. Pastikan izin lokasi diaktifkan.",
+        );
+        setIsLocating(false);
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  };
+
+  const handleDeliveryMethodChange = (method: "pickup" | "delivery") => {
+    setDeliveryMethod(method);
+    if (method === "pickup") {
+      setDeliveryFee(0);
+      setDeliveryDistance(null);
+      setDeliveryAddress("");
+      setLocationError("");
+    }
+  };
+
+  const totalWithDelivery = getTotalPrice() + deliveryFee;
 
   const formatRupiah = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
@@ -49,12 +146,32 @@ export default function CartPage() {
       alert("Mohon lengkapi nama dan nomor WhatsApp Anda.");
       return;
     }
+    if (deliveryMethod === "delivery") {
+      if (!deliveryAddress.trim()) {
+        alert("Mohon masukkan alamat pengiriman.");
+        return;
+      }
+      if (deliveryDistance === null || deliveryDistance > MAX_DELIVERY_KM) {
+        alert(
+          "Mohon deteksi lokasi Anda terlebih dahulu dan pastikan dalam jangkauan.",
+        );
+        return;
+      }
+    }
 
     startTransition(async () => {
       const orderData = {
         customerName,
         customerPhone,
-        totalAmount: getTotalPrice(),
+        totalAmount: totalWithDelivery,
+        deliveryMethod,
+        deliveryAddress:
+          deliveryMethod === "delivery" ? deliveryAddress : undefined,
+        deliveryFee: deliveryMethod === "delivery" ? deliveryFee : 0,
+        deliveryDistance:
+          deliveryMethod === "delivery"
+            ? (deliveryDistance ?? undefined)
+            : undefined,
         items: items.map((item) => ({
           productId: item.id,
           quantity: item.quantity,
@@ -210,6 +327,140 @@ export default function CartPage() {
                 Ringkasan Pesanan
               </h2>
 
+              {/* Delivery Method Selection */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                  Metode Pengambilan
+                </label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleDeliveryMethodChange("pickup")}
+                    className={`p-3 rounded-xl border-2 text-center transition-all ${
+                      deliveryMethod === "pickup"
+                        ? "border-brand-500 bg-brand-50 dark:bg-brand-900/20"
+                        : "border-gray-200 dark:border-slate-600 hover:border-gray-300"
+                    }`}
+                  >
+                    <Store
+                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-gray-400"}`}
+                    />
+                    <p
+                      className={`text-sm font-semibold ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-gray-700 dark:text-gray-300"}`}
+                    >
+                      Ambil di Toko
+                    </p>
+                    <p className="text-xs text-green-600 dark:text-green-400 font-medium">
+                      Gratis
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeliveryMethodChange("delivery")}
+                    className={`p-3 rounded-xl border-2 text-center transition-all ${
+                      deliveryMethod === "delivery"
+                        ? "border-brand-500 bg-brand-50 dark:bg-brand-900/20"
+                        : "border-gray-200 dark:border-slate-600 hover:border-gray-300"
+                    }`}
+                  >
+                    <Truck
+                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-gray-400"}`}
+                    />
+                    <p
+                      className={`text-sm font-semibold ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-gray-700 dark:text-gray-300"}`}
+                    >
+                      Dikirim
+                    </p>
+                    <p className="text-xs text-gray-500">+ Ongkir</p>
+                  </button>
+                </div>
+              </div>
+
+              {/* Delivery Details */}
+              {deliveryMethod === "delivery" && (
+                <div className="mb-6 space-y-3 p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-200 dark:border-slate-600">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Alamat Pengiriman
+                    </label>
+                    <textarea
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      placeholder="Masukkan alamat lengkap..."
+                      rows={2}
+                      className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={detectLocation}
+                    disabled={isLocating}
+                    className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                  >
+                    <MapPin className="w-4 h-4" />
+                    {isLocating
+                      ? "Mendeteksi lokasi..."
+                      : "Deteksi Lokasi Saya"}
+                  </button>
+
+                  {locationError && (
+                    <p className="text-xs text-red-600 dark:text-red-400 font-medium">
+                      {locationError}
+                    </p>
+                  )}
+
+                  {deliveryDistance !== null && !locationError && (
+                    <div className="text-sm space-y-1">
+                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                        <span>Jarak dari toko</span>
+                        <span className="font-semibold">
+                          {deliveryDistance} km
+                        </span>
+                      </div>
+                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                        <span>Ongkos kirim</span>
+                        <span className="font-bold text-brand-600 dark:text-brand-400">
+                          {formatRupiah(deliveryFee)}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <p className="text-[11px] text-gray-400">
+                    Maks. {MAX_DELIVERY_KM} km dari toko. Ongkir Rp
+                    {ONGKIR_PER_KM.toLocaleString()}/km (min Rp
+                    {ONGKIR_MIN.toLocaleString()}, maks Rp
+                    {ONGKIR_MAX.toLocaleString()}).
+                  </p>
+                </div>
+              )}
+
+              {/* Pickup Info */}
+              {deliveryMethod === "pickup" && (
+                <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-semibold text-green-800 dark:text-green-300">
+                        Ambil di Rizquna Store
+                      </p>
+                      <p className="text-xs text-green-600 dark:text-green-400 mt-1">
+                        Pesanan bisa diambil setelah konfirmasi via WhatsApp.
+                      </p>
+                      <a
+                        href="https://maps.app.goo.gl/H8BcHnWQpdyWnSECA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1 inline-block"
+                      >
+                        📍 Lihat lokasi di Google Maps
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600 dark:text-gray-400">
                   <span>
@@ -218,10 +469,16 @@ export default function CartPage() {
                   </span>
                   <span>{formatRupiah(getTotalPrice())}</span>
                 </div>
+                {deliveryMethod === "delivery" && deliveryFee > 0 && (
+                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                    <span>Ongkos kirim ({deliveryDistance} km)</span>
+                    <span>{formatRupiah(deliveryFee)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between font-bold text-lg text-gray-900 dark:text-white pt-3 border-t border-gray-100 dark:border-slate-700">
                   <span>Total Tagihan</span>
                   <span className="text-brand-600 dark:text-brand-400">
-                    {formatRupiah(getTotalPrice())}
+                    {formatRupiah(totalWithDelivery)}
                   </span>
                 </div>
               </div>

@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { KeyRound, Shield, Store, RefreshCw, Trash2, AlertTriangle } from "lucide-react";
+import {
+  KeyRound,
+  Shield,
+  Store,
+  RefreshCw,
+  Trash2,
+  AlertTriangle,
+} from "lucide-react";
 
 export default function AdminSettingsPage() {
   const router = useRouter();
@@ -212,8 +219,12 @@ export default function AdminSettingsPage() {
             <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-red-600 dark:text-red-400">Reset Data</h2>
-            <p className="text-sm text-gray-500">Hapus data testing. Data yang dihapus tidak bisa dikembalikan.</p>
+            <h2 className="text-lg font-bold text-red-600 dark:text-red-400">
+              Reset Data
+            </h2>
+            <p className="text-sm text-gray-500">
+              Hapus data testing. Data yang dihapus tidak bisa dikembalikan.
+            </p>
           </div>
         </div>
 
@@ -225,8 +236,16 @@ export default function AdminSettingsPage() {
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {[
-                { key: "orders", label: "Pesanan Toko", desc: "Hapus semua order & item" },
-                { key: "bookings", label: "Booking Playground", desc: "Hapus semua reservasi" },
+                {
+                  key: "orders",
+                  label: "Pesanan Toko",
+                  desc: "Hapus semua order & item",
+                },
+                {
+                  key: "bookings",
+                  label: "Booking Playground",
+                  desc: "Hapus semua reservasi",
+                },
                 { key: "all", label: "Semua Data", desc: "Pesanan + Booking" },
               ].map((opt) => (
                 <button
@@ -238,7 +257,9 @@ export default function AdminSettingsPage() {
                       : "border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500"
                   }`}
                 >
-                  <p className={`font-semibold text-sm ${resetTarget === opt.key ? "text-red-600 dark:text-red-400" : "text-gray-900 dark:text-white"}`}>
+                  <p
+                    className={`font-semibold text-sm ${resetTarget === opt.key ? "text-red-600 dark:text-red-400" : "text-gray-900 dark:text-white"}`}
+                  >
                     {opt.label}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">{opt.desc}</p>
@@ -276,18 +297,27 @@ export default function AdminSettingsPage() {
           >
             <Trash2 className="w-4 h-4" />
             Hapus Data{" "}
-            {resetTarget === "orders" ? "Pesanan" : resetTarget === "bookings" ? "Booking" : "Semua"}
+            {resetTarget === "orders"
+              ? "Pesanan"
+              : resetTarget === "bookings"
+                ? "Booking"
+                : "Semua"}
           </button>
 
           {resetMessage && (
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{resetMessage}</p>
+            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              {resetMessage}
+            </p>
           )}
         </div>
       </div>
 
       {/* Confirmation Modal */}
       {showResetConfirm && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowResetConfirm(false)}>
+        <div
+          className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+          onClick={() => setShowResetConfirm(false)}
+        >
           <div
             className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full border border-red-200 dark:border-red-900/50"
             onClick={(e) => e.stopPropagation()}
@@ -296,17 +326,27 @@ export default function AdminSettingsPage() {
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Konfirmasi Reset Data</h3>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                Konfirmasi Reset Data
+              </h3>
               <p className="text-sm text-gray-500 mb-4">
                 Tindakan ini akan menghapus{" "}
                 <span className="font-bold text-red-600">
-                  {resetTarget === "orders" ? "semua pesanan toko" : resetTarget === "bookings" ? "semua booking playground" : "semua pesanan & booking"}
+                  {resetTarget === "orders"
+                    ? "semua pesanan toko"
+                    : resetTarget === "bookings"
+                      ? "semua booking playground"
+                      : "semua pesanan & booking"}
                 </span>{" "}
                 secara permanen. Data tidak bisa dikembalikan.
               </p>
               <div className="mb-4">
                 <label className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Ketik <span className="font-mono font-bold text-red-600">HAPUS</span> untuk konfirmasi
+                  Ketik{" "}
+                  <span className="font-mono font-bold text-red-600">
+                    HAPUS
+                  </span>{" "}
+                  untuk konfirmasi
                 </label>
                 <input
                   type="text"
@@ -318,7 +358,10 @@ export default function AdminSettingsPage() {
               </div>
               <div className="flex gap-3">
                 <button
-                  onClick={() => { setShowResetConfirm(false); setConfirmText(""); }}
+                  onClick={() => {
+                    setShowResetConfirm(false);
+                    setConfirmText("");
+                  }}
                   className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 font-medium rounded-xl transition-colors"
                 >
                   Batal
@@ -332,7 +375,10 @@ export default function AdminSettingsPage() {
                       const res = await fetch("/api/admin/reset-data", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ password: resetPassword, target: resetTarget }),
+                        body: JSON.stringify({
+                          password: resetPassword,
+                          target: resetTarget,
+                        }),
                       });
                       const data = await res.json();
                       if (res.ok) {
@@ -342,7 +388,9 @@ export default function AdminSettingsPage() {
                         setResetMessage(`❌ Gagal: ${data.error}`);
                       }
                     } catch {
-                      setResetMessage("❌ Terjadi kesalahan saat mereset data.");
+                      setResetMessage(
+                        "❌ Terjadi kesalahan saat mereset data.",
+                      );
                     } finally {
                       setIsResetting(false);
                       setShowResetConfirm(false);
