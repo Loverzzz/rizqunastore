@@ -1,20 +1,23 @@
-import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
     const { message } = await request.json();
 
-    if (!message || typeof message !== 'string') {
-      return NextResponse.json({ error: 'Message is required' }, { status: 400 });
+    if (!message || typeof message !== "string") {
+      return NextResponse.json(
+        { error: "Message is required" },
+        { status: 400 },
+      );
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ 
-        reply: 'Fitur AI Chatbot belum diaktifkan. Silakan hubungi admin.' 
+      return NextResponse.json({
+        reply: "Fitur AI Chatbot belum diaktifkan. Silakan hubungi admin.",
       });
     }
 
@@ -22,12 +25,15 @@ export async function POST(request: Request) {
     const products = await prisma.product.findMany({
       select: { name: true, price: true, category: true, stock: true },
       take: 50,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
 
-    const productList = products.map(p => 
-      `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString('id-ID')}, stok: ${p.stock}`
-    ).join('\n');
+    const productList = products
+      .map(
+        (p) =>
+          `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString("id-ID")}, stok: ${p.stock}`,
+      )
+      .join("\n");
 
     const systemPrompt = `Kamu adalah asisten virtual toko Rizquna Store & Playground Happy Kids. Kamu ramah, helpful, dan menjawab dalam Bahasa Indonesia.
 
@@ -52,8 +58,8 @@ Aturan:
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: systemPrompt }] },
           contents: [{ parts: [{ text: message }] }],
@@ -62,24 +68,35 @@ Aturan:
             temperature: 0.7,
           },
         }),
-      }
+      },
     );
 
     if (!response.ok) {
-      console.error('Gemini API error:', response.status);
-      return NextResponse.json({ 
-        reply: 'Maaf, saya sedang mengalami gangguan. Silakan coba lagi atau hubungi kami via WhatsApp di 0819-1596-7694.' 
+      const errData = await response.json().catch(() => null);
+      console.error("Gemini API error:", response.status, errData);
+      if (response.status === 429) {
+        return NextResponse.json({
+          reply:
+            "Asisten sedang sibuk karena banyak pertanyaan. Silakan coba lagi dalam beberapa detik atau hubungi kami via WhatsApp di 0819-1596-7694. 😊",
+        });
+      }
+      return NextResponse.json({
+        reply:
+          "Maaf, saya sedang mengalami gangguan. Silakan coba lagi atau hubungi kami via WhatsApp di 0819-1596-7694.",
       });
     }
 
     const data = await response.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Maaf, saya tidak bisa menjawab saat ini.';
+    const reply =
+      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      "Maaf, saya tidak bisa menjawab saat ini.";
 
     return NextResponse.json({ reply });
   } catch (error) {
-    console.error('Chat API Error:', error);
-    return NextResponse.json({ 
-      reply: 'Terjadi kesalahan. Silakan hubungi kami via WhatsApp di 0819-1596-7694.' 
+    console.error("Chat API Error:", error);
+    return NextResponse.json({
+      reply:
+        "Terjadi kesalahan. Silakan hubungi kami via WhatsApp di 0819-1596-7694.",
     });
   }
 }
