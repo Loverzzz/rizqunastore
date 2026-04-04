@@ -63,41 +63,61 @@ export default async function AdminDashboard({
   // Date filter for queries
   const dateFilter = periodDate ? { gte: periodDate } : undefined;
 
-  // Fetch counts filtered by period
-  const totalProducts = await prisma.product.count();
-  const totalOrders = await prisma.order.count({
-    where: dateFilter ? { createdAt: dateFilter } : undefined,
-  });
-  const totalBookings = await prisma.booking.count({
-    where: dateFilter ? { createdAt: dateFilter } : undefined,
-  });
+  // Chart date range
+  const chartStart = new Date();
+  chartStart.setDate(chartStart.getDate() - (chartDays - 1));
+  chartStart.setHours(0, 0, 0, 0);
 
-  // Hitung pendapatan dari pesanan yang LUNAS
-  const paidOrders = await prisma.order.aggregate({
-    where: { status: "PAID", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
-    _sum: { totalAmount: true },
-  });
-
-  const paidBookings = await prisma.booking.aggregate({
-    where: {
-      status: "CONFIRMED",
-      ...(dateFilter ? { updatedAt: dateFilter } : {}),
-    },
-    _sum: { totalAmount: true },
-  });
+  // Run ALL queries in parallel for speed
+  const [
+    totalProducts,
+    totalOrders,
+    totalBookings,
+    paidOrders,
+    paidBookings,
+    filteredOrderIds,
+    recentPaidOrders,
+    recentPaidBookings,
+    recentOrders,
+  ] = await Promise.all([
+    prisma.product.count(),
+    prisma.order.count({
+      where: dateFilter ? { createdAt: dateFilter } : undefined,
+    }),
+    prisma.booking.count({
+      where: dateFilter ? { createdAt: dateFilter } : undefined,
+    }),
+    prisma.order.aggregate({
+      where: { status: "PAID", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
+      _sum: { totalAmount: true },
+    }),
+    prisma.booking.aggregate({
+      where: { status: "CONFIRMED", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
+      _sum: { totalAmount: true },
+    }),
+    dateFilter
+      ? prisma.order.findMany({ where: { createdAt: dateFilter }, select: { id: true } })
+      : Promise.resolve(null),
+    prisma.order.findMany({
+      where: { status: "PAID", updatedAt: { gte: chartStart } },
+      select: { totalAmount: true, updatedAt: true },
+    }),
+    prisma.booking.findMany({
+      where: { status: "CONFIRMED", updatedAt: { gte: chartStart } },
+      select: { totalAmount: true, updatedAt: true },
+    }),
+    prisma.order.findMany({
+      take: 5,
+      orderBy: { createdAt: "desc" },
+      where: dateFilter ? { createdAt: dateFilter } : undefined,
+    }),
+  ]);
 
   const totalRevenue =
     (paidOrders._sum.totalAmount || 0) + (paidBookings._sum.totalAmount || 0);
 
-  // Produk terlaris (filtered by period)
-  let orderIdFilter: string[] | undefined;
-  if (dateFilter) {
-    const filteredOrders = await prisma.order.findMany({
-      where: { createdAt: dateFilter },
-      select: { id: true },
-    });
-    orderIdFilter = filteredOrders.map((o) => o.id);
-  }
+  // Produk terlaris (second batch - depends on filteredOrderIds)
+  const orderIdFilter = filteredOrderIds?.map((o) => o.id);
   const topProducts = await prisma.orderItem.groupBy({
     by: ["productId"],
     _sum: { quantity: true },
@@ -114,20 +134,6 @@ export default async function AdminDashboard({
     ...tp,
     product: topProductDetails.find((p) => p.id === tp.productId),
   }));
-
-  // Pendapatan chart (berdasarkan period)
-  const chartStart = new Date();
-  chartStart.setDate(chartStart.getDate() - (chartDays - 1));
-  chartStart.setHours(0, 0, 0, 0);
-
-  const recentPaidOrders = await prisma.order.findMany({
-    where: { status: "PAID", updatedAt: { gte: chartStart } },
-    select: { totalAmount: true, updatedAt: true },
-  });
-  const recentPaidBookings = await prisma.booking.findMany({
-    where: { status: "CONFIRMED", updatedAt: { gte: chartStart } },
-    select: { totalAmount: true, updatedAt: true },
-  });
 
   // Build chart data
   const dailyRevenue: { date: string; amount: number }[] = [];
@@ -155,12 +161,6 @@ export default async function AdminDashboard({
     dailyRevenue.push({ date: dateStr, amount: dayAmount });
   }
   const maxRevenue = Math.max(...dailyRevenue.map((d) => d.amount), 1);
-
-  const recentOrders = await prisma.order.findMany({
-    take: 5,
-    orderBy: { createdAt: "desc" },
-    where: dateFilter ? { createdAt: dateFilter } : undefined,
-  });
 
   const formatRupiah = (price: number) => {
     return new Intl.NumberFormat("id-ID", {
