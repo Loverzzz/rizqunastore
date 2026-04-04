@@ -88,15 +88,24 @@ export default async function AdminDashboard({
       where: dateFilter ? { createdAt: dateFilter } : undefined,
     }),
     prisma.order.aggregate({
-      where: { status: "PAID", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
+      where: {
+        status: "PAID",
+        ...(dateFilter ? { updatedAt: dateFilter } : {}),
+      },
       _sum: { totalAmount: true },
     }),
     prisma.booking.aggregate({
-      where: { status: "CONFIRMED", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
+      where: {
+        status: "CONFIRMED",
+        ...(dateFilter ? { updatedAt: dateFilter } : {}),
+      },
       _sum: { totalAmount: true },
     }),
     dateFilter
-      ? prisma.order.findMany({ where: { createdAt: dateFilter }, select: { id: true } })
+      ? prisma.order.findMany({
+          where: { createdAt: dateFilter },
+          select: { id: true },
+        })
       : Promise.resolve(null),
     prisma.order.findMany({
       where: { status: "PAID", updatedAt: { gte: chartStart } },

@@ -9,7 +9,10 @@ export default function AdminLoading() {
         </div>
         <div className="flex gap-2">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-10 w-20 bg-gray-200 dark:bg-slate-700 rounded-xl" />
+            <div
+              key={i}
+              className="h-10 w-20 bg-gray-200 dark:bg-slate-700 rounded-xl"
+            />
           ))}
         </div>
       </div>
@@ -17,7 +20,10 @@ export default function AdminLoading() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+          <div
+            key={i}
+            className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700"
+          >
             <div className="flex justify-between items-start mb-4">
               <div className="w-12 h-12 bg-gray-200 dark:bg-slate-700 rounded-xl" />
               <div className="w-16 h-6 bg-gray-200 dark:bg-slate-700 rounded-full" />
@@ -31,11 +37,17 @@ export default function AdminLoading() {
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700">
+          <div
+            key={i}
+            className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700"
+          >
             <div className="h-6 w-40 bg-gray-200 dark:bg-slate-700 rounded mb-6" />
             <div className="space-y-4">
               {[1, 2, 3, 4].map((j) => (
-                <div key={j} className="h-12 bg-gray-200 dark:bg-slate-700 rounded-xl" />
+                <div
+                  key={j}
+                  className="h-12 bg-gray-200 dark:bg-slate-700 rounded-xl"
+                />
               ))}
             </div>
           </div>
