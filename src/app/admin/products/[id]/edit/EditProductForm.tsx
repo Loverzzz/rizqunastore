@@ -25,6 +25,7 @@ export default function EditProductForm({
   const [imagePreview, setImagePreview] = useState<string | null>(
     product.imageUrl || null,
   );
+  const [useUrl, setUseUrl] = useState(false);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -155,11 +156,46 @@ export default function EditProductForm({
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-            Gambar Produk (Opsional)
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Gambar Produk (Opsional)
+            </label>
+            <button
+              type="button"
+              onClick={() => {
+                setUseUrl(!useUrl);
+                setImagePreview(null);
+                setImageUrl("");
+              }}
+              className="text-xs text-brand-600 dark:text-brand-400 hover:underline font-medium"
+            >
+              {useUrl ? "Upload File" : "Pakai Link URL"}
+            </button>
+          </div>
           <input type="hidden" name="imageUrl" value={imageUrl} />
-          {imagePreview ? (
+          {useUrl ? (
+            <div className="space-y-2">
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={(e) => {
+                  setImageUrl(e.target.value);
+                  setImagePreview(e.target.value || null);
+                }}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                placeholder="https://example.com/image.jpg"
+              />
+              {imagePreview && (
+                <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
+          ) : imagePreview ? (
             <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
               <img
                 src={imagePreview}
