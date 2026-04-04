@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 import { redirect } from "next/navigation";
 import EditProductForm from "./EditProductForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditProductPage({
   params,
 }: {
