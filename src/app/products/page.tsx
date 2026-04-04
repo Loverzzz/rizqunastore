@@ -9,8 +9,7 @@ export const metadata: Metadata = {
     "Temukan berbagai kebutuhan harian Anda di Rizquna Store. Alat tulis, sembako, jajanan, dan lainnya.",
 };
 
-// Revalidate setiap 5 menit
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 export default async function ProductsPage() {
   // Fetch real products from DB
