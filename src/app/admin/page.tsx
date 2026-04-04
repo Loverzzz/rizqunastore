@@ -1,41 +1,100 @@
 import prisma from "@/lib/prisma";
-import {
-  Package,
-  ShoppingBag,
-  Ticket,
-  TrendingUp,
-  Users,
-  CreditCard,
-} from "lucide-react";
+import { Package, ShoppingBag, Ticket, TrendingUp } from "lucide-react";
+import DashboardFilter from "@/components/DashboardFilter";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminDashboard() {
-  // Fetch real counts from DB
+function getPeriodDate(period: string | undefined): Date | null {
+  if (!period) return null;
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  switch (period) {
+    case "day":
+      return now;
+    case "week":
+      now.setDate(now.getDate() - 6);
+      return now;
+    case "month":
+      now.setDate(now.getDate() - 29);
+      return now;
+    default:
+      return null;
+  }
+}
+
+function getPeriodLabel(period: string | undefined): string {
+  switch (period) {
+    case "day":
+      return "Hari Ini";
+    case "week":
+      return "7 Hari Terakhir";
+    case "month":
+      return "30 Hari Terakhir";
+    default:
+      return "Semua Waktu";
+  }
+}
+
+function getChartDays(period: string | undefined): number {
+  switch (period) {
+    case "day":
+      return 1;
+    case "week":
+      return 7;
+    case "month":
+      return 30;
+    default:
+      return 7;
+  }
+}
+
+export default async function AdminDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const period = typeof params.period === "string" ? params.period : undefined;
+  const periodDate = getPeriodDate(period);
+  const periodLabel = getPeriodLabel(period);
+  const chartDays = getChartDays(period);
+
+  // Date filter for queries
+  const dateFilter = periodDate ? { gte: periodDate } : undefined;
+
+  // Fetch counts filtered by period
   const totalProducts = await prisma.product.count();
-  const totalOrders = await prisma.order.count();
-  const totalBookings = await prisma.booking.count();
+  const totalOrders = await prisma.order.count({
+    where: dateFilter ? { createdAt: dateFilter } : undefined,
+  });
+  const totalBookings = await prisma.booking.count({
+    where: dateFilter ? { createdAt: dateFilter } : undefined,
+  });
 
   // Hitung pendapatan dari pesanan yang LUNAS
   const paidOrders = await prisma.order.aggregate({
-    where: { status: "PAID" },
+    where: { status: "PAID", ...(dateFilter ? { updatedAt: dateFilter } : {}) },
     _sum: { totalAmount: true },
   });
 
   const paidBookings = await prisma.booking.aggregate({
-    where: { status: "CONFIRMED" },
+    where: {
+      status: "CONFIRMED",
+      ...(dateFilter ? { updatedAt: dateFilter } : {}),
+    },
     _sum: { totalAmount: true },
   });
 
   const totalRevenue =
     (paidOrders._sum.totalAmount || 0) + (paidBookings._sum.totalAmount || 0);
 
-  // Produk terlaris
+  // Produk terlaris (filtered by period)
   const topProducts = await prisma.orderItem.groupBy({
     by: ["productId"],
     _sum: { quantity: true },
     orderBy: { _sum: { quantity: "desc" } },
     take: 5,
+    where: dateFilter ? { order: { createdAt: dateFilter } } : undefined,
   });
   const topProductIds = topProducts.map((tp) => tp.productId);
   const topProductDetails = await prisma.product.findMany({
@@ -47,23 +106,23 @@ export default async function AdminDashboard() {
     product: topProductDetails.find((p) => p.id === tp.productId),
   }));
 
-  // Pendapatan 7 hari terakhir
-  const sevenDaysAgo = new Date();
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
-  sevenDaysAgo.setHours(0, 0, 0, 0);
+  // Pendapatan chart (berdasarkan period)
+  const chartStart = new Date();
+  chartStart.setDate(chartStart.getDate() - (chartDays - 1));
+  chartStart.setHours(0, 0, 0, 0);
 
   const recentPaidOrders = await prisma.order.findMany({
-    where: { status: "PAID", updatedAt: { gte: sevenDaysAgo } },
+    where: { status: "PAID", updatedAt: { gte: chartStart } },
     select: { totalAmount: true, updatedAt: true },
   });
   const recentPaidBookings = await prisma.booking.findMany({
-    where: { status: "CONFIRMED", updatedAt: { gte: sevenDaysAgo } },
+    where: { status: "CONFIRMED", updatedAt: { gte: chartStart } },
     select: { totalAmount: true, updatedAt: true },
   });
 
-  // Build 7-day chart data
+  // Build chart data
   const dailyRevenue: { date: string; amount: number }[] = [];
-  for (let i = 6; i >= 0; i--) {
+  for (let i = chartDays - 1; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const dateStr = d.toLocaleDateString("id-ID", {
@@ -91,6 +150,7 @@ export default async function AdminDashboard() {
   const recentOrders = await prisma.order.findMany({
     take: 5,
     orderBy: { createdAt: "desc" },
+    where: dateFilter ? { createdAt: dateFilter } : undefined,
   });
 
   const formatRupiah = (price: number) => {
@@ -135,13 +195,19 @@ export default async function AdminDashboard() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Dashboard Overview
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Selamat datang di panel admin Rizquna Store.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Dashboard Overview
+          </h1>
+          <p className="text-gray-500 mt-1">
+            Menampilkan data:{" "}
+            <span className="font-semibold text-brand-600 dark:text-brand-400">
+              {periodLabel}
+            </span>
+          </p>
+        </div>
+        <DashboardFilter />
       </div>
 
       {/* Stats Grid */}
@@ -222,7 +288,8 @@ export default async function AdminDashboard() {
         {/* Revenue Chart - 7 Days */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
           <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
-            Pendapatan 7 Hari Terakhir
+            Pendapatan{" "}
+            {chartDays === 1 ? "Hari Ini" : `${chartDays} Hari Terakhir`}
           </h2>
           <div className="flex items-end gap-2 h-48">
             {dailyRevenue.map((day, i) => (
