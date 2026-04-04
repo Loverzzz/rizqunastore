@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Package, ShoppingBag, Ticket, TrendingUp } from "lucide-react";
+import { Suspense } from "react";
 import DashboardFilter from "@/components/DashboardFilter";
 
 export const dynamic = "force-dynamic";
@@ -89,12 +90,20 @@ export default async function AdminDashboard({
     (paidOrders._sum.totalAmount || 0) + (paidBookings._sum.totalAmount || 0);
 
   // Produk terlaris (filtered by period)
+  let orderIdFilter: string[] | undefined;
+  if (dateFilter) {
+    const filteredOrders = await prisma.order.findMany({
+      where: { createdAt: dateFilter },
+      select: { id: true },
+    });
+    orderIdFilter = filteredOrders.map((o) => o.id);
+  }
   const topProducts = await prisma.orderItem.groupBy({
     by: ["productId"],
     _sum: { quantity: true },
     orderBy: { _sum: { quantity: "desc" } },
     take: 5,
-    where: dateFilter ? { order: { createdAt: dateFilter } } : undefined,
+    where: orderIdFilter ? { orderId: { in: orderIdFilter } } : undefined,
   });
   const topProductIds = topProducts.map((tp) => tp.productId);
   const topProductDetails = await prisma.product.findMany({
@@ -207,7 +216,9 @@ export default async function AdminDashboard({
             </span>
           </p>
         </div>
-        <DashboardFilter />
+        <Suspense fallback={<div className="h-10" />}>
+          <DashboardFilter />
+        </Suspense>
       </div>
 
       {/* Stats Grid */}
