@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return NextResponse.json({
         description: `${productName} berkualitas tinggi untuk kebutuhan sehari-hari Anda.`,
@@ -19,31 +19,28 @@ export async function POST(request: Request) {
     }
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
         body: JSON.stringify({
-          system_instruction: {
-            parts: [
-              {
-                text: "Kamu membuat deskripsi produk singkat untuk toko kelontong/general store bernama Rizquna. Tulis deskripsi dalam Bahasa Indonesia, max 2 kalimat, menarik dan informatif. Jangan pakai emoji. Langsung tulis deskripsinya saja tanpa awalan.",
-              },
-            ],
-          },
-          contents: [
+          model: "llama-3.1-8b-instant",
+          messages: [
             {
-              parts: [
-                {
-                  text: `Buatkan deskripsi untuk produk: "${productName}" (kategori: ${category || "Umum"})`,
-                },
-              ],
+              role: "system",
+              content:
+                "Kamu membuat deskripsi produk singkat untuk toko kelontong/general store bernama Rizquna. Tulis deskripsi dalam Bahasa Indonesia, max 2 kalimat, menarik dan informatif. Jangan pakai emoji. Langsung tulis deskripsinya saja tanpa awalan.",
+            },
+            {
+              role: "user",
+              content: `Buatkan deskripsi untuk produk: "${productName}" (kategori: ${category || "Umum"})`,
             },
           ],
-          generationConfig: {
-            maxOutputTokens: 100,
-            temperature: 0.8,
-          },
+          max_tokens: 100,
+          temperature: 0.8,
         }),
       },
     );
@@ -56,7 +53,7 @@ export async function POST(request: Request) {
 
     const data = await response.json();
     const description =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data.choices?.[0]?.message?.content ||
       `${productName} berkualitas.`;
 
     return NextResponse.json({ description });

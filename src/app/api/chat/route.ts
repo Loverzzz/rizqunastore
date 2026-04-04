@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return NextResponse.json({
         reply: "Fitur AI Chatbot belum diaktifkan. Silakan hubungi admin.",
@@ -56,28 +56,32 @@ Aturan:
 - Untuk pertanyaan di luar kemampuan, arahkan ke WhatsApp`;
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ parts: [{ text: message }] }],
-          generationConfig: {
-            maxOutputTokens: 300,
-            temperature: 0.7,
-          },
+          model: "llama-3.1-8b-instant",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: message },
+          ],
+          max_tokens: 300,
+          temperature: 0.7,
         }),
       },
     );
 
     if (!response.ok) {
       const errData = await response.json().catch(() => null);
-      console.error("Gemini API error:", response.status, errData);
+      console.error("Groq API error:", response.status, errData);
       if (response.status === 429) {
         return NextResponse.json({
           reply:
-            "Asisten sedang sibuk karena banyak pertanyaan. Silakan coba lagi dalam beberapa detik atau hubungi kami via WhatsApp di 0819-1596-7694. 😊",
+            "Asisten sedang sibuk. Silakan coba lagi dalam beberapa detik atau hubungi kami via WhatsApp di 0819-1596-7694.",
         });
       }
       return NextResponse.json({
@@ -88,7 +92,7 @@ Aturan:
 
     const data = await response.json();
     const reply =
-      data.candidates?.[0]?.content?.parts?.[0]?.text ||
+      data.choices?.[0]?.message?.content ||
       "Maaf, saya tidak bisa menjawab saat ini.";
 
     return NextResponse.json({ reply });
