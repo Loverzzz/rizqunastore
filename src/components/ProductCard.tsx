@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useState } from "react";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -44,12 +45,15 @@ export default function ProductCard({ product }: { product: Product }) {
       whileHover={{ y: -5 }}
       className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 dark:border-slate-700 transition-all flex flex-col h-full group"
     >
-      <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-6 overflow-hidden">
+      <div className="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
         {product.imageUrl ? (
-          <img
+          <Image
             src={product.imageUrl}
             alt={product.name}
-            className="object-contain w-full h-full mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
+            loading="lazy"
           />
         ) : (
           <div className="text-gray-400 dark:text-gray-500 font-medium">

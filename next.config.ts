@@ -10,7 +10,9 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
       },
     ],
+    formats: ["image/avif", "image/webp"],
   },
+  compress: true,
 };
 
 export default nextConfig;

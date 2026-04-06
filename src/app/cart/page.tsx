@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
   ShoppingCart,
   ArrowLeft,
@@ -267,12 +268,14 @@ export default function CartPage() {
                 key={item.id}
                 className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-4"
               >
-                <div className="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 p-2">
+                <div className="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 relative overflow-hidden">
                   {item.imageUrl ? (
-                    <img
+                    <Image
                       src={item.imageUrl}
                       alt={item.name}
-                      className="w-full h-full object-contain mix-blend-multiply flex-shrink-0"
+                      fill
+                      sizes="96px"
+                      className="object-contain mix-blend-multiply p-2"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">

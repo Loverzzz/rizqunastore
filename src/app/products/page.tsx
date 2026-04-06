@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import ProductList from "@/components/ProductList";
-import { PackageSearch } from "lucide-react";
 import { Metadata } from "next";
+import { unstable_cache } from "next/cache";
 
 export const metadata: Metadata = {
   title: "Katalog Produk | Rizquna Store",
@@ -11,17 +11,23 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function ProductsPage() {
-  // Fetch real products from DB
-  let rawProducts = await prisma.product.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+const getProducts = unstable_cache(
+  async () => {
+    const rawProducts = await prisma.product.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    return rawProducts.map((p) => ({
+      ...p,
+      createdAt: p.createdAt.toISOString(),
+      updatedAt: p.updatedAt.toISOString(),
+    }));
+  },
+  ["products-list"],
+  { revalidate: 60 },
+);
 
-  let products = rawProducts.map((p) => ({
-    ...p,
-    createdAt: p.createdAt.toISOString(),
-    updatedAt: p.updatedAt.toISOString(),
-  }));
+export default async function ProductsPage() {
+  const products = await getProducts();
 
   return (
     <div className="py-12 bg-gray-50 min-h-screen dark:bg-slate-900">

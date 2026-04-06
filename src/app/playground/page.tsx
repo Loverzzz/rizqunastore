@@ -11,7 +11,7 @@ import {
   User,
   Phone,
 } from "lucide-react";
-import { createBooking, updateBookingStatus } from "@/actions/booking";
+import { createBooking } from "@/actions/booking";
 import { useRouter } from "next/navigation";
 
 export default function PlaygroundPage() {

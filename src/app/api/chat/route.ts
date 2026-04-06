@@ -3,6 +3,31 @@ import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+// Simple in-memory cache for product list (TTL: 5 minutes)
+let cachedProductList: string | null = null;
+let cacheTimestamp = 0;
+const CACHE_TTL = 5 * 60 * 1000;
+
+async function getProductList(): Promise<string> {
+  const now = Date.now();
+  if (cachedProductList && now - cacheTimestamp < CACHE_TTL) {
+    return cachedProductList;
+  }
+  const products = await prisma.product.findMany({
+    select: { name: true, price: true, category: true, stock: true },
+    take: 50,
+    orderBy: { createdAt: "desc" },
+  });
+  cachedProductList = products
+    .map(
+      (p) =>
+        `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString("id-ID")}, stok: ${p.stock}`,
+    )
+    .join("\n");
+  cacheTimestamp = now;
+  return cachedProductList;
+}
+
 export async function POST(request: Request) {
   try {
     const { message } = await request.json();
@@ -21,19 +46,7 @@ export async function POST(request: Request) {
       });
     }
 
-    // Fetch store context for the AI
-    const products = await prisma.product.findMany({
-      select: { name: true, price: true, category: true, stock: true },
-      take: 50,
-      orderBy: { createdAt: "desc" },
-    });
-
-    const productList = products
-      .map(
-        (p) =>
-          `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString("id-ID")}, stok: ${p.stock}`,
-      )
-      .join("\n");
+    const productList = await getProductList();
 
     const systemPrompt = `Kamu adalah asisten virtual toko Rizquna Store & Playground Happy Kids. Kamu ramah, helpful, dan menjawab dalam Bahasa Indonesia.
 
