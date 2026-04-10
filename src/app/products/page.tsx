@@ -23,7 +23,7 @@ const getProducts = unstable_cache(
       updatedAt: p.updatedAt.toISOString(),
     }));
   },
-  ["products-list"],
+  ["products-with-variants"],
   { revalidate: 60 },
 );
 
