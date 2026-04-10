@@ -50,9 +50,7 @@ export async function GET() {
     };
   }
 
-  const allOk = Object.values(checks).every(
-    (c) => (c as { ok: boolean }).ok,
-  );
+  const allOk = Object.values(checks).every((c) => (c as { ok: boolean }).ok);
 
   return NextResponse.json(
     {
