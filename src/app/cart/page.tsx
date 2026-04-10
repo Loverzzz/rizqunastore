@@ -271,13 +271,21 @@ export default function CartPage() {
               >
                 <div className="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 relative overflow-hidden">
                   {item.imageUrl ? (
-                    <Image
-                      src={item.imageUrl}
-                      alt={item.name}
-                      fill
-                      sizes="96px"
-                      className="object-contain mix-blend-multiply p-2"
-                    />
+                    item.imageUrl.startsWith("data:") ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        className="absolute inset-0 w-full h-full object-contain mix-blend-multiply p-2"
+                      />
+                    ) : (
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.name}
+                        fill
+                        sizes="96px"
+                        className="object-contain mix-blend-multiply p-2"
+                      />
+                    )
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
                       No Img

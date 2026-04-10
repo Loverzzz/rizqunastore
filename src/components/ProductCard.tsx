@@ -77,14 +77,23 @@ export default function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
         {product.imageUrl ? (
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
-            loading="lazy"
-          />
+          product.imageUrl.startsWith("data:") ? (
+            <img
+              src={product.imageUrl}
+              alt={product.name}
+              className="absolute inset-0 w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
+              loading="lazy"
+            />
+          ) : (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
+              loading="lazy"
+            />
+          )
         ) : (
           <div className="text-gray-400 dark:text-gray-500 font-medium">
             No Image
