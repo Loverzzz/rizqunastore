@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import ProductList from "@/components/ProductList";
 import { Metadata } from "next";
-import { unstable_cache } from "next/cache";
 
 export const metadata: Metadata = {
   title: "Katalog Produk | Rizquna Store",
@@ -11,24 +10,31 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-const getProducts = unstable_cache(
-  async () => {
+export default async function ProductsPage() {
+  let products;
+  try {
     const rawProducts = await prisma.product.findMany({
       orderBy: { createdAt: "desc" },
       include: { variants: { orderBy: { label: "asc" } } },
     });
-    return rawProducts.map((p) => ({
+    products = rawProducts.map((p) => ({
       ...p,
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
     }));
-  },
-  ["products-with-variants"],
-  { revalidate: 60 },
-);
-
-export default async function ProductsPage() {
-  const products = await getProducts();
+  } catch (e) {
+    console.error("Failed to fetch products with variants:", e);
+    // Fallback: fetch without variants
+    const rawProducts = await prisma.product.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    products = rawProducts.map((p) => ({
+      ...p,
+      variants: [],
+      createdAt: p.createdAt.toISOString(),
+      updatedAt: p.updatedAt.toISOString(),
+    }));
+  }
 
   return (
     <div className="py-12 bg-gray-50 min-h-screen dark:bg-slate-900">
