@@ -33,7 +33,7 @@ export default function EditProductForm({
   const [imagePreview, setImagePreview] = useState<string | null>(
     product.imageUrl || null,
   );
-  const [useUrl, setUseUrl] = useState(false);
+  const [useUrl, setUseUrl] = useState(!!product.imageUrl);
   const [variants, setVariants] = useState<
     { id?: string; label: string; price: string; stock: string }[]
   >(
@@ -86,9 +86,28 @@ export default function EditProductForm({
     }
   };
 
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSubmit = async (formData: FormData) => {
+    setSaving(true);
+    setError(null);
+    try {
+      await action(formData);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Gagal menyimpan produk");
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden p-6 md:p-8">
-      <form action={action} className="space-y-6">
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
+          {error}
+        </div>
+      )}
+      <form action={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label
@@ -292,7 +311,7 @@ export default function EditProductForm({
           {useUrl ? (
             <div className="space-y-2">
               <input
-                type="url"
+                type="text"
                 value={imageUrl}
                 onChange={(e) => {
                   setImageUrl(e.target.value);
@@ -362,10 +381,11 @@ export default function EditProductForm({
           </Link>
           <button
             type="submit"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl transition-all shadow-sm"
+            disabled={saving}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-xl transition-all shadow-sm disabled:opacity-70 disabled:cursor-not-allowed"
           >
             <Save className="w-5 h-5" />
-            Perbarui Produk
+            {saving ? "Menyimpan..." : "Perbarui Produk"}
           </button>
         </div>
       </form>

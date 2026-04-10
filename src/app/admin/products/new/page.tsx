@@ -349,7 +349,7 @@ export default function NewProductPage() {
             {useUrl ? (
               <div className="space-y-2">
                 <input
-                  type="url"
+                  type="text"
                   value={imageUrl}
                   onChange={(e) => {
                     setImageUrl(e.target.value);
