@@ -125,9 +125,7 @@ export async function updateProduct(id: string, formData: FormData) {
       select: { id: true },
     });
     const existingIds = existing.map((v) => v.id);
-    const incomingIds = variants
-      .filter((v) => v.id)
-      .map((v) => v.id as string);
+    const incomingIds = variants.filter((v) => v.id).map((v) => v.id as string);
 
     // Delete removed variants (only if no order items reference them)
     const toDelete = existingIds.filter((eid) => !incomingIds.includes(eid));
