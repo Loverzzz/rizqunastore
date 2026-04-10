@@ -14,14 +14,26 @@ model Product {
   id          String   @id @default(uuid())
   name        String
   description String?
-  price       Float
+  price       Float    // harga dasar (atau harga terendah jika ada varian)
   imageUrl    String?
-  category    String   // e.g., "Alat Tulis", "Sembako", "Jajanan"
-  stock       Int      @default(0)
+  category    String   // e.g., "Tas", "Seragam Sekolah", "Seragam Pramuka"
+  stock       Int      @default(0) // total stok (untuk produk tanpa varian)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  variants    ProductVariant[]
   orderItems  OrderItem[]
+}
+
+model ProductVariant {
+  id        String  @id @default(uuid())
+  productId String
+  label     String  // e.g., "Uk 3", "Uk 4", "M", "L"
+  price     Float
+  stock     Int     @default(0)
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
 }
 
 model Order {
@@ -47,11 +59,13 @@ model OrderItem {
   id        String  @id @default(uuid())
   orderId   String
   productId String
+  variantId String?
   quantity  Int
   price     Float
 
-  order     Order   @relation(fields: [orderId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  order     Order           @relation(fields: [orderId], references: [id])
+  product   Product         @relation(fields: [productId], references: [id])
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
 }
 
 model Booking {

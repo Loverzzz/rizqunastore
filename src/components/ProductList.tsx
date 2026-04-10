@@ -4,6 +4,13 @@ import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import { PackageSearch, Search } from "lucide-react";
 
+interface Variant {
+  id: string;
+  label: string;
+  price: number;
+  stock: number;
+}
+
 interface Product {
   id: string;
   name: string;
@@ -12,6 +19,7 @@ interface Product {
   imageUrl: string | null;
   category: string;
   stock: number;
+  variants?: Variant[];
 }
 
 export default function ProductList({ products }: { products: Product[] }) {

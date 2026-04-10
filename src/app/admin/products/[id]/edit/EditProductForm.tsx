@@ -1,8 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Save, Upload } from "lucide-react";
+import { Save, Upload, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+
+interface VariantData {
+  id?: string;
+  label: string;
+  price: number;
+  stock: number;
+}
 
 interface EditProductFormProps {
   action: (formData: FormData) => Promise<void>;
@@ -13,6 +20,7 @@ interface EditProductFormProps {
     price: number;
     stock: number;
     imageUrl: string;
+    variants?: VariantData[];
   };
 }
 
@@ -26,6 +34,26 @@ export default function EditProductForm({
     product.imageUrl || null,
   );
   const [useUrl, setUseUrl] = useState(false);
+  const [variants, setVariants] = useState<
+    { id?: string; label: string; price: string; stock: string }[]
+  >(
+    (product.variants || []).map((v) => ({
+      id: v.id,
+      label: v.label,
+      price: String(v.price),
+      stock: String(v.stock),
+    })),
+  );
+
+  const addVariant = () =>
+    setVariants([...variants, { label: "", price: "", stock: "" }]);
+  const removeVariant = (i: number) =>
+    setVariants(variants.filter((_, idx) => idx !== i));
+  const updateVariant = (i: number, field: string, value: string) => {
+    const copy = [...variants];
+    copy[i] = { ...copy[i], [field]: value };
+    setVariants(copy);
+  };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -93,6 +121,9 @@ export default function EditProductForm({
               required
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
             >
+              <option value="Tas">Tas</option>
+              <option value="Seragam Sekolah">Seragam Sekolah</option>
+              <option value="Seragam Pramuka">Seragam Pramuka</option>
               <option value="Sembako">Sembako</option>
               <option value="Alat Tulis">Alat Tulis</option>
               <option value="Jajanan">Jajanan</option>
@@ -153,6 +184,91 @@ export default function EditProductForm({
               className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
             />
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Varian Ukuran (Opsional)
+            </label>
+            <button
+              type="button"
+              onClick={addVariant}
+              className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/30 dark:hover:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg transition-colors"
+            >
+              <Plus className="w-3 h-3" />
+              Tambah Ukuran
+            </button>
+          </div>
+          {variants.length > 0 && (
+            <input
+              type="hidden"
+              name="variants"
+              value={JSON.stringify(
+                variants
+                  .filter((v) => v.label && v.price && v.stock)
+                  .map((v) => ({
+                    id: v.id,
+                    label: v.label,
+                    price: Number(v.price),
+                    stock: Number(v.stock),
+                  })),
+              )}
+            />
+          )}
+          {variants.length > 0 && (
+            <div className="space-y-2">
+              <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 px-1">
+                <span>Label</span>
+                <span>Harga (Rp)</span>
+                <span>Stok</span>
+                <span className="w-8" />
+              </div>
+              {variants.map((v, i) => (
+                <div
+                  key={i}
+                  className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center"
+                >
+                  <input
+                    type="text"
+                    placeholder="Uk 3"
+                    value={v.label}
+                    onChange={(e) => updateVariant(i, "label", e.target.value)}
+                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                  />
+                  <input
+                    type="number"
+                    placeholder="50000"
+                    min="0"
+                    value={v.price}
+                    onChange={(e) => updateVariant(i, "price", e.target.value)}
+                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                  />
+                  <input
+                    type="number"
+                    placeholder="10"
+                    min="0"
+                    value={v.stock}
+                    onChange={(e) => updateVariant(i, "stock", e.target.value)}
+                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeVariant(i)}
+                    className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+          {variants.length === 0 && (
+            <p className="text-xs text-gray-400 dark:text-gray-500">
+              Tambahkan varian jika produk memiliki beberapa ukuran dengan
+              harga/stok berbeda.
+            </p>
+          )}
         </div>
 
         <div className="space-y-2">

@@ -15,6 +15,7 @@ export default async function EditProductPage({
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
+    include: { variants: { orderBy: { label: "asc" } } },
   });
 
   if (!product) {
@@ -51,6 +52,12 @@ export default async function EditProductPage({
           price: product.price,
           stock: product.stock,
           imageUrl: product.imageUrl || "",
+          variants: product.variants.map((v) => ({
+            id: v.id,
+            label: v.label,
+            price: v.price,
+            stock: v.stock,
+          })),
         }}
       />
     </div>

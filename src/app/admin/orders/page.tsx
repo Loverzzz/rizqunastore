@@ -8,7 +8,7 @@ export default async function AdminOrdersPage() {
     orderBy: { createdAt: "desc" },
     include: {
       items: {
-        include: { product: true },
+        include: { product: true, variant: true },
       },
     },
   });
@@ -26,6 +26,13 @@ export default async function AdminOrdersPage() {
         imageUrl: item.product.imageUrl,
         price: item.product.price,
       },
+      variant: item.variant
+        ? {
+            id: item.variant.id,
+            label: item.variant.label,
+            price: item.variant.price,
+          }
+        : null,
     })),
   }));
 

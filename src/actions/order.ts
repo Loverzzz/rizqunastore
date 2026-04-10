@@ -13,6 +13,7 @@ export async function createOrder(data: {
   deliveryDistance?: number;
   items: {
     productId: string;
+    variantId?: string;
     quantity: number;
     price: number;
   }[];
@@ -37,34 +38,57 @@ export async function createOrder(data: {
       let serverCalculatedTotal = 0;
       const trustedItems: {
         productId: string;
+        variantId?: string;
         quantity: number;
         price: number;
       }[] = [];
 
       for (const item of data.items) {
-        // Fetch harga & stok resmi dari database (JANGAN percaya price dari klien)
-        const product = await tx.product.findUnique({
-          where: { id: item.productId },
-        });
+        // Jika ada variantId, gunakan harga & stok dari variant
+        if (item.variantId) {
+          const variant = await tx.productVariant.findUnique({
+            where: { id: item.variantId },
+            include: { product: true },
+          });
 
-        if (!product) {
-          throw new Error(`Produk tidak ditemukan.`);
+          if (!variant) {
+            throw new Error(`Varian produk tidak ditemukan.`);
+          }
+          if (variant.stock < item.quantity) {
+            throw new Error(
+              `Stok "${variant.product.name} (${variant.label})" tidak cukup. Tersisa ${variant.stock} item.`,
+            );
+          }
+
+          serverCalculatedTotal += variant.price * item.quantity;
+          trustedItems.push({
+            productId: variant.productId,
+            variantId: variant.id,
+            quantity: item.quantity,
+            price: variant.price,
+          });
+        } else {
+          // Produk tanpa varian
+          const product = await tx.product.findUnique({
+            where: { id: item.productId },
+          });
+
+          if (!product) {
+            throw new Error(`Produk tidak ditemukan.`);
+          }
+          if (product.stock < item.quantity) {
+            throw new Error(
+              `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`,
+            );
+          }
+
+          serverCalculatedTotal += product.price * item.quantity;
+          trustedItems.push({
+            productId: item.productId,
+            quantity: item.quantity,
+            price: product.price,
+          });
         }
-        if (product.stock < item.quantity) {
-          throw new Error(
-            `Stok "${product.name}" tidak cukup. Tersisa ${product.stock} item.`,
-          );
-        }
-
-        // Gunakan harga dari database, bukan dari klien
-        serverCalculatedTotal += product.price * item.quantity;
-        trustedItems.push({
-          productId: item.productId,
-          quantity: item.quantity,
-          price: product.price, // harga resmi dari DB
-        });
-
-        // Stok TIDAK dikurangi di sini — hanya dikurangi saat status berubah ke PAID
       }
 
       // Validasi dan hitung ongkir di server
@@ -93,6 +117,7 @@ export async function createOrder(data: {
           items: {
             create: trustedItems.map((item) => ({
               productId: item.productId,
+              variantId: item.variantId || null,
               quantity: item.quantity,
               price: item.price,
             })),
@@ -129,28 +154,51 @@ export async function updateOrderStatus(orderId: string, status: string) {
       // Jika status berubah ke PAID dan sebelumnya BUKAN PAID → kurangi stok
       if (status === "PAID" && order.status !== "PAID") {
         for (const item of order.items) {
-          const product = await tx.product.findUnique({
-            where: { id: item.productId },
-          });
-          if (!product || product.stock < item.quantity) {
-            throw new Error(
-              `Stok "${product?.name || "produk"}" tidak cukup untuk memproses pembayaran.`,
-            );
+          if (item.variantId) {
+            const variant = await tx.productVariant.findUnique({
+              where: { id: item.variantId },
+              include: { product: true },
+            });
+            if (!variant || variant.stock < item.quantity) {
+              throw new Error(
+                `Stok "${variant?.product.name || "produk"} (${variant?.label || ""})" tidak cukup untuk memproses pembayaran.`,
+              );
+            }
+            await tx.productVariant.update({
+              where: { id: item.variantId },
+              data: { stock: { decrement: item.quantity } },
+            });
+          } else {
+            const product = await tx.product.findUnique({
+              where: { id: item.productId },
+            });
+            if (!product || product.stock < item.quantity) {
+              throw new Error(
+                `Stok "${product?.name || "produk"}" tidak cukup untuk memproses pembayaran.`,
+              );
+            }
+            await tx.product.update({
+              where: { id: item.productId },
+              data: { stock: { decrement: item.quantity } },
+            });
           }
-          await tx.product.update({
-            where: { id: item.productId },
-            data: { stock: { decrement: item.quantity } },
-          });
         }
       }
 
       // Jika status berubah ke CANCELLED dan sebelumnya PAID → kembalikan stok
       if (status === "CANCELLED" && order.status === "PAID") {
         for (const item of order.items) {
-          await tx.product.update({
-            where: { id: item.productId },
-            data: { stock: { increment: item.quantity } },
-          });
+          if (item.variantId) {
+            await tx.productVariant.update({
+              where: { id: item.variantId },
+              data: { stock: { increment: item.quantity } },
+            });
+          } else {
+            await tx.product.update({
+              where: { id: item.productId },
+              data: { stock: { increment: item.quantity } },
+            });
+          }
         }
       }
 

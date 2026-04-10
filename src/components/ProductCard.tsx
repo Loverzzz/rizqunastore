@@ -7,6 +7,13 @@ import { useWishlistStore } from "@/store/wishlistStore";
 import { useState } from "react";
 import Image from "next/image";
 
+interface Variant {
+  id: string;
+  label: string;
+  price: number;
+  stock: number;
+}
+
 interface Product {
   id: string;
   name: string;
@@ -14,6 +21,8 @@ interface Product {
   price: number;
   imageUrl: string | null;
   category: string;
+  stock: number;
+  variants?: Variant[];
 }
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -22,11 +31,32 @@ export default function ProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false);
   const wishlisted = isWishlisted(product.id);
 
+  const hasVariants = product.variants && product.variants.length > 0;
+
+  // Sort variants numerically (e.g., "Uk 3" before "Uk 10")
+  const sortedVariants = hasVariants
+    ? [...product.variants!].sort((a, b) => {
+        const numA = parseInt(a.label.replace(/\D/g, "")) || 0;
+        const numB = parseInt(b.label.replace(/\D/g, "")) || 0;
+        return numA - numB || a.label.localeCompare(b.label);
+      })
+    : [];
+
+  const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
+    sortedVariants.length > 0 ? sortedVariants[0] : null,
+  );
+
+  const currentPrice = selectedVariant ? selectedVariant.price : product.price;
+  const currentStock = selectedVariant ? selectedVariant.stock : product.stock;
+
   const handleAddToCart = () => {
+    if (hasVariants && !selectedVariant) return;
     addItem({
-      id: product.id,
+      productId: product.id,
+      variantId: selectedVariant?.id || null,
+      variantLabel: selectedVariant?.label || null,
       name: product.name,
-      price: product.price,
+      price: currentPrice,
       imageUrl: product.imageUrl,
     });
     setAdded(true);
@@ -84,13 +114,46 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.description || "Tidak ada deskripsi."}
         </p>
 
+        {/* Variant / Size Picker */}
+        {hasVariants && (
+          <div className="mb-4">
+            <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-2">
+              Pilih Ukuran:
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {sortedVariants.map((v) => (
+                <button
+                  key={v.id}
+                  onClick={() => setSelectedVariant(v)}
+                  disabled={v.stock === 0}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-all ${
+                    selectedVariant?.id === v.id
+                      ? "bg-brand-600 text-white border-brand-600 shadow-sm"
+                      : v.stock === 0
+                        ? "bg-gray-100 text-gray-300 border-gray-200 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500 dark:border-slate-600"
+                        : "bg-white text-gray-700 border-gray-200 hover:border-brand-400 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600"
+                  }`}
+                >
+                  {v.label}
+                </button>
+              ))}
+            </div>
+            {selectedVariant && (
+              <p className="text-[11px] text-gray-400 mt-1.5">
+                Stok: {selectedVariant.stock}
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-slate-700">
           <span className="text-xl font-black text-brand-600 dark:text-brand-400">
-            {formatRupiah(product.price)}
+            {formatRupiah(currentPrice)}
           </span>
           <button
             onClick={handleAddToCart}
-            className={`p-3 ${added ? "bg-green-500 text-white" : "bg-brand-50 hover:bg-brand-500 text-brand-600 hover:text-white dark:bg-slate-700 dark:hover:bg-brand-500 dark:text-brand-400 dark:hover:text-white"} rounded-full transition-colors flex mt-1 items-center gap-1 active:scale-95 cursor-pointer z-10`}
+            disabled={currentStock === 0}
+            className={`p-3 ${added ? "bg-green-500 text-white" : currentStock === 0 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500" : "bg-brand-50 hover:bg-brand-500 text-brand-600 hover:text-white dark:bg-slate-700 dark:hover:bg-brand-500 dark:text-brand-400 dark:hover:text-white"} rounded-full transition-colors flex mt-1 items-center gap-1 active:scale-95 cursor-pointer z-10`}
             aria-label="Tambah ke keranjang"
           >
             {added ? (

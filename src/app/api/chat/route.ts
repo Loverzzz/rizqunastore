@@ -14,15 +14,29 @@ async function getProductList(): Promise<string> {
     return cachedProductList;
   }
   const products = await prisma.product.findMany({
-    select: { name: true, price: true, category: true, stock: true },
+    select: {
+      name: true,
+      price: true,
+      category: true,
+      stock: true,
+      variants: { select: { label: true, price: true, stock: true } },
+    },
     take: 50,
     orderBy: { createdAt: "desc" },
   });
   cachedProductList = products
-    .map(
-      (p) =>
-        `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString("id-ID")}, stok: ${p.stock}`,
-    )
+    .map((p) => {
+      if (p.variants.length > 0) {
+        const sizes = p.variants
+          .map(
+            (v) =>
+              `${v.label}: Rp${v.price.toLocaleString("id-ID")} (stok ${v.stock})`,
+          )
+          .join(", ");
+        return `- ${p.name} (${p.category}): ${sizes}`;
+      }
+      return `- ${p.name} (${p.category}): Rp ${p.price.toLocaleString("id-ID")}, stok: ${p.stock}`;
+    })
     .join("\n");
   cacheTimestamp = now;
   return cachedProductList;

@@ -174,7 +174,8 @@ export default function CartPage() {
             ? (deliveryDistance ?? undefined)
             : undefined,
         items: items.map((item) => ({
-          productId: item.id,
+          productId: item.productId,
+          variantId: item.variantId || undefined,
           quantity: item.quantity,
           price: item.price,
         })),
@@ -288,6 +289,11 @@ export default function CartPage() {
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 mb-1">
                     {item.name}
                   </h3>
+                  {item.variantLabel && (
+                    <span className="inline-block px-2 py-0.5 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-md mb-1">
+                      {item.variantLabel}
+                    </span>
+                  )}
                   <p className="text-brand-600 dark:text-brand-400 font-semibold">
                     {formatRupiah(item.price)}
                   </p>

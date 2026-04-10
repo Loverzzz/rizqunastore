@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany({
     orderBy: { createdAt: "desc" },
+    include: { variants: true },
   });
 
   const formatRupiah = (price: number) => {
@@ -110,7 +111,9 @@ export default async function AdminProductsPage() {
                       {formatRupiah(product.price)}
                     </td>
                     <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
-                      {product.stock}
+                      {product.variants.length > 0
+                        ? `${product.variants.reduce((s, v) => s + v.stock, 0)} (${product.variants.length} ukuran)`
+                        : product.stock}
                     </td>
                     <td className="px-6 py-4 text-right space-x-2">
                       <Link

@@ -15,6 +15,7 @@ const getProducts = unstable_cache(
   async () => {
     const rawProducts = await prisma.product.findMany({
       orderBy: { createdAt: "desc" },
+      include: { variants: { orderBy: { label: "asc" } } },
     });
     return rawProducts.map((p) => ({
       ...p,

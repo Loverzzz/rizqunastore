@@ -22,6 +22,7 @@ type OrderItem = {
   quantity: number;
   price: number;
   product: { id: string; name: string; imageUrl: string | null; price: number };
+  variant: { id: string; label: string; price: number } | null;
 };
 
 type Order = {
@@ -339,6 +340,11 @@ export default function OrdersTable({ orders }: { orders: Order[] }) {
                           <p className="font-medium text-gray-900 dark:text-white text-sm">
                             {item.product.name}
                           </p>
+                          {item.variant && (
+                            <p className="text-xs text-brand-500 font-medium">
+                              {item.variant.label}
+                            </p>
+                          )}
                           <p className="text-xs text-gray-500">
                             @ {formatRupiah(item.price)}
                           </p>

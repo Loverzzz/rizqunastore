@@ -35,7 +35,7 @@ export async function POST(request: Request) {
       where: { id: orderId },
       include: {
         items: {
-          include: { product: true },
+          include: { product: true, variant: true },
         },
       },
     });
@@ -51,12 +51,15 @@ export async function POST(request: Request) {
     const midtransOrderId = `ORDER-${order.id.split("-")[0]}-${Date.now()}`;
 
     // Hitung gross_amount pasti berdasarkan item_details agar tidak ditolak Midtrans
-    const itemDetails = order.items.map((item) => ({
-      id: item.productId.substring(0, 50),
-      price: Math.round(item.price),
-      quantity: item.quantity,
-      name: item.product.name.substring(0, 50),
-    }));
+    const itemDetails = order.items.map((item) => {
+      const variantSuffix = item.variant ? ` (${item.variant.label})` : "";
+      return {
+        id: (item.variantId || item.productId).substring(0, 50),
+        price: Math.round(item.price),
+        quantity: item.quantity,
+        name: `${item.product.name}${variantSuffix}`.substring(0, 50),
+      };
+    });
 
     // Tambahkan ongkir sebagai item jika ada
     if (order.deliveryFee && order.deliveryFee > 0) {
