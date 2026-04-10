@@ -107,75 +107,72 @@ export async function updateProduct(id: string, formData: FormData) {
     }
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.product.update({
-      where: { id },
-      data: {
-        name,
-        description,
-        price,
-        stock,
-        category,
-        imageUrl: imageUrl || null,
-      },
+  await prisma.product.update({
+    where: { id },
+    data: {
+      name,
+      description,
+      price,
+      stock,
+      category,
+      imageUrl: imageUrl || null,
+    },
+  });
+
+  if (variants.length > 0) {
+    const existing = await prisma.productVariant.findMany({
+      where: { productId: id },
+      select: { id: true },
     });
+    const existingIds = existing.map((v) => v.id);
+    const incomingIds = variants
+      .filter((v) => v.id)
+      .map((v) => v.id as string);
 
-    if (variants.length > 0) {
-      // Get existing variant IDs
-      const existing = await tx.productVariant.findMany({
-        where: { productId: id },
-        select: { id: true },
+    // Delete removed variants (only if no order items reference them)
+    const toDelete = existingIds.filter((eid) => !incomingIds.includes(eid));
+    for (const vid of toDelete) {
+      const orderCount = await prisma.orderItem.count({
+        where: { variantId: vid },
       });
-      const existingIds = existing.map((v) => v.id);
-      const incomingIds = variants
-        .filter((v) => v.id)
-        .map((v) => v.id as string);
-
-      // Delete removed variants (only if no order items reference them)
-      const toDelete = existingIds.filter((eid) => !incomingIds.includes(eid));
-      for (const vid of toDelete) {
-        const orderCount = await tx.orderItem.count({
-          where: { variantId: vid },
-        });
-        if (orderCount === 0) {
-          await tx.productVariant.delete({ where: { id: vid } });
-        }
-      }
-
-      // Upsert variants
-      for (const v of variants) {
-        if (v.id && existingIds.includes(v.id)) {
-          await tx.productVariant.update({
-            where: { id: v.id },
-            data: { label: v.label, price: v.price, stock: v.stock },
-          });
-        } else {
-          await tx.productVariant.create({
-            data: {
-              productId: id,
-              label: v.label,
-              price: v.price,
-              stock: v.stock,
-            },
-          });
-        }
-      }
-    } else {
-      // If no variants submitted, delete all variants without orders
-      const existing = await tx.productVariant.findMany({
-        where: { productId: id },
-        select: { id: true },
-      });
-      for (const v of existing) {
-        const orderCount = await tx.orderItem.count({
-          where: { variantId: v.id },
-        });
-        if (orderCount === 0) {
-          await tx.productVariant.delete({ where: { id: v.id } });
-        }
+      if (orderCount === 0) {
+        await prisma.productVariant.delete({ where: { id: vid } });
       }
     }
-  });
+
+    // Upsert variants
+    for (const v of variants) {
+      if (v.id && existingIds.includes(v.id)) {
+        await prisma.productVariant.update({
+          where: { id: v.id },
+          data: { label: v.label, price: v.price, stock: v.stock },
+        });
+      } else {
+        await prisma.productVariant.create({
+          data: {
+            productId: id,
+            label: v.label,
+            price: v.price,
+            stock: v.stock,
+          },
+        });
+      }
+    }
+  } else {
+    // If no variants submitted, delete all variants without orders
+    const existing = await prisma.productVariant.findMany({
+      where: { productId: id },
+      select: { id: true },
+    });
+    for (const v of existing) {
+      const orderCount = await prisma.orderItem.count({
+        where: { variantId: v.id },
+      });
+      if (orderCount === 0) {
+        await prisma.productVariant.delete({ where: { id: v.id } });
+      }
+    }
+  }
 
   revalidatePath("/admin/products");
   revalidatePath("/products");

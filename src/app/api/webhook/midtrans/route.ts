@@ -130,32 +130,28 @@ export async function POST(request: Request) {
 
         // Jika PAID dan sebelumnya bukan PAID → kurangi stok
         if (finalStatus === "PAID" && order.status !== "PAID") {
-          await prisma.$transaction(async (tx) => {
-            for (const item of order.items) {
-              await tx.product.update({
-                where: { id: item.productId },
-                data: { stock: { decrement: item.quantity } },
-              });
-            }
-            await tx.order.update({
-              where: { id: order.id },
-              data: { status: finalStatus },
+          for (const item of order.items) {
+            await prisma.product.update({
+              where: { id: item.productId },
+              data: { stock: { decrement: item.quantity } },
             });
+          }
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: finalStatus },
           });
           console.log(`Webhook: Order ${order.id} PAID → stock decremented`);
         } else if (finalStatus === "CANCELLED" && order.status === "PAID") {
           // Jika CANCELLED dari PAID → kembalikan stok
-          await prisma.$transaction(async (tx) => {
-            for (const item of order.items) {
-              await tx.product.update({
-                where: { id: item.productId },
-                data: { stock: { increment: item.quantity } },
-              });
-            }
-            await tx.order.update({
-              where: { id: order.id },
-              data: { status: finalStatus },
+          for (const item of order.items) {
+            await prisma.product.update({
+              where: { id: item.productId },
+              data: { stock: { increment: item.quantity } },
             });
+          }
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: finalStatus },
           });
           console.log(
             `Webhook: Order ${order.id} CANCELLED from PAID → stock restored`,
@@ -196,17 +192,15 @@ export async function POST(request: Request) {
       });
       if (order) {
         if (finalStatus === "CANCELLED" && order.status !== "CANCELLED") {
-          await prisma.$transaction(async (tx) => {
-            for (const item of order.items) {
-              await tx.product.update({
-                where: { id: item.productId },
-                data: { stock: { increment: item.quantity } },
-              });
-            }
-            await tx.order.update({
-              where: { id: order.id },
-              data: { status: finalStatus },
+          for (const item of order.items) {
+            await prisma.product.update({
+              where: { id: item.productId },
+              data: { stock: { increment: item.quantity } },
             });
+          }
+          await prisma.order.update({
+            where: { id: order.id },
+            data: { status: finalStatus },
           });
         } else {
           await prisma.order.update({
