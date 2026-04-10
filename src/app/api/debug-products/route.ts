@@ -14,7 +14,10 @@ export async function GET() {
       createdAt: p.createdAt.toISOString(),
       updatedAt: p.updatedAt.toISOString(),
     }));
-    return NextResponse.json({ ok: true, count: products.length, first: products[0] });
+    const withImages = products.filter((p) => p.imageUrl).map((p) => ({
+      id: p.id, name: p.name, imageUrl: p.imageUrl?.substring(0, 80),
+    }));
+    return NextResponse.json({ ok: true, count: products.length, withImages });
   } catch (e: unknown) {
     return NextResponse.json(
       { ok: false, error: e instanceof Error ? e.message : String(e), stack: e instanceof Error ? e.stack : undefined },
