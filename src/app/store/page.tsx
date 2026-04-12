@@ -47,9 +47,9 @@ export default function StorePage() {
             </div>
             <div className="text-gray-600 dark:text-gray-400 space-y-1">
               <p className="font-medium text-gray-900 dark:text-white">Rizquna Store</p>
-              <p>Jl. Raya No. 123</p>
-              <p>Desa Sumberagung, Kecamatan Jenu</p>
-              <p>Kabupaten Tuban, Jawa Timur 62352</p>
+              <p>X3FX+892, Jl. Raya Plumpang</p>
+              <p>RW.7, Tanggungan, Kec. Plumpang</p>
+              <p>Kabupaten Tuban, Jawa Timur 62382</p>
               <p>Indonesia</p>
             </div>
             <a

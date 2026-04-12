@@ -114,7 +114,7 @@ export default function ProductList({ products }: { products: Product[] }) {
                 className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
               >
                 <MapPin className="w-3 h-3" />
-                Jl. Raya Plumpang, Plumpang, Tuban
+                X3FX+892, Jl. Raya Plumpang, Tuban
               </a>
             </div>
           </div>

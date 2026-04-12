@@ -46,9 +46,9 @@ export default function Footer() {
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" />
                 <span className="text-sm">
-                  Jl. Raya Plumpang, RW.7, Tanggungan,<br />
-                  Kec. Plumpang, Kabupaten Tuban,<br />
-                  Jawa Timur 62382
+                  X3FX+892, Jl. Raya Plumpang, RW.7,<br />
+                  Tanggungan, Kec. Plumpang,<br />
+                  Kabupaten Tuban, Jawa Timur 62382
                 </span>
               </li>
               <li className="flex items-center gap-2">
