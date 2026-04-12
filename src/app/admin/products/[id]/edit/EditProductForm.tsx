@@ -12,7 +12,7 @@ interface VariantData {
 }
 
 interface EditProductFormProps {
-  action: (formData: FormData) => Promise<void>;
+  action: (formData: FormData) => Promise<{ success: boolean } | void>;
   product: {
     name: string;
     category: string;
@@ -88,12 +88,19 @@ export default function EditProductForm({
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (formData: FormData) => {
     setSaving(true);
     setError(null);
+    setSuccess(false);
     try {
       await action(formData);
+      setSuccess(true);
+      // Redirect setelah berhasil
+      setTimeout(() => {
+        window.location.href = "/admin/products";
+      }, 500);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Gagal menyimpan produk");
       setSaving(false);
@@ -105,6 +112,11 @@ export default function EditProductForm({
       {error && (
         <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
           {error}
+        </div>
+      )}
+      {success && (
+        <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-sm text-green-600 dark:text-green-400">
+          Produk berhasil diperbarui! Mengalihkan...
         </div>
       )}
       <form action={handleSubmit} className="space-y-6">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, Mail, Phone } from "lucide-react";
+import { Clock, Mail, Phone, MapPin, AlertCircle } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -33,6 +33,7 @@ export default function Footer() {
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Tautan Cepat</h4>
             <ul className="space-y-2">
               <li><Link href="/products" className="text-gray-600 dark:text-gray-400 hover:text-brand-500 transition-colors">Toko Rizquna</Link></li>
+              <li><Link href="/store" className="text-gray-600 dark:text-gray-400 hover:text-brand-500 transition-colors">Lokasi Toko</Link></li>
               <li><Link href="/playground" className="text-gray-600 dark:text-gray-400 hover:text-accent-500 transition-colors">Playground Happy Kids</Link></li>
               <li className="pt-2"><Link href="/terms" className="text-gray-500 dark:text-gray-500 hover:text-brand-500 transition-colors text-sm">Syarat & Ketentuan</Link></li>
               <li><Link href="/refund" className="text-gray-500 dark:text-gray-500 hover:text-accent-500 transition-colors text-sm">Kebijakan Pengembalian</Link></li>
@@ -42,6 +43,14 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Hubungi Kami</h4>
             <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+              <li className="flex items-start gap-2">
+                <MapPin className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" />
+                <span className="text-sm">
+                  Jl. Raya No. 123, Desa Sumberagung,<br />
+                  Kecamatan Jenu, Kabupaten Tuban,<br />
+                  Jawa Timur 62352
+                </span>
+              </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-brand-500 shrink-0" />
                 <a href="https://wa.me/6281915967694" target="_blank" rel="noopener noreferrer" className="hover:text-brand-500 transition-colors">
@@ -50,7 +59,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-accent-500 shrink-0" />
-                <a href="mailto:reynaldmlbb4@gmail.com" className="hover:text-accent-500 transition-colors break-words">
+                <a href="mailto:reynaldmlbb4@gmail.com" className="hover:text-accent-500 transition-colors break-words text-sm">
                   reynaldmlbb4@gmail.com
                 </a>
               </li>
@@ -58,6 +67,21 @@ export default function Footer() {
           </div>
         </div>
         
+        {/* Disclaimer */}
+        <div className="mb-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-amber-800 dark:text-amber-200">
+              <p className="font-semibold mb-1">Catatan Penting</p>
+              <p>
+                Gambar produk yang ditampilkan pada website dapat berbeda dengan barang asli. 
+                Untuk konfirmasi detail produk (warna, ukuran, kondisi, ketersediaan stok), 
+                silakan hubungi admin via WhatsApp atau datang langsung ke toko offline kami.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="border-t border-gray-200 dark:border-slate-800 pt-8 text-center text-gray-500 text-sm">
           <p>© {new Date().getFullYear()} Rizquna Store & Playground. All rights reserved.</p>
         </div>

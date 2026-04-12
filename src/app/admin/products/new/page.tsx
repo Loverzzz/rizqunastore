@@ -11,11 +11,9 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import { useFormStatus } from "react-dom";
 import { useState } from "react";
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
+function SubmitButton({ pending }: { pending: boolean }) {
   return (
     <button
       type="submit"
@@ -38,6 +36,9 @@ export default function NewProductPage() {
   const [variants, setVariants] = useState<
     { label: string; price: string; stock: string }[]
   >([]);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const addVariant = () =>
     setVariants([...variants, { label: "", price: "", stock: "" }]);
@@ -126,8 +127,34 @@ export default function NewProductPage() {
         </div>
       </div>
 
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
+          {error}
+        </div>
+      )}
+      {success && (
+        <div className="mb-4 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl text-sm text-green-600 dark:text-green-400">
+          Produk berhasil dibuat! Mengalihkan...
+        </div>
+      )}
       <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden p-6 md:p-8">
-        <form action={createProduct} className="space-y-6">
+        <form onSubmit={async (e) => {
+          e.preventDefault();
+          setSaving(true);
+          setError(null);
+          setSuccess(false);
+          try {
+            const formData = new FormData(e.currentTarget);
+            await createProduct(formData);
+            setSuccess(true);
+            setTimeout(() => {
+              window.location.href = "/admin/products";
+            }, 500);
+          } catch (e: unknown) {
+            setError(e instanceof Error ? e.message : "Gagal membuat produk");
+            setSaving(false);
+          }
+        }} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label
@@ -417,7 +444,7 @@ export default function NewProductPage() {
             >
               Batal
             </Link>
-            <SubmitButton />
+            <SubmitButton pending={saving} />
           </div>
         </form>
       </div>

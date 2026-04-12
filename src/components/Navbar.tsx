@@ -37,7 +37,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 glass bg-white/70 dark:bg-slate-900/70 border-b border-gray-200 dark:border-slate-800">
+    <nav className="sticky top-0 z-50 glass shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
@@ -60,6 +60,12 @@ export default function Navbar() {
               className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors px-3 py-2 rounded-md text-sm font-medium"
             >
               Toko
+            </Link>
+            <Link
+              href="/store"
+              className="text-gray-700 dark:text-gray-300 hover:text-brand-500 transition-colors px-3 py-2 rounded-md text-sm font-medium"
+            >
+              Lokasi
             </Link>
             <Link
               href="/playground"
@@ -132,6 +138,12 @@ export default function Navbar() {
                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-50 dark:hover:bg-slate-800"
               >
                 Toko
+              </Link>
+              <Link
+                href="/store"
+                className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-brand-500 hover:bg-gray-50 dark:hover:bg-slate-800"
+              >
+                Lokasi
               </Link>
               <Link
                 href="/playground"

@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 
 async function requireAdmin() {
@@ -59,7 +58,6 @@ export async function createProduct(formData: FormData) {
 
   revalidatePath("/admin/products");
   revalidatePath("/products");
-  redirect("/admin/products");
 }
 
 export async function deleteProduct(id: string) {
@@ -174,5 +172,5 @@ export async function updateProduct(id: string, formData: FormData) {
 
   revalidatePath("/admin/products");
   revalidatePath("/products");
-  redirect("/admin/products");
+  return { success: true };
 }

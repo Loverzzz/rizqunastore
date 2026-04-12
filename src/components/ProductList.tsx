@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { PackageSearch, Search } from "lucide-react";
+import { PackageSearch, Search, AlertCircle, MapPin, Phone } from "lucide-react";
 
 interface Variant {
   id: string;
@@ -85,6 +85,35 @@ export default function ProductList({ products }: { products: Product[] }) {
             {cat}
           </button>
         ))}
+      </div>
+
+      {/* Disclaimer */}
+      <div className="mb-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
+        <div className="flex items-start gap-3">
+          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-amber-800 dark:text-amber-200">
+            <p className="font-semibold mb-1">Disclaimer Produk</p>
+            <p className="mb-2">
+              Gambar produk yang ditampilkan dapat berbeda dengan barang asli. 
+              Untuk konfirmasi detail produk (warna, ukuran, kondisi), silakan hubungi admin WhatsApp atau datang langsung ke toko offline kami.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 text-xs">
+              <a 
+                href="https://wa.me/6281915967694" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
+              >
+                <Phone className="w-3 h-3" />
+                Hubungi Admin WhatsApp
+              </a>
+              <span className="flex items-center gap-1 text-amber-700 dark:text-amber-300">
+                <MapPin className="w-3 h-3" />
+                Jl. Raya No. 123, Tuban, Jawa Timur
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {filteredProducts.length > 0 ? (
