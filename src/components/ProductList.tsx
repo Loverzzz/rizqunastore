@@ -107,10 +107,15 @@ export default function ProductList({ products }: { products: Product[] }) {
                 <Phone className="w-3 h-3" />
                 Hubungi Admin WhatsApp
               </a>
-              <span className="flex items-center gap-1 text-amber-700 dark:text-amber-300">
+              <a 
+                href="https://share.google/TvhIwGbiWwDis9Kg6"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
+              >
                 <MapPin className="w-3 h-3" />
-                Jl. Raya No. 123, Tuban, Jawa Timur
-              </span>
+                Jl. Raya Plumpang, Plumpang, Tuban
+              </a>
             </div>
           </div>
         </div>

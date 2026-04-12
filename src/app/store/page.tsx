@@ -53,7 +53,7 @@ export default function StorePage() {
               <p>Indonesia</p>
             </div>
             <a
-              href="https://maps.google.com/?q=-6.8987,111.9025"
+              href="https://share.google/TvhIwGbiWwDis9Kg6"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg transition-colors"

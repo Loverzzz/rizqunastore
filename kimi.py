@@ -1,0 +1,32 @@
+default_model = "kimi-for-coding"
+default_thinking = false
+default_yolo = false
+default_editor = ""
+
+[providers.kimi-for-coding]
+type = "kimi"
+base_url = "https://api.kimi.com/coding/v1"
+api_key = "sk-xxx"  # Gantilah dengan API key yang valid
+
+[models.kimi-for-coding]
+provider = "kimi-for-coding"
+model = "kimi-for-coding"
+max_context_size = 262144
+
+[loop_control]
+max_steps_per_turn = 100
+max_retries_per_step = 3
+max_ralph_iterations = 0
+reserved_context_size = 50000
+compaction_trigger_ratio = 0.85
+
+[services.moonshot_search]
+base_url = "https://api.kimi.com/coding/v1/search"
+api_key = "sk-xxx"  # Gantilah dengan API key yang valid
+
+[services.moonshot_fetch]
+base_url = "https://api.kimi.com/coding/v1/fetch"
+api_key = "sk-xxx"  # Gantilah dengan API key yang valid
+
+[mcp.client]
+tool_call_timeout_ms = 60000
