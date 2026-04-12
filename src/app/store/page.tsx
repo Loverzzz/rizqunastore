@@ -122,16 +122,29 @@ export default function StorePage() {
           </div>
         </div>
 
-        {/* Map Placeholder */}
+        {/* Google Maps */}
         <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Peta Lokasi</h2>
-          <div className="aspect-video bg-gray-100 dark:bg-slate-700 rounded-xl flex items-center justify-center">
-            <div className="text-center text-gray-500 dark:text-gray-400">
-              <MapPin className="w-12 h-12 mx-auto mb-2" />
-              <p>Google Maps Integration</p>
-              <p className="text-sm">Klik "Buka di Google Maps" untuk melihat peta</p>
+          <a
+            href="https://share.google/TvhIwGbiWwDis9Kg6"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block aspect-video rounded-xl overflow-hidden relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-accent-500/20 group-hover:from-brand-500/30 group-hover:to-accent-500/30 transition-all" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="p-4 bg-white dark:bg-slate-800 rounded-full shadow-lg mb-4 group-hover:scale-110 transition-transform">
+                <MapPin className="w-10 h-10 text-brand-600 dark:text-brand-400" />
+              </div>
+              <p className="text-gray-900 dark:text-white font-semibold text-lg">Lihat di Google Maps</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Klik untuk membuka peta lokasi</p>
             </div>
-          </div>
+            <div className="absolute bottom-4 left-4 right-4 p-3 bg-white/90 dark:bg-slate-800/90 rounded-lg backdrop-blur-sm">
+              <p className="text-sm text-gray-700 dark:text-gray-300 text-center">
+                X3FX+892, Jl. Raya Plumpang, RW.7, Tanggungan, Kec. Plumpang, Tuban 62382
+              </p>
+            </div>
+          </a>
         </div>
       </div>
     </div>
