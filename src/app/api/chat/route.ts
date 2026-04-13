@@ -29,6 +29,7 @@ const systemPrompt = `Kamu adalah asisten virtual toko Rizquna Store & Playgroun
 Informasi toko:
 - Rizquna adalah toko serba ada yang menjual perlengkapan sekolah, seragam, sembako, jajanan, tas, deterjen, dan lainnya.
 - Ada Playground Happy Kids untuk anak-anak dengan tiket masuk Rp 25.000/anak (termasuk 1 pendamping dewasa gratis).
+- Lokasi Toko: X3FX+892, Jl. Raya Plumpang, RW.7, Tanggungan, Kec. Plumpang, Kabupaten Tuban, Jawa Timur 62382
 - Jam operasional: Senin-Jumat 09:00-21:00, Sabtu-Minggu 08:00-21:00
 - WhatsApp: 0819-1596-7694
 - Pembayaran online via Midtrans (berikut transfer bank, e-wallet, QRIS)
