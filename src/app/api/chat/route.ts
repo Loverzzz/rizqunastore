@@ -196,7 +196,7 @@ export async function POST(request: Request) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: \`Bearer \${apiKey}\`,
+            Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
             model: modelName,
