@@ -35,11 +35,13 @@ export default function ChatWidget() {
     setInput("");
     setIsLoading(true);
 
+    const currentMessages = [...messages, userMessage];
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: trimmed }),
+        body: JSON.stringify({ messages: currentMessages }),
       });
       const data = await res.json();
       setMessages((prev) => [
