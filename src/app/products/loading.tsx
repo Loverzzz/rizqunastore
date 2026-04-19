@@ -6,7 +6,7 @@ export default function ProductsLoading() {
           <div className="h-10 w-64 bg-[#F0D5C8] dark:bg-[#3D1F0A] rounded-lg animate-pulse mb-4" />
           <div className="h-5 w-96 bg-[#F0D5C8] dark:bg-[#3D1F0A] rounded-lg animate-pulse" />
         </div>
-          <div className="h-12 w-full bg-[#F0D5C8] dark:bg-[#3D1F0A] rounded-xl animate-pulse mb-6" />
+        <div className="h-12 w-full bg-[#F0D5C8] dark:bg-[#3D1F0A] rounded-xl animate-pulse mb-6" />
         <div className="flex gap-2 mb-8">
           {[1, 2, 3, 4].map((i) => (
             <div

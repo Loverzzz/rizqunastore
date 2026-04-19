@@ -183,7 +183,7 @@ export default function PlaygroundPage() {
                 <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-2">
                   Pemesanan Selesai
                 </h3>
-                  className="text-[#5C2A10] dark:text-[#D4A882] mb-8 max-w-sm mx-auto"
+                <p className="text-[#5C2A10] dark:text-[#D4A882] mb-8 max-w-sm mx-auto">
                   Tiket Playground untuk jadwal {time} atas nama {customerName}{" "}
                   telah berhasil dicatat.
                 </p>

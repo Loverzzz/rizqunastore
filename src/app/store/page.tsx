@@ -146,8 +146,8 @@ export default function StorePage() {
         </div>
 
         {/* Google Maps */}
-          className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40">
+          <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             Peta Lokasi
           </h2>
           <a
