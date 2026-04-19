@@ -16,7 +16,7 @@ export default function StorePage() {
           <h1 className="text-4xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             Lokasi Toko
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+          <p className="text-[#5C2A10] dark:text-[#D4A882] max-w-2xl mx-auto">
             Kunjungi toko offline kami untuk melihat produk secara langsung dan
             berbelanja dengan lebih nyaman.
           </p>
@@ -41,7 +41,7 @@ export default function StorePage() {
         {/* Store Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Address Card */}
-            className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
+          <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-brand-100 dark:bg-brand-900/30 rounded-xl">
                 <MapPin className="w-6 h-6 text-brand-600 dark:text-brand-400" />
@@ -71,7 +71,7 @@ export default function StorePage() {
           </div>
 
           {/* Hours Card */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
+          <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40">
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-accent-100 dark:bg-accent-900/30 rounded-xl">
                 <Clock className="w-6 h-6 text-accent-600 dark:text-accent-400" />
@@ -81,7 +81,7 @@ export default function StorePage() {
               </h2>
             </div>
             <div className="space-y-3">
-              <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-slate-700">
+              <div className="flex justify-between items-center py-2 border-b border-[#F0D5C8] dark:border-brand-900/40">
                 <span className="text-[#5C2A10] dark:text-[#D4A882]">
                   Senin - Minggu
                 </span>
@@ -89,7 +89,7 @@ export default function StorePage() {
                   08:00 - 20:00
                 </span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-slate-700">
+              <div className="flex justify-between items-center py-2 border-b border-[#F0D5C8] dark:border-brand-900/40">
                 <span className="text-[#5C2A10] dark:text-[#D4A882]">
                   Istirahat
                 </span>
@@ -115,11 +115,11 @@ export default function StorePage() {
             <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
               <Phone className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
-              <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
+            <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
               Kontak & Konfirmasi
             </h2>
           </div>
-            <p className="text-[#5C2A10] dark:text-[#D4A882] mb-4">
+          <p className="text-[#5C2A10] dark:text-[#D4A882] mb-4">
             Untuk konfirmasi ketersediaan produk, detail barang, atau pertanyaan
             lainnya, silakan hubungi kami melalui:
           </p>
