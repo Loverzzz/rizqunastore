@@ -68,6 +68,12 @@ export default function CartPage() {
   // Form State
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+
+  const isValidIndonesianPhone = (phone: string) => {
+    const cleaned = phone.replace(/[\s\-\.]/g, "");
+    return /^(\+62|62|0)8[1-9][0-9]{7,10}$/.test(cleaned);
+  };
 
   // Delivery State
   const [deliveryMethod, setDeliveryMethod] = useState<"pickup" | "delivery">(
@@ -145,6 +151,10 @@ export default function CartPage() {
     e.preventDefault();
     if (!customerName || !customerPhone) {
       alert("Mohon lengkapi nama dan nomor WhatsApp Anda.");
+      return;
+    }
+    if (!isValidIndonesianPhone(customerPhone)) {
+      setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
       return;
     }
     if (deliveryMethod === "delivery") {
@@ -522,10 +532,22 @@ export default function CartPage() {
                     type="tel"
                     required
                     value={customerPhone}
-                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    onChange={(e) => {
+                      setCustomerPhone(e.target.value);
+                      if (e.target.value && !isValidIndonesianPhone(e.target.value)) {
+                        setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
+                      } else {
+                        setPhoneError("");
+                      }
+                    }}
                     placeholder="Contoh: 08123456789"
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none"
+                    className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none ${
+                      phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-200 dark:border-slate-600"
+                    }`}
                   />
+                  {phoneError && (
+                    <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                  )}
                 </div>
 
                 <button
