@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       ...chatMessages.map((m: any) => ({ role: m.role, content: m.content })),
     ];
 
-    const modelName = "llama-3.3-70b-versatile"; // More reliable for tool/function calling
+    const modelName = "llama-3.1-8b-instant"; // Higher rate limits on Groq free tier
 
     // 1st request to Groq LLM
     const response = await fetch(
@@ -98,11 +98,23 @@ export async function POST(request: Request) {
 
     if (!response.ok) {
       const errData = await response.json().catch(() => null);
-      console.error("Groq API error:", response.status, errData);
-      if (response.status === 429) {
+      console.error(
+        "Groq API error:",
+        response.status,
+        JSON.stringify(errData),
+      );
+      if (
+        response.status === 429 ||
+        errData?.error?.code === "rate_limit_exceeded"
+      ) {
         return NextResponse.json({
           reply:
             "Asisten sedang sibuk. Silakan coba lagi dalam beberapa detik atau hubungi kami via WhatsApp di 0819-1596-7694.",
+        });
+      }
+      if (response.status === 401) {
+        return NextResponse.json({
+          reply: "Konfigurasi AI belum aktif. Silakan hubungi admin.",
         });
       }
       return NextResponse.json({
