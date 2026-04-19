@@ -8,14 +8,29 @@ export const metadata: Metadata = {
     "Temukan berbagai kebutuhan harian Anda di Rizquna Store. Alat tulis, sembako, jajanan, dan lainnya.",
 };
 
-export const dynamic = "force-dynamic";
+// Halaman dikache 5 menit, otomatis refresh jika ada perubahan produk
+export const revalidate = 300;
 
 export default async function ProductsPage() {
   let products;
   try {
     const rawProducts = await prisma.product.findMany({
-      orderBy: { createdAt: "desc" },
-      include: { variants: { orderBy: { label: "asc" } } },
+      orderBy: { name: "asc" },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        imageUrl: true,
+        category: true,
+        stock: true,
+        createdAt: true,
+        updatedAt: true,
+        variants: {
+          orderBy: { label: "asc" },
+          select: { id: true, label: true, price: true, stock: true },
+        },
+      },
     });
     products = rawProducts.map((p) => ({
       ...p,
