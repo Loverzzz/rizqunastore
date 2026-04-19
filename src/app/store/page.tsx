@@ -110,7 +110,7 @@ export default function StorePage() {
         </div>
 
         {/* Contact Card */}
-          className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 mb-8"
+        <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 mb-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
               <Phone className="w-6 h-6 text-green-600 dark:text-green-400" />

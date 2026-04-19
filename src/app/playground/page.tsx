@@ -211,7 +211,7 @@ export default function PlaygroundPage() {
                 <div className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
+                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <User className="w-4 h-4 text-brand-500" /> Nama
                         Ayah/Bunda
                       </label>
@@ -221,11 +221,11 @@ export default function PlaygroundPage() {
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="Contoh: Budi Santoso"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                        className="w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <Phone className="w-4 h-4 text-brand-500" /> No WhatsApp
                       </label>
                       <input
@@ -271,13 +271,13 @@ export default function PlaygroundPage() {
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       min={todayStr}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                      className="w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <Clock className="w-4 h-4 text-brand-500" /> Jam
                         Kedatangan
                       </label>
@@ -319,7 +319,7 @@ export default function PlaygroundPage() {
                             ),
                           )
                         }
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                        className="w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                       />
                     </div>
                   </div>

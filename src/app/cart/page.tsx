@@ -406,7 +406,8 @@ export default function CartPage() {
               {/* Delivery Details */}
               {deliveryMethod === "delivery" && (
                 <div className="mb-6 space-y-3 p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50">
-                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-1">
+                  <div>
+                    <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-1">
                       Alamat Pengiriman
                     </label>
                     <textarea
