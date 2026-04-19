@@ -234,19 +234,28 @@ export default function PlaygroundPage() {
                         value={customerPhone}
                         onChange={(e) => {
                           setCustomerPhone(e.target.value);
-                          if (e.target.value && !isValidIndonesianPhone(e.target.value)) {
-                            setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
+                          if (
+                            e.target.value &&
+                            !isValidIndonesianPhone(e.target.value)
+                          ) {
+                            setPhoneError(
+                              "Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx",
+                            );
                           } else {
                             setPhoneError("");
                           }
                         }}
                         placeholder="0812xxxxxx"
                         className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow ${
-                          phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-200 dark:border-slate-600"
+                          phoneError
+                            ? "border-red-400 focus:ring-red-400"
+                            : "border-gray-200 dark:border-slate-600"
                         }`}
                       />
                       {phoneError && (
-                        <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                        <p className="mt-1 text-xs text-red-500">
+                          {phoneError}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -279,14 +288,16 @@ export default function PlaygroundPage() {
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                       >
                         <option value="">Pilih Jam</option>
-                        {[8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20].map((hour) => {
-                          const timeString = `${hour.toString().padStart(2, "0")}:00`;
-                          return (
-                            <option key={timeString} value={timeString}>
-                              {timeString}
-                            </option>
-                          );
-                        })}
+                        {[8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20].map(
+                          (hour) => {
+                            const timeString = `${hour.toString().padStart(2, "0")}:00`;
+                            return (
+                              <option key={timeString} value={timeString}>
+                                {timeString}
+                              </option>
+                            );
+                          },
+                        )}
                       </select>
                     </div>
 

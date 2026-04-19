@@ -3,26 +3,28 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-50: #f0f9ff;
-  --color-brand-100: #e0f2fe;
-  --color-brand-200: #bae6fd;
-  --color-brand-300: #7dd3fc;
-  --color-brand-400: #38bdf8;
-  --color-brand-500: #0ea5e9;
-  --color-brand-600: #0284c7;
-  --color-brand-700: #0369a1;
-  --color-brand-800: #075985;
-  --color-brand-900: #0c4a6e;
+  /* Warm terracotta / orange brand palette */
+  --color-brand-50: #fff3ec;
+  --color-brand-100: #ffe5d0;
+  --color-brand-200: #ffc9a0;
+  --color-brand-300: #ffa370;
+  --color-brand-400: #ff7a3d;
+  --color-brand-500: #e85d20;
+  --color-brand-600: #c2461a;
+  --color-brand-700: #9b3213;
+  --color-brand-800: #7a220c;
+  --color-brand-900: #5c1608;
 
-  --color-accent-100: #fef3c7;
-  --color-accent-200: #fde68a;
-  --color-accent-300: #fcd34d;
-  --color-accent-400: #fbbf24;
-  --color-accent-500: #f59e0b;
-  --color-accent-600: #d97706;
-  --color-accent-700: #b45309;
-  --color-accent-800: #92400e;
-  --color-accent-900: #78350f;
+  /* Golden amber accent palette */
+  --color-accent-100: #fef9ec;
+  --color-accent-200: #fdefc4;
+  --color-accent-300: #fcd97a;
+  --color-accent-400: #f9c13a;
+  --color-accent-500: #f0a500;
+  --color-accent-600: #d08600;
+  --color-accent-700: #a66800;
+  --color-accent-800: #7d4d00;
+  --color-accent-900: #5c3800;
 
   --font-sans:
     var(--font-inter), ui-sans-serif, system-ui, sans-serif,
@@ -30,13 +32,17 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
+  --background: #fdf6ef;
+  --foreground: #1c0a00;
+  --card: #ffffff;
+  --surface: #f5ede4;
 }
 
 .dark {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  --background: #1a0800;
+  --foreground: #f5e6d3;
+  --card: #2d1506;
+  --surface: #3d1f0a;
 }
 
 body {
@@ -46,13 +52,21 @@ body {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(253, 246, 239, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(194, 70, 26, 0.12);
 }
 
 .dark .glass {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(26, 8, 0, 0.92);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Warm surface utilities */
+.warm-card {
+  background: var(--card);
+}
+.warm-surface {
+  background: var(--surface);
 }

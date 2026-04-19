@@ -73,7 +73,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 dark:border-slate-700 transition-all flex flex-col h-full group"
+      className="bg-white dark:bg-[#2D1506] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 transition-all flex flex-col h-full group"
     >
       <div className="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
         {product.imageUrl ? (
@@ -100,13 +100,13 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
         <div className="absolute top-4 left-4">
-          <span className="px-3 py-1 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full text-xs font-semibold text-brand-600 dark:text-brand-400 border border-brand-100 dark:border-slate-600">
+          <span className="px-3 py-1 bg-white/80 dark:bg-[#1A0800]/80 backdrop-blur-md rounded-full text-xs font-semibold text-brand-600 dark:text-brand-400 border border-brand-100 dark:border-brand-900/50">
             {product.category}
           </span>
         </div>
         <button
           onClick={() => toggleItem(product.id)}
-          className="absolute top-4 right-4 p-2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md rounded-full border border-gray-100 dark:border-slate-600 hover:scale-110 transition-transform z-10"
+          className="absolute top-4 right-4 p-2 bg-white/80 dark:bg-[#1A0800]/80 backdrop-blur-md rounded-full border border-[#F0D5C8] dark:border-brand-900/50 hover:scale-110 transition-transform z-10"
           aria-label="Wishlist"
         >
           <Heart
@@ -116,17 +116,17 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+        <h3 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-2 line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 flex-grow">
+        <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mb-4 line-clamp-2 flex-grow">
           {product.description || "Tidak ada deskripsi."}
         </p>
 
         {/* Variant / Size Picker */}
         {hasVariants && (
           <div className="mb-4">
-            <p className="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-2">
+            <p className="text-xs font-semibold text-[#5C2A10] dark:text-[#D4A882] mb-2">
               Pilih Ukuran:
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -139,8 +139,8 @@ export default function ProductCard({ product }: { product: Product }) {
                     selectedVariant?.id === v.id
                       ? "bg-brand-600 text-white border-brand-600 shadow-sm"
                       : v.stock === 0
-                        ? "bg-gray-100 text-gray-300 border-gray-200 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500 dark:border-slate-600"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-brand-400 dark:bg-slate-700 dark:text-gray-300 dark:border-slate-600"
+                        ? "bg-[#F5EDE4] text-[#C4946A] border-[#E8C9B0] cursor-not-allowed dark:bg-[#3D1F0A] dark:text-[#8B5A35] dark:border-brand-900/40"
+                        : "bg-white text-[#1C0A00] border-[#E8C9B0] hover:border-brand-400 dark:bg-[#3D1F0A] dark:text-[#F5E6D3] dark:border-brand-900/40"
                   }`}
                 >
                   {v.label}

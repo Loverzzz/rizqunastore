@@ -3,44 +3,44 @@ import { Clock, Mail, Phone, MapPin, AlertCircle } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800 pt-12 pb-8">
+    <footer className="bg-[#F5EDE4] dark:bg-[#1A0800] border-t border-[#E8C9B0] dark:border-brand-900/40 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
             <h3 className="text-2xl font-bold bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent mb-4">
               Rizquna
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4 max-w-xs">
+            <p className="text-[#5C2A10] dark:text-[#D4A882] mb-4 max-w-xs">
               General store lengkap untuk kebutuhan sehari-hari dan playground
               interaktif untuk keceriaan anak-anak.
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+            <h4 className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               Jam Operasional
             </h4>
-            <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-3 text-[#5C2A10] dark:text-[#D4A882]">
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-brand-500" />
-                <span>Senin - Minggu: 08:00 - 20:00</span>
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">Senin - Minggu: 08:00 - 20:00</span>
               </li>
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-accent-500" />
-                <span>Istirahat: 12:00 - 13:00</span>
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">Istirahat: 12:00 - 13:00</span>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+            <h4 className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               Tautan Cepat
             </h4>
             <ul className="space-y-2">
               <li>
                 <Link
                   href="/products"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-500 transition-colors"
+                  className="text-[#5C2A10] dark:text-[#D4A882] hover:text-brand-600 transition-colors"
                 >
                   Toko Rizquna
                 </Link>
@@ -48,7 +48,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/store"
-                  className="text-gray-600 dark:text-gray-400 hover:text-brand-500 transition-colors"
+                  className="text-[#5C2A10] dark:text-[#D4A882] hover:text-brand-600 transition-colors"
                 >
                   Lokasi Toko
                 </Link>
@@ -56,7 +56,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/playground"
-                  className="text-gray-600 dark:text-gray-400 hover:text-accent-500 transition-colors"
+                  className="text-[#5C2A10] dark:text-[#D4A882] hover:text-accent-600 transition-colors"
                 >
                   Playground Happy Kids
                 </Link>
@@ -64,15 +64,15 @@ export default function Footer() {
               <li className="pt-2">
                 <Link
                   href="/terms"
-                  className="text-gray-500 dark:text-gray-500 hover:text-brand-500 transition-colors text-sm"
+                  className="text-[#7A4A2A] dark:text-[#A87050] hover:text-brand-600 transition-colors text-sm"
                 >
-                  Syarat & Ketentuan
+                  Syarat &amp; Ketentuan
                 </Link>
               </li>
               <li>
                 <Link
                   href="/refund"
-                  className="text-gray-500 dark:text-gray-500 hover:text-accent-500 transition-colors text-sm"
+                  className="text-[#7A4A2A] dark:text-[#A87050] hover:text-accent-600 transition-colors text-sm"
                 >
                   Kebijakan Pengembalian
                 </Link>
@@ -81,13 +81,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">
+            <h4 className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               Hubungi Kami
             </h4>
-            <ul className="space-y-3 text-gray-600 dark:text-gray-400">
+            <ul className="space-y-3 text-[#5C2A10] dark:text-[#D4A882]">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-brand-500 shrink-0 mt-0.5" />
-                <span className="text-sm">
+                <span className="text-sm text-[#5C2A10] dark:text-[#D4A882]">
                   X3FX+892, Jl. Raya Plumpang, RW.7,
                   <br />
                   Tanggungan, Kec. Plumpang,
@@ -101,7 +101,7 @@ export default function Footer() {
                   href="https://wa.me/6281915967694"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-brand-500 transition-colors"
+                  className="text-[#5C2A10] dark:text-[#D4A882] hover:text-brand-600 transition-colors"
                 >
                   0819-1596-7694
                 </a>
@@ -110,7 +110,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-accent-500 shrink-0" />
                 <a
                   href="mailto:reynaldmlbb4@gmail.com"
-                  className="hover:text-accent-500 transition-colors break-words text-sm"
+                  className="text-[#5C2A10] dark:text-[#D4A882] hover:text-accent-600 transition-colors break-words text-sm"
                 >
                   reynaldmlbb4@gmail.com
                 </a>
@@ -135,7 +135,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 dark:border-slate-800 pt-8 text-center text-gray-500 text-sm">
+        <div className="border-t border-[#E8C9B0] dark:border-brand-900/40 pt-8 text-center text-[#7A4A2A] dark:text-[#A87050] text-sm">
           <p>
             © {new Date().getFullYear()} Rizquna Store & Playground. All rights
             reserved.

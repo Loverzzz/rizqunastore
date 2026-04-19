@@ -534,15 +534,22 @@ export default function CartPage() {
                     value={customerPhone}
                     onChange={(e) => {
                       setCustomerPhone(e.target.value);
-                      if (e.target.value && !isValidIndonesianPhone(e.target.value)) {
-                        setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
+                      if (
+                        e.target.value &&
+                        !isValidIndonesianPhone(e.target.value)
+                      ) {
+                        setPhoneError(
+                          "Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx",
+                        );
                       } else {
                         setPhoneError("");
                       }
                     }}
                     placeholder="Contoh: 08123456789"
                     className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none ${
-                      phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-200 dark:border-slate-600"
+                      phoneError
+                        ? "border-red-400 focus:ring-red-400"
+                        : "border-gray-200 dark:border-slate-600"
                     }`}
                   />
                   {phoneError && (

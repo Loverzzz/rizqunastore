@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { PackageSearch, Search, AlertCircle, MapPin, Phone } from "lucide-react";
+import {
+  PackageSearch,
+  Search,
+  AlertCircle,
+  MapPin,
+  Phone,
+} from "lucide-react";
 
 interface Variant {
   id: string;
@@ -66,7 +72,7 @@ export default function ProductList({ products }: { products: Product[] }) {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Cari produk... (nama, kategori, deskripsi)"
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+          className="w-full pl-12 pr-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/40 bg-white dark:bg-[#2D1506] text-[#1C0A00] dark:text-[#F5E6D3] placeholder-[#C4946A] dark:placeholder-[#8B5A35] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
         />
       </div>
 
@@ -78,8 +84,8 @@ export default function ProductList({ products }: { products: Product[] }) {
             onClick={() => setActiveCategory(cat)}
             className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
               activeCategory === cat
-                ? "bg-brand-600 text-white shadow-md"
-                : "bg-white dark:bg-slate-800 text-gray-600 dark:text-gray-300 hover:bg-brand-50 hover:text-brand-600 border border-gray-200 dark:border-slate-700"
+                ? "bg-[#2D1506] text-white shadow-md dark:bg-brand-600"
+                : "bg-white dark:bg-[#2D1506] text-[#5C2A10] dark:text-[#D4A882] hover:bg-brand-50 hover:text-brand-600 border border-[#E8C9B0] dark:border-brand-900/40"
             }`}
           >
             {cat}
@@ -94,20 +100,21 @@ export default function ProductList({ products }: { products: Product[] }) {
           <div className="text-sm text-amber-800 dark:text-amber-200">
             <p className="font-semibold mb-1">Disclaimer Produk</p>
             <p className="mb-2">
-              Gambar produk yang ditampilkan dapat berbeda dengan barang asli. 
-              Untuk konfirmasi detail produk (warna, ukuran, kondisi), silakan hubungi admin WhatsApp atau datang langsung ke toko offline kami.
+              Gambar produk yang ditampilkan dapat berbeda dengan barang asli.
+              Untuk konfirmasi detail produk (warna, ukuran, kondisi), silakan
+              hubungi admin WhatsApp atau datang langsung ke toko offline kami.
             </p>
             <div className="flex flex-wrap items-center gap-4 text-xs">
-              <a 
-                href="https://wa.me/6281915967694" 
-                target="_blank" 
+              <a
+                href="https://wa.me/6281915967694"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
               >
                 <Phone className="w-3 h-3" />
                 Hubungi Admin WhatsApp
               </a>
-              <a 
+              <a
                 href="https://share.google/TvhIwGbiWwDis9Kg6"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -128,12 +135,12 @@ export default function ProductList({ products }: { products: Product[] }) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-32 bg-white dark:bg-slate-800 rounded-3xl border border-gray-100 dark:border-slate-700">
-          <PackageSearch className="w-16 h-16 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+        <div className="text-center py-32 bg-white dark:bg-[#2D1506] rounded-3xl border border-[#F0D5C8] dark:border-brand-900/40">
+          <PackageSearch className="w-16 h-16 mx-auto text-[#E8C9B0] dark:text-brand-800 mb-4" />
+          <h3 className="text-xl font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
             Tidak ada produk
           </h3>
-          <p className="text-gray-500 mt-2">
+          <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-2">
             Kategori ini belum memiliki produk.
           </p>
         </div>

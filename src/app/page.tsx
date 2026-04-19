@@ -16,7 +16,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-100 via-background to-background dark:from-slate-800 dark:via-background dark:to-background"></div>
+        <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-100 via-[#FDF6EF] to-[#FDF6EF] dark:from-brand-900/40 dark:via-[#1A0800] dark:to-[#1A0800]"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -25,7 +25,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-400 text-sm font-medium mb-6 border border-brand-100 dark:border-slate-700 shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-sm font-medium mb-6 border border-brand-100 dark:border-brand-900/50 shadow-sm">
                 <Sparkles className="w-4 h-4" />
                 <span>Satu Tempat, Berbagai Kebutuhan</span>
               </div>
@@ -46,14 +46,14 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/products"
-                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-brand-600 hover:bg-brand-700 text-white font-medium transition-all shadow-lg hover:shadow-brand-500/30"
+                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-[#2D1506] hover:bg-brand-600 text-white font-semibold transition-all shadow-lg hover:shadow-brand-500/30"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   Mulai Belanja
                 </Link>
                 <Link
                   href="/playground"
-                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-gray-900 dark:text-white border border-gray-200 dark:border-slate-700 hover:border-accent-500 dark:hover:border-accent-500 font-medium transition-all shadow-sm hover:shadow-md"
+                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-[#2D1506] text-[#1C0A00] dark:text-[#F5E6D3] border border-[#E8C9B0] dark:border-brand-800 hover:border-brand-500 dark:hover:border-brand-500 font-medium transition-all shadow-sm hover:shadow-md"
                 >
                   <Gamepad2 className="w-5 h-5 text-accent-500" />
                   Pesan Tiket Playground
@@ -84,8 +84,82 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Shop by Category Section */}
+      <section className="py-12 bg-[#F5EDE4] dark:bg-[#2D1506]/40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
+              Belanja{" "}
+              <span className="text-brand-600 dark:text-brand-400">
+                per Kategori
+              </span>
+            </h2>
+            <Link
+              href="/products"
+              className="text-sm font-medium text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1"
+            >
+              Lihat Semua <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 md:gap-5">
+            {[
+              { icon: "📚", label: "Alat Tulis", href: "/products" },
+              { icon: "🛒", label: "Sembako", href: "/products" },
+              { icon: "👕", label: "Seragam", href: "/products" },
+              { icon: "🎒", label: "Tas & Koper", href: "/products" },
+              { icon: "🎮", label: "Playground", href: "/playground" },
+            ].map(({ icon, label, href }) => (
+              <Link
+                key={label}
+                href={href}
+                className="flex flex-col items-center gap-3 p-4 md:p-5 rounded-2xl bg-white dark:bg-[#2D1506] border border-[#F0D5C8] dark:border-brand-900/40 hover:border-brand-400 dark:hover:border-brand-500 hover:shadow-md transition-all group text-center"
+              >
+                <span className="text-3xl">{icon}</span>
+                <span className="text-xs md:text-sm font-medium text-[#1C0A00] dark:text-[#F5E6D3] group-hover:text-brand-600 dark:group-hover:text-brand-400">
+                  {label}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Promo Banner */}
+      <section className="py-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-[#2D1506] dark:bg-[#3D1F0A] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+            <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
+              <Sparkles className="w-72 h-72 text-accent-400" />
+            </div>
+            <div className="relative z-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-500/20 text-accent-300 text-xs font-bold mb-3 border border-accent-500/30">
+                <span className="w-1.5 h-1.5 bg-accent-400 rounded-full animate-pulse"></span>
+                PROMO SPESIAL
+              </div>
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                Tiket Playground Happy Kids
+              </h3>
+              <p className="text-brand-200 text-sm">
+                Gratis 1 pendamping dewasa setiap pembelian tiket anak!
+              </p>
+            </div>
+            <div className="relative z-10 flex flex-col items-center md:items-end gap-3">
+              <div className="text-4xl font-extrabold text-accent-400">
+                Rp 10.000
+              </div>
+              <Link
+                href="/playground"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-accent-500 hover:bg-accent-400 text-[#1C0A00] font-bold text-sm transition-all shadow-lg shadow-accent-500/30"
+              >
+                Pesan Sekarang <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Services Section */}
-      <section className="py-20 bg-gray-50 dark:bg-slate-900/50">
+      <section className="py-20 bg-[#F5EDE4] dark:bg-[#2D1506]/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -101,7 +175,7 @@ export default function Home() {
             {/* Store Card */}
             <motion.div
               whileHover={{ y: -8 }}
-              className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-700 relative overflow-hidden group"
+              className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 relative overflow-hidden group"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5 transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform duration-500">
                 <ShoppingBag className="w-48 h-48" />
@@ -110,10 +184,10 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-2xl bg-brand-100 dark:bg-brand-900/30 flex items-center justify-center mb-6">
                   <ShoppingBag className="w-8 h-8 text-brand-600 dark:text-brand-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
                   Rizquna Store
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-[#5C2A10] dark:text-[#D4A882] mb-6">
                   Toko perlengkapan alat tulis terlengkap, sembako segar, dan
                   aneka jajanan favorit keluarga. Semua yang Anda cari ada di
                   sini.
@@ -130,7 +204,7 @@ export default function Home() {
             {/* Playground Card */}
             <motion.div
               whileHover={{ y: -8 }}
-              className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-slate-700 relative overflow-hidden group"
+              className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 relative overflow-hidden group"
             >
               <div className="absolute top-0 right-0 p-8 opacity-5 transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform duration-500">
                 <Gamepad2 className="w-48 h-48" />
@@ -139,10 +213,10 @@ export default function Home() {
                 <div className="w-16 h-16 rounded-2xl bg-accent-100 dark:bg-accent-900/30 flex items-center justify-center mb-6">
                   <Gamepad2 className="w-8 h-8 text-accent-600 dark:text-accent-400" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
                   Playground Happy Kids
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-6">
+                <p className="text-[#5C2A10] dark:text-[#D4A882] mb-6">
                   Area bermain luas yang aman dan edukatif. Dilengkapi berbagai
                   wahana menyenangkan untuk melatih motorik anak.
                 </p>
