@@ -20,11 +20,17 @@ export default function PlaygroundPage() {
   const [guests, setGuests] = useState(1);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [isBooked, setIsBooked] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const ticketPrice = 25000; // Harga tiket contoh
+  const ticketPrice = 10000; // Harga tiket
+
+  const isValidIndonesianPhone = (phone: string) => {
+    const cleaned = phone.replace(/[\s\-\.]/g, "");
+    return /^(\+62|62|0)8[1-9][0-9]{7,10}$/.test(cleaned);
+  };
 
   // Get today's date in local timezone (YYYY-MM-DD)
   const today = new Date();
@@ -33,6 +39,10 @@ export default function PlaygroundPage() {
   const handleBooking = (e: React.FormEvent) => {
     e.preventDefault();
     if (!date || !time || !customerName || !customerPhone) return;
+    if (!isValidIndonesianPhone(customerPhone)) {
+      setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
+      return;
+    }
 
     startTransition(async () => {
       // Create Database Record
@@ -117,7 +127,7 @@ export default function PlaygroundPage() {
               </h3>
               <div className="flex items-end gap-2 mb-2">
                 <span className="text-4xl font-black text-brand-600 dark:text-brand-400">
-                  Rp 25.000
+                  Rp 10.000
                 </span>
                 <span className="text-gray-500 dark:text-gray-400 mb-1">
                   / anak (sepuasnya)
@@ -222,10 +232,22 @@ export default function PlaygroundPage() {
                         type="tel"
                         required
                         value={customerPhone}
-                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        onChange={(e) => {
+                          setCustomerPhone(e.target.value);
+                          if (e.target.value && !isValidIndonesianPhone(e.target.value)) {
+                            setPhoneError("Nomor tidak valid. Gunakan format: 08xx-xxxx-xxxx");
+                          } else {
+                            setPhoneError("");
+                          }
+                        }}
                         placeholder="0812xxxxxx"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow ${
+                          phoneError ? "border-red-400 focus:ring-red-400" : "border-gray-200 dark:border-slate-600"
+                        }`}
                       />
+                      {phoneError && (
+                        <p className="mt-1 text-xs text-red-500">{phoneError}</p>
+                      )}
                     </div>
                   </div>
 
@@ -257,8 +279,7 @@ export default function PlaygroundPage() {
                         className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                       >
                         <option value="">Pilih Jam</option>
-                        {Array.from({ length: 13 }).map((_, i) => {
-                          const hour = i + 9;
+                        {[8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20].map((hour) => {
                           const timeString = `${hour.toString().padStart(2, "0")}:00`;
                           return (
                             <option key={timeString} value={timeString}>
