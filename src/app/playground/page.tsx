@@ -121,7 +121,7 @@ export default function PlaygroundPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Info & Rules */}
           <div className="space-y-8">
-            className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
+            <div className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40">
               <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6 flex items-center gap-3">
                 <Ticket className="w-6 h-6 text-accent-500" /> Harga Tiket Masuk
               </h3>
