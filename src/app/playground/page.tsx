@@ -302,7 +302,7 @@ export default function PlaygroundPage() {
                     </div>
 
                     <div>
-                      className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
+                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <Users className="w-4 h-4 text-brand-500" /> Jumlah Anak
                       </label>
                       <input
