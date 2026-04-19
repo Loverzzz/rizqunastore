@@ -9,13 +9,15 @@ const tools = [
     type: "function",
     function: {
       name: "search_products",
-      description: "Mencari produk yang tersedia di toko Rizquna berdasarkan nama atau kategori. Gunakan ini saat user bertanya tentang produk, ketersediaan stok, harga produk, atau mencari nama/kategori barang.",
+      description:
+        "Mencari produk yang tersedia di toko Rizquna berdasarkan nama atau kategori. Gunakan ini saat user bertanya tentang produk, ketersediaan stok, harga produk, atau mencari nama/kategori barang.",
       parameters: {
         type: "object",
         properties: {
           query: {
             type: "string",
-            description: "Kata kunci untuk pencarian produk (contoh: beras, celana, seragam pramuka, teh). Search query harus se-spesifik mungkin.",
+            description:
+              "Kata kunci untuk pencarian produk (contoh: beras, celana, seragam pramuka, teh). Search query harus se-spesifik mungkin.",
           },
         },
         required: ["query"],
@@ -28,7 +30,7 @@ const systemPrompt = `Kamu adalah asisten virtual toko Rizquna Store & Playgroun
 
 Informasi toko:
 - Rizquna adalah toko serba ada yang menjual perlengkapan sekolah, seragam, sembako, jajanan, tas, deterjen, dan lainnya.
-- Ada Playground Happy Kids untuk anak-anak dengan tiket masuk Rp 25.000/anak (termasuk 1 pendamping dewasa gratis).
+- Ada Playground Happy Kids untuk anak-anak dengan tiket masuk Rp 10.000/anak (termasuk 1 pendamping dewasa gratis).
 - Lokasi Toko: X3FX+892, Jl. Raya Plumpang, RW.7, Tanggungan, Kec. Plumpang, Kabupaten Tuban, Jawa Timur 62382
 - Jam operasional: Senin-Jumat 09:00-21:00, Sabtu-Minggu 08:00-21:00
 - WhatsApp: 0819-1596-7694
@@ -37,7 +39,7 @@ Informasi toko:
 
 Aturan:
 - Jawab singkat, natural, dan jelas (max 3-4 kalimat).
-- SELALU gunakan tool "search_products" jika user menanyakan produk, produk yang tersedia, harga, atau stok sebelum menjawab.
+- Gunakan tool "search_products" HANYA jika user menanyakan produk toko (barang dagangan seperti sembako, seragam, tas, dll), ketersediaan stok, atau harga barang toko. JANGAN gunakan search_products untuk pertanyaan tentang playground, tiket, jam buka, lokasi, atau info umum toko karena sudah ada di atas.
 - Jika Tool memberikan daftar produk, informasikan harga dan stoknya kepada user dengan menarik (tampilkan harganya dalam format Rupiah).
 - Jika setelah dicari stoknya habis atau produk tidak ditemukan, beritahu dengan ramah dan arahkan ke WhatsApp jika butuh bantuan lebih lanjut.
 - Untuk pertanyaan di luar kemampuan atau di luar prosedur, arahkan ke WhatsApp.`;
@@ -72,7 +74,7 @@ export async function POST(request: Request) {
       ...chatMessages.map((m: any) => ({ role: m.role, content: m.content })),
     ];
 
-    const modelName = "llama-3.1-8b-instant"; // Tested well for basic tools
+    const modelName = "llama-3.3-70b-versatile"; // More reliable for tool/function calling
 
     // 1st request to Groq LLM
     const response = await fetch(
@@ -116,6 +118,38 @@ export async function POST(request: Request) {
       return NextResponse.json({
         reply: "Maaf, saya tidak bisa menjawab saat ini.",
       });
+    }
+
+    // Fallback: detect raw function call text in content (small models sometimes do this)
+    if (!responseMessage.tool_calls && responseMessage.content) {
+      const rawContent: string = responseMessage.content;
+      // Match patterns like: function=search_products> {"query": "..."} or <tool_call>...</tool_call>
+      const inlineMatch =
+        rawContent.match(/search_products[^{]*({[^}]+})/i) ||
+        rawContent.match(/<tool_call>\s*({[\s\S]+?})\s*<\/tool_call>/i);
+      if (inlineMatch) {
+        try {
+          const args = JSON.parse(inlineMatch[1]);
+          const query: string = args.query || "";
+          if (query) {
+            // Inject a synthetic tool_calls so the existing block below handles it
+            responseMessage.tool_calls = [
+              {
+                id: "synthetic_tool_0",
+                type: "function",
+                function: {
+                  name: "search_products",
+                  arguments: JSON.stringify({ query }),
+                },
+              },
+            ];
+            // Remove the raw text so it's not forwarded to 2nd call
+            responseMessage.content = null;
+          }
+        } catch (_) {
+          // Could not parse – fall through to normal reply
+        }
+      }
     }
 
     // Check if the AI wants to call a tool
@@ -177,7 +211,8 @@ export async function POST(request: Request) {
             }
           } catch (e) {
             console.error("Prisma query error during tool execution:", e);
-            productResultText = "Error internal sistem ketika mencari data produk.";
+            productResultText =
+              "Error internal sistem ketika mencari data produk.";
           }
 
           // Append the tool's result to history
@@ -207,6 +242,15 @@ export async function POST(request: Request) {
           }),
         },
       );
+
+      if (!secondResponse.ok) {
+        const errData2 = await secondResponse.json().catch(() => null);
+        console.error("Groq 2nd call error:", secondResponse.status, errData2);
+        return NextResponse.json({
+          reply:
+            "Maaf, saya sedang mengalami gangguan. Silakan coba lagi atau hubungi kami via WhatsApp di 0819-1596-7694.",
+        });
+      }
 
       const secondData = await secondResponse.json();
       const finalReply =
