@@ -102,16 +102,16 @@ export default function PlaygroundPage() {
   };
 
   return (
-    <div className="py-12 bg-gray-50 dark:bg-slate-900 min-h-screen">
+    <div className="py-12 bg-[#FDF6EF] dark:bg-[#1A0800] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mb-6">
             Playground{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">
               Happy Kids
             </span>
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
+          <p className="text-xl text-[#5C2A10] dark:text-[#D4A882]">
             Fasilitas bermain anak indoor yang aman, nyaman, dan edukatif.
             Dilengkapi dengan wahana ketangkasan, area mandi bola, dan berbagai
             mainan interaktif.
@@ -121,19 +121,19 @@ export default function PlaygroundPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Info & Rules */}
           <div className="space-y-8">
-            <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-sm border border-gray-100 dark:border-slate-700">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+            className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
+              <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6 flex items-center gap-3">
                 <Ticket className="w-6 h-6 text-accent-500" /> Harga Tiket Masuk
               </h3>
               <div className="flex items-end gap-2 mb-2">
                 <span className="text-4xl font-black text-brand-600 dark:text-brand-400">
                   Rp 10.000
                 </span>
-                <span className="text-gray-500 dark:text-gray-400 mb-1">
+                <span className="text-[#7A4A2A] dark:text-[#A87050] mb-1">
                   / anak (sepuasnya)
                 </span>
               </div>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-[#7A4A2A] dark:text-[#A87050]">
                 *Satu tiket sudah termasuk gratis 1 pendamping dewasa.
               </p>
             </div>
@@ -169,7 +169,7 @@ export default function PlaygroundPage() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-slate-700 relative overflow-hidden"
+            className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-2xl border border-[#F0D5C8] dark:border-brand-900/40 relative overflow-hidden"
           >
             {isBooked ? (
               <div className="text-center py-16">
@@ -180,10 +180,10 @@ export default function PlaygroundPage() {
                 >
                   <CheckCircle2 className="w-10 h-10 text-green-600" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-2">
                   Pemesanan Selesai
                 </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-sm mx-auto">
+                  className="text-[#5C2A10] dark:text-[#D4A882] mb-8 max-w-sm mx-auto"
                   Tiket Playground untuk jadwal {time} atas nama {customerName}{" "}
                   telah berhasil dicatat.
                 </p>
@@ -204,14 +204,14 @@ export default function PlaygroundPage() {
               </div>
             ) : (
               <form onSubmit={handleBooking}>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6">
                   Pesan Tiket Sekarang
                 </h3>
 
                 <div className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <User className="w-4 h-4 text-brand-500" /> Nama
                         Ayah/Bunda
                       </label>
@@ -246,10 +246,10 @@ export default function PlaygroundPage() {
                           }
                         }}
                         placeholder="0812xxxxxx"
-                        className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow ${
+                        className={`w-full px-4 py-3 rounded-xl border bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow ${
                           phoneError
                             ? "border-red-400 focus:ring-red-400"
-                            : "border-gray-200 dark:border-slate-600"
+                            : "border-[#E8C9B0] dark:border-brand-900/50"
                         }`}
                       />
                       {phoneError && (
@@ -261,7 +261,7 @@ export default function PlaygroundPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-brand-500" /> Tanggal
                       Kunjungan
                     </label>
@@ -285,7 +285,7 @@ export default function PlaygroundPage() {
                         required
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                        className="w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
                       >
                         <option value="">Pilih Jam</option>
                         {[8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20].map(
@@ -302,7 +302,7 @@ export default function PlaygroundPage() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                      className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2 flex items-center gap-2">
                         <Users className="w-4 h-4 text-brand-500" /> Jumlah Anak
                       </label>
                       <input
@@ -325,8 +325,8 @@ export default function PlaygroundPage() {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-slate-700 flex items-center justify-between mb-8">
-                  <span className="text-gray-600 dark:text-gray-400">
+                <div className="mt-8 pt-6 border-t border-[#F0D5C8] dark:border-brand-900/40 flex items-center justify-between mb-8">
+                  <span className="text-[#5C2A10] dark:text-[#D4A882]">
                     Total Harga:
                   </span>
                   <span className="text-3xl font-black text-brand-600 dark:text-brand-400">

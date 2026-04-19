@@ -9,11 +9,11 @@ export const metadata: Metadata = {
 
 export default function StorePage() {
   return (
-    <div className="py-12 bg-gray-50 dark:bg-slate-900 min-h-screen">
+    <div className="py-12 bg-[#FDF6EF] dark:bg-[#1A0800] min-h-screen">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-4xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             Lokasi Toko
           </h1>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -41,17 +41,17 @@ export default function StorePage() {
         {/* Store Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Address Card */}
-          <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
+            className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
             <div className="flex items-center gap-3 mb-4">
               <div className="p-3 bg-brand-100 dark:bg-brand-900/30 rounded-xl">
                 <MapPin className="w-6 h-6 text-brand-600 dark:text-brand-400" />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
                 Alamat Lengkap
               </h2>
             </div>
-            <div className="text-gray-600 dark:text-gray-400 space-y-1">
-              <p className="font-medium text-gray-900 dark:text-white">
+            <div className="text-[#5C2A10] dark:text-[#D4A882] space-y-1">
+              <p className="font-medium text-[#1C0A00] dark:text-[#F5E6D3]">
                 Rizquna Store
               </p>
               <p>X3FX+892, Jl. Raya Plumpang</p>
@@ -76,21 +76,21 @@ export default function StorePage() {
               <div className="p-3 bg-accent-100 dark:bg-accent-900/30 rounded-xl">
                 <Clock className="w-6 h-6 text-accent-600 dark:text-accent-400" />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
                 Jam Operasional
               </h2>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-slate-700">
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">
                   Senin - Minggu
                 </span>
-                <span className="font-semibold text-gray-900 dark:text-white">
+                <span className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
                   08:00 - 20:00
                 </span>
               </div>
               <div className="flex justify-between items-center py-2 border-b border-gray-100 dark:border-slate-700">
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">
                   Istirahat
                 </span>
                 <span className="font-semibold text-amber-600 dark:text-amber-400">
@@ -98,7 +98,7 @@ export default function StorePage() {
                 </span>
               </div>
               <div className="flex justify-between items-center py-2">
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">
                   Hari Libur Nasional
                 </span>
                 <span className="font-semibold text-green-600 dark:text-green-400">
@@ -110,16 +110,16 @@ export default function StorePage() {
         </div>
 
         {/* Contact Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700 mb-8">
+          className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 mb-8"
           <div className="flex items-center gap-3 mb-4">
             <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-xl">
               <Phone className="w-6 h-6 text-green-600 dark:text-green-400" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
               Kontak & Konfirmasi
             </h2>
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <p className="text-[#5C2A10] dark:text-[#D4A882] mb-4">
             Untuk konfirmasi ketersediaan produk, detail barang, atau pertanyaan
             lainnya, silakan hubungi kami melalui:
           </p>
@@ -137,7 +137,7 @@ export default function StorePage() {
             </a>
             <a
               href="tel:081915967694"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 dark:bg-slate-700 hover:bg-gray-200 dark:hover:bg-slate-600 text-gray-900 dark:text-white font-medium rounded-xl transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#F5EDE4] dark:bg-[#3D1F0A] hover:bg-[#EDD9CA] dark:hover:bg-[#4D2A12] text-[#1C0A00] dark:text-[#F5E6D3] font-medium rounded-xl transition-colors"
             >
               <Phone className="w-5 h-5" />
               0819-1596-7694
@@ -146,7 +146,7 @@ export default function StorePage() {
         </div>
 
         {/* Google Maps */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
+          className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40"
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Peta Lokasi
           </h2>
@@ -161,15 +161,15 @@ export default function StorePage() {
               <div className="p-4 bg-white dark:bg-slate-800 rounded-full shadow-lg mb-4 group-hover:scale-110 transition-transform">
                 <MapPin className="w-10 h-10 text-brand-600 dark:text-brand-400" />
               </div>
-              <p className="text-gray-900 dark:text-white font-semibold text-lg">
+              <p className="text-[#1C0A00] dark:text-[#F5E6D3] font-semibold text-lg">
                 Lihat di Google Maps
               </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
+              <p className="text-[#7A4A2A] dark:text-[#A87050] text-sm mt-1">
                 Klik untuk membuka peta lokasi
               </p>
             </div>
             <div className="absolute bottom-4 left-4 right-4 p-3 bg-white/90 dark:bg-slate-800/90 rounded-lg backdrop-blur-sm">
-              <p className="text-sm text-gray-700 dark:text-gray-300 text-center">
+              <p className="text-sm text-[#5C2A10] dark:text-[#D4A882] text-center">
                 X3FX+892, Jl. Raya Plumpang, RW.7, Tanggungan, Kec. Plumpang,
                 Tuban 62382
               </p>

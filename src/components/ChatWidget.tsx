@@ -86,7 +86,7 @@ export default function ChatWidget() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-slate-700 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-[360px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-6rem)] bg-white dark:bg-[#2D1506] rounded-2xl shadow-2xl border border-[#E8C9B0] dark:border-brand-900/40 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-brand-500 to-brand-600 text-white p-4 flex items-center justify-between flex-shrink-0">
@@ -119,8 +119,8 @@ export default function ChatWidget() {
                   <div
                     className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
                       msg.role === "user"
-                        ? "bg-brand-500 text-white rounded-br-md"
-                        : "bg-gray-100 dark:bg-slate-700 text-gray-800 dark:text-gray-200 rounded-bl-md"
+                        ? "bg-brand-600 text-white rounded-br-md"
+                        : "bg-[#F5EDE4] dark:bg-[#3D1F0A] text-[#1C0A00] dark:text-[#F5E6D3] rounded-bl-md"
                     }`}
                   >
                     {msg.content}
@@ -129,7 +129,7 @@ export default function ChatWidget() {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-gray-100 dark:bg-slate-700 px-4 py-3 rounded-2xl rounded-bl-md">
+                  <div className="bg-[#F5EDE4] dark:bg-[#3D1F0A] px-4 py-3 rounded-2xl rounded-bl-md">
                     <div className="flex gap-1">
                       <span
                         className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
@@ -151,7 +151,7 @@ export default function ChatWidget() {
             </div>
 
             {/* Input */}
-            <div className="p-3 border-t border-gray-200 dark:border-slate-700 flex-shrink-0">
+            <div className="p-3 border-t border-[#E8C9B0] dark:border-brand-900/40 flex-shrink-0">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -164,7 +164,7 @@ export default function ChatWidget() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ketik pesan..."
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] text-sm focus:ring-2 focus:ring-brand-500 outline-none"
                   disabled={isLoading}
                 />
                 <button

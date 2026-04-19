@@ -14,7 +14,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FDF6EF] dark:bg-[#1A0800] flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center">
         <div className="w-20 h-20 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
           <svg
@@ -31,10 +31,10 @@ export default function Error({
             />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-2">
           Terjadi Kesalahan
         </h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-8">
+        <p className="text-[#7A4A2A] dark:text-[#A87050] mb-8">
           Maaf, terjadi kesalahan yang tidak terduga. Silakan coba lagi.
         </p>
         <button

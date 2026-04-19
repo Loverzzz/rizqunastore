@@ -10,20 +10,20 @@ export const dynamic = "force-static";
 
 export default function TermsPage() {
   return (
-    <div className="py-12 bg-gray-50 min-h-screen dark:bg-slate-900">
+    <div className="py-12 bg-[#FDF6EF] min-h-screen dark:bg-[#1A0800]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mt-8 mb-4">
+          <h1 className="text-3xl md:text-5xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mt-8 mb-4">
             Syarat & Ketentuan
           </h1>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <p className="text-[#7A4A2A] dark:text-[#A87050] max-w-2xl mx-auto">
             Terakhir diperbarui: 22 Maret 2026
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-3xl p-8 md:p-12 shadow-sm border border-gray-100 dark:border-slate-700 text-gray-700 dark:text-gray-300 space-y-8 h-full">
+        <div className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 md:p-12 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 text-[#5C2A10] dark:text-[#D4A882] space-y-8 h-full">
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               1. Pengenalan
             </h2>
             <p className="leading-relaxed">
@@ -37,7 +37,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               2. Layanan Kami
             </h2>
             <ul className="list-disc pl-5 space-y-2 leading-relaxed">
@@ -56,7 +56,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               3. Akun dan Privasi
             </h2>
             <p className="leading-relaxed mb-2">
@@ -69,7 +69,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               4. Proses Pemesanan & Pembayaran
             </h2>
             <p className="leading-relaxed mb-4">
@@ -92,7 +92,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               5. Ketentuan Playground
             </h2>
             <p className="leading-relaxed">
@@ -106,7 +106,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               6. Perubahan Kebijakan
             </h2>
             <p className="leading-relaxed">
@@ -118,7 +118,7 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
               7. Kontak Kami
             </h2>
             <p className="leading-relaxed">

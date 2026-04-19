@@ -52,7 +52,7 @@ export default async function ProductsPage() {
   }
 
   return (
-    <div className="py-12 bg-gray-50 min-h-screen dark:bg-slate-900">
+    <div className="py-12 bg-[#FDF6EF] min-h-screen dark:bg-[#1A0800]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ProductList products={products} />
       </div>

@@ -242,13 +242,13 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="py-12 bg-gray-50 dark:bg-slate-900 min-h-screen">
+      <div className="py-12 bg-[#FDF6EF] dark:bg-[#1A0800] min-h-screen">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
-          <ShoppingCart className="w-24 h-24 mx-auto text-gray-300 dark:text-gray-600 mb-6" />
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          <ShoppingCart className="w-24 h-24 mx-auto text-[#E8C9B0] dark:text-brand-900 mb-6" />
+          <h1 className="text-3xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             Keranjang Belanja Kosong
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
+          <p className="text-[#7A4A2A] dark:text-[#A87050] mb-8 max-w-md mx-auto">
             Ups! Anda belum menambahkan produk apapun ke keranjang. Silakan
             lihat katalog produk kami.
           </p>
@@ -265,9 +265,9 @@ export default function CartPage() {
   }
 
   return (
-    <div className="py-12 bg-gray-50 dark:bg-slate-900 min-h-screen">
+    <div className="py-12 bg-[#FDF6EF] dark:bg-[#1A0800] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-8">
+        <h1 className="text-3xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mb-8">
           Keranjang Belanja
         </h1>
 
@@ -277,7 +277,7 @@ export default function CartPage() {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-gray-100 dark:border-slate-700 flex flex-col sm:flex-row items-center gap-4"
+                className="bg-white dark:bg-[#2D1506] rounded-2xl p-4 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 flex flex-col sm:flex-row items-center gap-4"
               >
                 <div className="w-24 h-24 bg-gray-50 rounded-xl flex-shrink-0 relative overflow-hidden">
                   {item.imageUrl ? (
@@ -304,11 +304,11 @@ export default function CartPage() {
                 </div>
 
                 <div className="flex-grow text-center sm:text-left">
-                  <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-2 mb-1">
+                  <h3 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3] line-clamp-2 mb-1">
                     {item.name}
                   </h3>
                   {item.variantLabel && (
-                    <span className="inline-block px-2 py-0.5 bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 text-xs font-medium rounded-md mb-1">
+                    <span className="inline-block px-2 py-0.5 bg-[#F5EDE4] dark:bg-[#3D1F0A] text-[#5C2A10] dark:text-[#D4A882] text-xs font-medium rounded-md mb-1">
                       {item.variantLabel}
                     </span>
                   )}
@@ -318,10 +318,10 @@ export default function CartPage() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center border border-gray-200 dark:border-slate-600 rounded-lg overflow-hidden">
+                  <div className="flex items-center border border-[#E8C9B0] dark:border-brand-900/50 rounded-lg overflow-hidden">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      className="px-3 py-2 bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
+                      className="px-3 py-2 bg-[#F5EDE4] hover:bg-[#EDD9CA] dark:bg-[#3D1F0A] dark:hover:bg-[#4D2A12] transition-colors"
                     >
                       <Minus className="w-4 h-4" />
                     </button>
@@ -330,7 +330,7 @@ export default function CartPage() {
                     </span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      className="px-3 py-2 bg-gray-50 hover:bg-gray-100 dark:bg-slate-700 dark:hover:bg-slate-600 transition-colors"
+                      className="px-3 py-2 bg-[#F5EDE4] hover:bg-[#EDD9CA] dark:bg-[#3D1F0A] dark:hover:bg-[#4D2A12] transition-colors"
                     >
                       <Plus className="w-4 h-4" />
                     </button>
@@ -349,14 +349,14 @@ export default function CartPage() {
 
           {/* Checkout Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-slate-700 sticky top-24">
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-100 dark:border-slate-700 pb-4">
+            <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 sticky top-24">
+              <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6 border-b border-[#F0D5C8] dark:border-brand-900/40 pb-4">
                 Ringkasan Pesanan
               </h2>
 
               {/* Delivery Method Selection */}
               <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-3">
                   Metode Pengambilan
                 </label>
                 <div className="grid grid-cols-2 gap-3">
@@ -366,14 +366,14 @@ export default function CartPage() {
                     className={`p-3 rounded-xl border-2 text-center transition-all ${
                       deliveryMethod === "pickup"
                         ? "border-brand-500 bg-brand-50 dark:bg-brand-900/20"
-                        : "border-gray-200 dark:border-slate-600 hover:border-gray-300"
+                        : "border-[#E8C9B0] dark:border-brand-900/50 hover:border-[#C4946A]"
                     }`}
                   >
                     <Store
-                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-gray-400"}`}
+                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-[#C4946A]"}`}
                     />
                     <p
-                      className={`text-sm font-semibold ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-gray-700 dark:text-gray-300"}`}
+                      className={`text-sm font-semibold ${deliveryMethod === "pickup" ? "text-brand-600 dark:text-brand-400" : "text-[#5C2A10] dark:text-[#D4A882]"}`}
                     >
                       Ambil di Toko
                     </p>
@@ -387,14 +387,14 @@ export default function CartPage() {
                     className={`p-3 rounded-xl border-2 text-center transition-all ${
                       deliveryMethod === "delivery"
                         ? "border-brand-500 bg-brand-50 dark:bg-brand-900/20"
-                        : "border-gray-200 dark:border-slate-600 hover:border-gray-300"
+                        : "border-[#E8C9B0] dark:border-brand-900/50 hover:border-[#C4946A]"
                     }`}
                   >
                     <Truck
-                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-gray-400"}`}
+                      className={`w-5 h-5 mx-auto mb-1 ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-[#C4946A]"}`}
                     />
                     <p
-                      className={`text-sm font-semibold ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-gray-700 dark:text-gray-300"}`}
+                      className={`text-sm font-semibold ${deliveryMethod === "delivery" ? "text-brand-600 dark:text-brand-400" : "text-[#5C2A10] dark:text-[#D4A882]"}`}
                     >
                       Dikirim
                     </p>
@@ -405,9 +405,9 @@ export default function CartPage() {
 
               {/* Delivery Details */}
               {deliveryMethod === "delivery" && (
-                <div className="mb-6 space-y-3 p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl border border-gray-200 dark:border-slate-600">
+                  className="mb-6 space-y-3 p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50"
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-1">
                       Alamat Pengiriman
                     </label>
                     <textarea
@@ -415,7 +415,7 @@ export default function CartPage() {
                       onChange={(e) => setDeliveryAddress(e.target.value)}
                       placeholder="Masukkan alamat lengkap..."
                       rows={2}
-                      className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
+                      className="w-full px-4 py-2 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-white dark:bg-[#2D1506] text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none text-sm resize-none"
                     />
                   </div>
 
@@ -439,13 +439,13 @@ export default function CartPage() {
 
                   {deliveryDistance !== null && !locationError && (
                     <div className="text-sm space-y-1">
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between text-[#5C2A10] dark:text-[#D4A882]">
                         <span>Jarak dari toko</span>
                         <span className="font-semibold">
                           {deliveryDistance} km
                         </span>
                       </div>
-                      <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                      <div className="flex justify-between text-[#5C2A10] dark:text-[#D4A882]">
                         <span>Ongkos kirim</span>
                         <span className="font-bold text-brand-600 dark:text-brand-400">
                           {formatRupiah(deliveryFee)}
@@ -454,7 +454,7 @@ export default function CartPage() {
                     </div>
                   )}
 
-                  <p className="text-[11px] text-gray-400">
+                  <p className="text-[11px] text-[#A87050] dark:text-[#8B5A35]">
                     Maks. {MAX_DELIVERY_KM} km dari toko. Ongkir Rp
                     {ONGKIR_PER_KM.toLocaleString()}/km (min Rp
                     {ONGKIR_MIN.toLocaleString()}, maks Rp
@@ -489,7 +489,7 @@ export default function CartPage() {
               )}
 
               <div className="space-y-3 mb-6">
-                <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                <div className="flex justify-between text-[#5C2A10] dark:text-[#D4A882]">
                   <span>
                     Subtotal ({items.reduce((a, b) => a + b.quantity, 0)}{" "}
                     barang)
@@ -497,12 +497,12 @@ export default function CartPage() {
                   <span>{formatRupiah(getTotalPrice())}</span>
                 </div>
                 {deliveryMethod === "delivery" && deliveryFee > 0 && (
-                  <div className="flex justify-between text-gray-600 dark:text-gray-400">
+                  <div className="flex justify-between text-[#5C2A10] dark:text-[#D4A882]">
                     <span>Ongkos kirim ({deliveryDistance} km)</span>
                     <span>{formatRupiah(deliveryFee)}</span>
                   </div>
                 )}
-                <div className="flex justify-between font-bold text-lg text-gray-900 dark:text-white pt-3 border-t border-gray-100 dark:border-slate-700">
+                <div className="flex justify-between font-bold text-lg text-[#1C0A00] dark:text-[#F5E6D3] pt-3 border-t border-[#F0D5C8] dark:border-brand-900/40">
                   <span>Total Tagihan</span>
                   <span className="text-brand-600 dark:text-brand-400">
                     {formatRupiah(totalWithDelivery)}
@@ -512,7 +512,7 @@ export default function CartPage() {
 
               <form onSubmit={handleCheckout} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-1">
                     Nama Lengkap
                   </label>
                   <input
@@ -521,11 +521,11 @@ export default function CartPage() {
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     placeholder="Contoh: Budi Santoso"
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none"
+                    className="w-full px-4 py-2 rounded-xl border border-[#E8C9B0] dark:border-brand-900/50 bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-1">
                     No. WhatsApp
                   </label>
                   <input
@@ -546,10 +546,10 @@ export default function CartPage() {
                       }
                     }}
                     placeholder="Contoh: 08123456789"
-                    className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none ${
+                    className={`w-full px-4 py-2 rounded-xl border bg-[#FDF6EF] dark:bg-[#3D1F0A]/50 text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none ${
                       phoneError
                         ? "border-red-400 focus:ring-red-400"
-                        : "border-gray-200 dark:border-slate-600"
+                        : "border-[#E8C9B0] dark:border-brand-900/50"
                     }`}
                   />
                   {phoneError && (

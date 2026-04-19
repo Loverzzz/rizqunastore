@@ -23,11 +23,15 @@ export default function Footer() {
             <ul className="space-y-3 text-[#5C2A10] dark:text-[#D4A882]">
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-brand-500" />
-                <span className="text-[#5C2A10] dark:text-[#D4A882]">Senin - Minggu: 08:00 - 20:00</span>
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">
+                  Senin - Minggu: 08:00 - 20:00
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-accent-500" />
-                <span className="text-[#5C2A10] dark:text-[#D4A882]">Istirahat: 12:00 - 13:00</span>
+                <span className="text-[#5C2A10] dark:text-[#D4A882]">
+                  Istirahat: 12:00 - 13:00
+                </span>
               </li>
             </ul>
           </div>

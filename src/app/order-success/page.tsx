@@ -20,7 +20,7 @@ function OrderSuccessContent() {
   const isPaid = status === "paid";
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#FDF6EF] dark:bg-[#1A0800] flex items-center justify-center p-4">
       <div className="max-w-lg w-full text-center">
         {/* Confetti-like decoration */}
         <motion.div
@@ -64,7 +64,7 @@ function OrderSuccessContent() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             {isPaid
               ? type === "booking"
                 ? "Booking Berhasil!"
@@ -72,13 +72,13 @@ function OrderSuccessContent() {
               : "Menunggu Pembayaran"}
           </h1>
 
-          <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
+          <p className="text-lg text-[#5C2A10] dark:text-[#D4A882] mb-2">
             {isPaid
               ? `Terima kasih atas ${type === "booking" ? "booking" : "pesanan"} Anda!`
               : `Transaksi ${type === "booking" ? "booking" : "pesanan"} Anda sudah dibuat.`}
           </p>
 
-          <p className="text-gray-500 dark:text-gray-500 mb-10 max-w-sm mx-auto">
+          <p className="text-[#7A4A2A] dark:text-[#A87050] mb-10 max-w-sm mx-auto">
             {isPaid
               ? type === "booking"
                 ? "Tiket playground Anda sudah tercatat. Kami tunggu kedatangannya ya!"
@@ -91,7 +91,7 @@ function OrderSuccessContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm mb-8"
+          className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm mb-8"
         >
           <div
             className={`flex items-center justify-center gap-3 mb-3 ${
@@ -111,7 +111,7 @@ function OrderSuccessContent() {
                 : "Status: Menunggu Pembayaran"}
             </span>
           </div>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-[#A87050] dark:text-[#8B5A35]">
             {isPaid
               ? "Konfirmasi pembayaran dikirim otomatis oleh sistem Midtrans."
               : "Jika Anda tadi menutup popup Midtrans, buka kembali checkout untuk menyelesaikan pembayaran atau cek instruksi pembayaran dari Midtrans."}
@@ -150,7 +150,7 @@ function OrderSuccessContent() {
           </Link>
           <Link
             href="/"
-            className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-slate-800 text-gray-900 dark:text-white border border-gray-200 dark:border-slate-700 hover:border-brand-500 font-medium transition-all shadow-sm"
+            className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white dark:bg-[#2D1506] text-[#1C0A00] dark:text-[#F5E6D3] border border-[#E8C9B0] dark:border-brand-900/50 hover:border-brand-500 font-medium transition-all shadow-sm"
           >
             <Home className="w-5 h-5" />
             Kembali ke Beranda
@@ -165,7 +165,7 @@ export default function OrderSuccessPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="min-h-screen bg-[#FDF6EF] dark:bg-[#1A0800] flex items-center justify-center">
           <div className="text-gray-400">Memuat...</div>
         </div>
       }
