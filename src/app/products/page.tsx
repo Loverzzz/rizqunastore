@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Temukan berbagai kebutuhan harian Anda di Rizquna Store. Alat tulis, sembako, jajanan, dan lainnya.",
 };
 
-// Halaman dikache 5 menit, otomatis refresh jika ada perubahan produk
-export const revalidate = 60;
+// Cache 24 jam - hemat ISR writes
+export const revalidate = 86400;
 
 export default async function ProductsPage() {
   let products;
