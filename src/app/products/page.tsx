@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 // Halaman dikache 5 menit, otomatis refresh jika ada perubahan produk
-export const revalidate = 300;
+export const revalidate = 60;
 
 export default async function ProductsPage() {
   let products;
