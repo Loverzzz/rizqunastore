@@ -252,6 +252,11 @@ export default function PlaygroundPage() {
                     img: "/trampolin.png",
                   },
                   {
+                    title: "Pojok Kreatif & Edukatif",
+                    desc: "Menyusun balok, mainan lego, dan aneka aktivitas motorik halus yang melatih kreativitas.",
+                    img: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=400&auto=format&fit=crop",
+                  },
+                  {
                     title: "Wahana Rintangan Mini",
                     desc: "Jembatan mini dan rintangan lunak yang dirancang aman untuk sensori anak.",
                     img: "/wahana-rintangan-mini.png",
