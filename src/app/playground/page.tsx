@@ -13,6 +13,76 @@ import {
 } from "lucide-react";
 import { createBooking } from "@/actions/booking";
 import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
+
+const faqItems = [
+  {
+    question: "Berapa harga tiket masuk Playground Happy Kids?",
+    answer: "Harga tiket masuk adalah Rp 10.000 per anak. Setiap tiket sudah termasuk gratis 1 pendamping dewasa. Anak bisa bermain sepuasnya tanpa batas waktu.",
+  },
+  {
+    question: "Jam operasional Playground Happy Kids?",
+    answer: "Playground buka setiap hari Senin - Minggu pukul 08:00 - 20:00 WITA, dengan waktu istirahat pukul 12:00 - 13:00 WITA.",
+  },
+  {
+    question: "Apakah wajib memakai kaos kaki?",
+    answer: "Ya, anak dan pendamping wajib memakai kaos kaki selama berada di area bermain. Kaos kaki bisa dibawa sendiri atau dibeli di lokasi.",
+  },
+  {
+    question: "Apakah boleh membawa makanan ke dalam area bermain?",
+    answer: "Tidak diperbolehkan membawa makanan atau minuman ke dalam zona karpet bermain. Hal ini untuk menjaga kebersihan area permainan.",
+  },
+  {
+    question: "Apakah tersedia tempat parkir?",
+    answer: "Ya, tersedia area parkir yang luas dan aman untuk roda dua maupun roda empat di sekitar lokasi Rizquna Store & Playground.",
+  },
+  {
+    question: "Bagaimana cara memesan tiket secara online?",
+    answer: "Anda bisa memesan tiket melalui halaman ini dengan mengisi formulir pemesanan di atas. Pembayaran dilakukan secara online melalui Midtrans (QRIS, Transfer Bank, E-Wallet). Setelah pembayaran berhasil, Anda akan menerima konfirmasi pemesanan.",
+  },
+];
+
+function FaqAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <div className="max-w-3xl mx-auto space-y-3">
+      {faqItems.map((item, i) => (
+        <div
+          key={i}
+          className="bg-white dark:bg-[#2D1506] rounded-2xl border border-[#F0D5C8] dark:border-brand-900/40 overflow-hidden"
+        >
+          <button
+            onClick={() => setOpenIndex(openIndex === i ? null : i)}
+            className="w-full flex items-center justify-between px-6 py-4 text-left"
+          >
+            <span className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] pr-4">
+              {item.question}
+            </span>
+            <ChevronDown
+              className={`w-5 h-5 text-brand-500 flex-shrink-0 transition-transform duration-300 ${
+                openIndex === i ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+          {openIndex === i && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="px-6 pb-4"
+            >
+              <p className="text-[#5C2A10] dark:text-[#D4A882] leading-relaxed">
+                {item.answer}
+              </p>
+            </motion.div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function PlaygroundPage() {
   const [date, setDate] = useState("");
@@ -162,6 +232,52 @@ export default function PlaygroundPage() {
                   </span>
                 </li>
               </ul>
+            </div>
+
+            {/* Fasilitas Gallery */}
+            <div className="bg-white dark:bg-[#2D1506] rounded-3xl p-8 shadow-sm border border-[#F0D5C8] dark:border-brand-900/40">
+              <h3 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6 flex items-center gap-3">
+                <Ticket className="w-6 h-6 text-accent-500" /> Fasilitas Playground
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {[
+                  {
+                    title: "Mandi Bola & Perosotan",
+                    desc: "Kolam bola luas dengan perosotan ganda aman untuk melatih ketangkasan anak.",
+                    img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=400&auto=format&fit=crop",
+                  },
+                  {
+                    title: "Trampolin Ketangkasan",
+                    desc: "Melatih keseimbangan dan motorik kasar anak secara aktif dengan melompat ceria.",
+                    img: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=400&auto=format&fit=crop",
+                  },
+                  {
+                    title: "Pojok Kreatif & Edukatif",
+                    desc: "Menyusun balok, mainan lego, dan aneka aktivitas motorik halus yang melatih kreativitas.",
+                    img: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=400&auto=format&fit=crop",
+                  },
+                  {
+                    title: "Wahana Rintangan Mini",
+                    desc: "Jembatan mini dan rintangan lunak yang dirancang aman untuk sensori anak.",
+                    img: "https://images.unsplash.com/photo-1566418361715-ddc6375a0224?q=80&w=400&auto=format&fit=crop",
+                  },
+                ].map((facility, i) => (
+                  <div key={i} className="group rounded-2xl overflow-hidden border border-brand-100 dark:border-brand-900/30 bg-[#FDF6EF]/50 dark:bg-[#1A0800]/20 hover:shadow-md transition-all flex flex-col">
+                    <div className="relative aspect-video w-full overflow-hidden bg-brand-50">
+                      <img
+                        src={facility.img}
+                        alt={facility.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="p-4 flex-grow select-none">
+                      <h4 className="font-bold text-sm text-[#1C0A00] dark:text-[#F5E6D3] mb-1">{facility.title}</h4>
+                      <p className="text-xs text-[#7A4A2A] dark:text-[#A87050] leading-relaxed">{facility.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -344,6 +460,22 @@ export default function PlaygroundPage() {
               </form>
             )}
           </motion.div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mt-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
+              Pertanyaan{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 to-accent-600">
+                yang Sering Diajukan
+              </span>
+            </h2>
+            <p className="text-[#5C2A10] dark:text-[#D4A882] max-w-xl mx-auto">
+              Ada yang ingin Anda tanyakan? Berikut jawaban atas pertanyaan umum seputar Playground Happy Kids.
+            </p>
+          </div>
+          <FaqAccordion />
         </div>
       </div>
     </div>

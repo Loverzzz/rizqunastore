@@ -1,8 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Keranjang Belanja | Rizquna Store",
-  description: "Lihat dan kelola keranjang belanja Anda di Rizquna Store.",
+  title: "Keranjang Belanja",
+  description:
+    "Selesaikan pesanan belanja Anda di Rizquna Store. Proses checkout cepat, aman, dan didukung pembayaran otomatis via Midtrans.",
 };
 
 export default function CartLayout({
@@ -10,5 +11,5 @@ export default function CartLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <>{children}</>;
 }

@@ -8,8 +8,10 @@ export const metadata: Metadata = {
     "Temukan berbagai kebutuhan harian Anda di Rizquna Store. Alat tulis, sembako, jajanan, dan lainnya.",
 };
 
+// Force dynamic rendering - avoid prerender database errors
+export const dynamic = "force-dynamic";
 // Cache 24 jam - hemat ISR writes
-export const revalidate = 86400;
+export const revalidate = 0;
 
 export default async function ProductsPage() {
   let products;

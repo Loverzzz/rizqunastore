@@ -18,11 +18,6 @@ import { useState, useEffect, useTransition } from "react";
 import { createOrder } from "@/actions/order";
 import { useRouter } from "next/navigation";
 
-declare global {
-  interface Window {
-    snap: any;
-  }
-}
 
 // Koordinat toko Rizquna
 const STORE_LAT = -7.0267455;
@@ -238,7 +233,53 @@ export default function CartPage() {
     });
   };
 
-  if (!mounted) return null; // Prevent hydration error
+  if (!mounted) {
+    return (
+      <div className="py-12 bg-[#FDF6EF] dark:bg-[#1A0800] min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-10 w-48 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-xl animate-pulse mb-8" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Cart Items Skeleton */}
+            <div className="lg:col-span-2 space-y-4">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="bg-white dark:bg-[#2D1506] rounded-2xl p-4 border border-[#F0D5C8]/40 dark:border-brand-900/20 flex flex-col sm:flex-row items-center gap-4 animate-pulse"
+                >
+                  <div className="w-24 h-24 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-xl flex-shrink-0" />
+                  <div className="flex-grow space-y-2 w-full text-center sm:text-left">
+                    <div className="h-5 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-lg w-3/4 mx-auto sm:mx-0" />
+                    <div className="h-4 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-lg w-1/4 mx-auto sm:mx-0" />
+                    <div className="h-5 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-lg w-1/3 mx-auto sm:mx-0" />
+                  </div>
+                  <div className="flex items-center gap-4 w-full sm:w-auto justify-center">
+                    <div className="h-10 w-28 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-lg" />
+                    <div className="h-9 w-9 bg-red-100 dark:bg-red-950/20 rounded-lg" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Checkout Summary Skeleton */}
+            <div className="lg:col-span-1">
+              <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8]/40 dark:border-brand-900/20 space-y-6 animate-pulse">
+                <div className="h-6 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-lg w-1/2" />
+                <div className="space-y-3">
+                  <div className="h-4 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-lg w-full" />
+                  <div className="h-12 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-xl w-full" />
+                </div>
+                <div className="space-y-2 pt-4 border-t border-[#F0D5C8]/40 dark:border-brand-900/20">
+                  <div className="h-4 bg-[#E8C9B0]/20 dark:bg-brand-900/10 rounded-lg w-3/4" />
+                  <div className="h-6 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-lg w-1/2" />
+                </div>
+                <div className="h-12 bg-[#E8C9B0]/40 dark:bg-brand-900/20 rounded-xl w-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

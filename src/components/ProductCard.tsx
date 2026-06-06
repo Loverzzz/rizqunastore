@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart, Check, Heart } from "lucide-react";
+import { ShoppingCart, Check, Heart, ImageOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
@@ -75,7 +75,7 @@ export default function ProductCard({ product }: { product: Product }) {
       whileHover={{ y: -5 }}
       className="bg-white dark:bg-[#2D1506] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 transition-all flex flex-col h-full group"
     >
-      <div className="relative aspect-square bg-gray-50 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-square bg-gradient-to-br from-[#FDF6EF] to-[#F0E4D4] dark:from-[#2D1506]/60 dark:to-[#1A0800] flex items-center justify-center overflow-hidden">
         {product.imageUrl ? (
           product.imageUrl.startsWith("data:") ? (
             <img
@@ -95,14 +95,22 @@ export default function ProductCard({ product }: { product: Product }) {
             />
           )
         ) : (
-          <div className="text-gray-400 dark:text-gray-500 font-medium">
-            No Image
+          <div className="text-gray-300 dark:text-gray-600 flex flex-col items-center gap-2 select-none">
+            <ImageOff className="w-10 h-10 stroke-[1.5]" />
+            <span className="text-xs font-semibold tracking-wide">
+              Tidak Ada Gambar
+            </span>
           </div>
         )}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 flex flex-col gap-1.5 items-start">
           <span className="px-3 py-1 bg-white/80 dark:bg-[#1A0800]/80 backdrop-blur-md rounded-full text-xs font-semibold text-brand-600 dark:text-brand-400 border border-brand-100 dark:border-brand-900/50">
             {product.category}
           </span>
+          {currentStock === 0 && (
+            <span className="px-2.5 py-0.5 bg-red-600/90 text-white text-[10px] font-bold uppercase tracking-wider rounded-full shadow-sm">
+              Habis
+            </span>
+          )}
         </div>
         <button
           onClick={() => toggleItem(product.id)}
@@ -155,14 +163,21 @@ export default function ProductCard({ product }: { product: Product }) {
           </div>
         )}
 
-        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-slate-700">
-          <span className="text-xl font-black text-brand-600 dark:text-brand-400">
-            {formatRupiah(currentPrice)}
-          </span>
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#F0D5C8] dark:border-brand-900/30">
+          <div>
+            <span className="text-xl font-black text-brand-600 dark:text-brand-400">
+              {formatRupiah(currentPrice)}
+            </span>
+            {currentStock > 0 && currentStock <= 5 && (
+              <p className="text-[10px] text-amber-600 dark:text-amber-400 font-semibold mt-0.5">
+                Sisa {currentStock}!
+              </p>
+            )}
+          </div>
           <button
             onClick={handleAddToCart}
             disabled={currentStock === 0}
-            className={`p-3 ${added ? "bg-green-500 text-white" : currentStock === 0 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500" : "bg-brand-50 hover:bg-brand-500 text-brand-600 hover:text-white dark:bg-slate-700 dark:hover:bg-brand-500 dark:text-brand-400 dark:hover:text-white"} rounded-full transition-colors flex mt-1 items-center gap-1 active:scale-95 cursor-pointer z-10`}
+            className={`p-3 ${added ? "bg-green-500 text-white shadow-md shadow-green-500/30" : currentStock === 0 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500" : "bg-brand-600 hover:bg-brand-500 text-white dark:bg-brand-700 dark:hover:bg-brand-500 shadow-md shadow-brand-600/20 hover:shadow-brand-500/40"} rounded-full transition-all flex mt-1 items-center gap-1 active:scale-95 cursor-pointer z-10`}
             aria-label="Tambah ke keranjang"
           >
             {added ? (

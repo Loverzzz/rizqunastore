@@ -1,15 +1,39 @@
 import Link from "next/link";
-import { Clock, Mail, Phone, MapPin, AlertCircle } from "lucide-react";
+import {
+  Clock,
+  Mail,
+  Phone,
+  MapPin,
+  AlertCircle,
+  MessageCircle,
+} from "lucide-react";
 
 export default function Footer() {
   return (
     <footer className="bg-[#F5EDE4] dark:bg-[#1A0800] border-t border-[#E8C9B0] dark:border-brand-900/40 pt-12 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Brand Header */}
+        <div className="mb-10 pb-8 border-b border-[#E8C9B0] dark:border-brand-900/30 flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div>
+            <h2 className="text-3xl font-extrabold bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent mb-1">
+              Rizquna
+            </h2>
+            <p className="text-[#7A4A2A] dark:text-[#A87050] text-sm">
+              Satu tempat, berbagai kebutuhan keluarga.
+            </p>
+          </div>
+          <a
+            href="https://wa.me/6281915967694"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold text-sm transition-all shadow-md hover:shadow-green-500/30"
+          >
+            <MessageCircle className="w-4 h-4" />
+            Chat WhatsApp
+          </a>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-brand-500 to-accent-500 bg-clip-text text-transparent mb-4">
-              Rizquna
-            </h3>
             <p className="text-[#5C2A10] dark:text-[#D4A882] mb-4 max-w-xs">
               General store lengkap untuk kebutuhan sehari-hari dan playground
               interaktif untuk keceriaan anak-anak.
@@ -139,11 +163,18 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-[#E8C9B0] dark:border-brand-900/40 pt-8 text-center text-[#7A4A2A] dark:text-[#A87050] text-sm">
+        <div className="border-t border-[#E8C9B0] dark:border-brand-900/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-[#7A4A2A] dark:text-[#A87050] text-sm">
           <p>
-            © {new Date().getFullYear()} Rizquna Store & Playground. All rights
-            reserved.
+            © {new Date().getFullYear()}{" "}
+            <span className="font-semibold text-brand-600 dark:text-brand-400">
+              Rizquna
+            </span>{" "}
+            Store & Playground. All rights reserved.
           </p>
+          <div className="flex items-center gap-1 text-xs">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span>Buka Setiap Hari 08:00 – 20:00</span>
+          </div>
         </div>
       </div>
     </footer>

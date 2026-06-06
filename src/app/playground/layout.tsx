@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Playground Happy Kids | Rizquna",
+  title: "Pesan Tiket Playground Happy Kids",
   description:
-    "Pesan tiket Playground Happy Kids secara online. Area bermain indoor anak yang aman, nyaman, dan edukatif. Harga Rp 25.000/anak termasuk 1 pendamping.",
+    "Pesan tiket area bermain anak indoor Happy Kids di Rizquna Store. Cepat, mudah, dan aman dengan pembayaran online via Midtrans.",
 };
 
 export default function PlaygroundLayout({
@@ -11,5 +11,5 @@ export default function PlaygroundLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return <>{children}</>;
 }

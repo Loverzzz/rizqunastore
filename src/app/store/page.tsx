@@ -150,31 +150,22 @@ export default function StorePage() {
           <h2 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-4">
             Peta Lokasi
           </h2>
-          <a
-            href="https://share.google/TvhIwGbiWwDis9Kg6"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block aspect-video rounded-xl overflow-hidden relative group"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-accent-500/20 group-hover:from-brand-500/30 group-hover:to-accent-500/30 transition-all" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <div className="p-4 bg-white dark:bg-slate-800 rounded-full shadow-lg mb-4 group-hover:scale-110 transition-transform">
-                <MapPin className="w-10 h-10 text-brand-600 dark:text-brand-400" />
-              </div>
-              <p className="text-[#1C0A00] dark:text-[#F5E6D3] font-semibold text-lg">
-                Lihat di Google Maps
-              </p>
-              <p className="text-[#7A4A2A] dark:text-[#A87050] text-sm mt-1">
-                Klik untuk membuka peta lokasi
-              </p>
-            </div>
-            <div className="absolute bottom-4 left-4 right-4 p-3 bg-white/90 dark:bg-slate-800/90 rounded-lg backdrop-blur-sm">
-              <p className="text-sm text-[#5C2A10] dark:text-[#D4A882] text-center">
-                X3FX+892, Jl. Raya Plumpang, RW.7, Tanggungan, Kec. Plumpang,
-                Tuban 62382
-              </p>
-            </div>
-          </a>
+          <div className="aspect-video rounded-xl overflow-hidden border border-[#E8C9B0] dark:border-brand-900/50 shadow-inner relative">
+            <iframe
+              src="https://maps.google.com/maps?q=-7.0267455,112.0983932&z=17&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Peta Lokasi Rizquna Store & Playground"
+              className="w-full h-full opacity-90 hover:opacity-100 transition-opacity dark:opacity-85 dark:hover:opacity-95"
+            />
+          </div>
+          <p className="text-xs text-[#A87050] dark:text-[#8B5A35] mt-3 text-center">
+            📍 Rizquna Store: RW.7, Tanggungan, Kec. Plumpang, Tuban, Jawa Timur 62382
+          </p>
         </div>
       </div>
     </div>

@@ -45,10 +45,36 @@
   --surface: #3d1f0a;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Custom warm scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-200);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-400);
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-brand-800);
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-600);
 }
 
 .glass {
@@ -69,4 +95,83 @@ body {
 }
 .warm-surface {
   background: var(--surface);
+}
+
+/* Float animation */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+/* Shimmer animation for skeletons / highlights */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Pulse glow for CTAs */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(232, 93, 32, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(232, 93, 32, 0);
+  }
+}
+
+/* Spin slow for decorative elements */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-float-delay {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-500),
+    var(--color-accent-500)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover glow */
+.card-hover-glow {
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+.card-hover-glow:hover {
+  box-shadow: 0 20px 40px -10px rgba(194, 70, 26, 0.18);
+  transform: translateY(-4px);
 }

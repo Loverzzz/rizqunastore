@@ -1,13 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import {
   PackageSearch,
   Search,
-  AlertCircle,
-  MapPin,
-  Phone,
 } from "lucide-react";
 
 interface Variant {
@@ -28,9 +26,23 @@ interface Product {
   variants?: Variant[];
 }
 
-export default function ProductList({ products }: { products: Product[] }) {
-  const [activeCategory, setActiveCategory] = useState("Semua");
+function ProductListContent({ products }: { products: Product[] }) {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get("category") || "Semua";
+
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("terbaru");
+
+  // Sync category if search params change (e.g. from homepage category clicks)
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    } else {
+      setActiveCategory("Semua");
+    }
+  }, [searchParams]);
 
   const categories = [
     "Semua",
@@ -39,7 +51,7 @@ export default function ProductList({ products }: { products: Product[] }) {
 
   const filteredProducts = products.filter((p) => {
     const matchCategory =
-      activeCategory === "Semua" || p.category === activeCategory;
+      activeCategory === "Semua" || p.category.toLowerCase() === activeCategory.toLowerCase();
     const query = searchQuery.toLowerCase();
     const matchSearch =
       !query ||
@@ -50,20 +62,15 @@ export default function ProductList({ products }: { products: Product[] }) {
     return matchCategory && matchSearch;
   });
 
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === "termurah") return a.price - b.price;
+    if (sortBy === "termahal") return b.price - a.price;
+    if (sortBy === "az") return a.name.localeCompare(b.name);
+    return 0; // 'terbaru'
+  });
+
   return (
     <>
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
-        <div>
-          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-            Katalog Rizquna
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
-            Temukan berbagai kebutuhan harian Anda. Mulai dari alat tulis
-            sekolah, sembako dapur, hingga aneka jajanan anak.
-          </p>
-        </div>
-      </div>
-
       {/* Search Bar */}
       <div className="relative mb-6">
         <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -77,13 +84,13 @@ export default function ProductList({ products }: { products: Product[] }) {
       </div>
 
       {/* Category Filter */}
-      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-8">
+      <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mb-6">
         {categories.map((cat, i) => (
           <button
             key={i}
             onClick={() => setActiveCategory(cat)}
-            className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-              activeCategory === cat
+            className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all cursor-pointer ${
+              activeCategory.toLowerCase() === cat.toLowerCase()
                 ? "bg-[#2D1506] text-white shadow-md dark:bg-brand-600"
                 : "bg-white dark:bg-[#2D1506] text-[#5C2A10] dark:text-[#D4A882] hover:bg-brand-50 hover:text-brand-600 border border-[#E8C9B0] dark:border-brand-900/40"
             }`}
@@ -93,44 +100,30 @@ export default function ProductList({ products }: { products: Product[] }) {
         ))}
       </div>
 
-      {/* Disclaimer */}
-      <div className="mb-8 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
-        <div className="flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-amber-800 dark:text-amber-200">
-            <p className="font-semibold mb-1">Disclaimer Produk</p>
-            <p className="mb-2">
-              Gambar produk yang ditampilkan dapat berbeda dengan barang asli.
-              Untuk konfirmasi detail produk (warna, ukuran, kondisi), silakan
-              hubungi admin WhatsApp atau datang langsung ke toko offline kami.
-            </p>
-            <div className="flex flex-wrap items-center gap-4 text-xs">
-              <a
-                href="https://wa.me/6281915967694"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
-              >
-                <Phone className="w-3 h-3" />
-                Hubungi Admin WhatsApp
-              </a>
-              <a
-                href="https://share.google/TvhIwGbiWwDis9Kg6"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-amber-700 dark:text-amber-300 hover:underline"
-              >
-                <MapPin className="w-3 h-3" />
-                X3FX+892, Jl. Raya Plumpang, Tuban
-              </a>
-            </div>
-          </div>
+      {/* Sort & Count Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-4 border-b border-[#F0D5C8]/40 dark:border-brand-900/20">
+        <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
+          Menampilkan <span className="font-semibold text-brand-600 dark:text-brand-400">{sortedProducts.length}</span> produk
+        </p>
+        <div className="flex items-center gap-2 select-none">
+          <label htmlFor="sort-select" className="text-xs font-semibold text-[#5C2A10] dark:text-[#D4A882] whitespace-nowrap">Urutkan:</label>
+          <select
+            id="sort-select"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-3 py-1.5 rounded-lg border border-[#E8C9B0] dark:border-brand-900/40 bg-white dark:bg-[#2D1506] text-xs font-medium text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-1 focus:ring-brand-500 outline-none cursor-pointer"
+          >
+            <option value="terbaru">Terbaru</option>
+            <option value="termurah">Harga Termurah</option>
+            <option value="termahal">Harga Termahal</option>
+            <option value="az">Nama A-Z</option>
+          </select>
         </div>
       </div>
 
-      {filteredProducts.length > 0 ? (
+      {sortedProducts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {filteredProducts.map((product) => (
+          {sortedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
@@ -145,6 +138,33 @@ export default function ProductList({ products }: { products: Product[] }) {
           </p>
         </div>
       )}
+    </>
+  );
+}
+
+export default function ProductList({ products }: { products: Product[] }) {
+  return (
+    <>
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+        <div>
+          <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
+            Katalog Rizquna
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl">
+            Temukan berbagai kebutuhan harian Anda. Mulai dari alat tulis
+            sekolah, sembako dapur, hingga aneka jajanan anak.
+          </p>
+        </div>
+      </div>
+
+      <Suspense fallback={
+        <div className="text-center py-20 select-none">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-600 mx-auto"></div>
+          <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] mt-2">Memuat katalog...</p>
+        </div>
+      }>
+        <ProductListContent products={products} />
+      </Suspense>
     </>
   );
 }
