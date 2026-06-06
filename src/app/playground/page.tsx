@@ -18,7 +18,7 @@ import { ChevronDown } from "lucide-react";
 const faqItems = [
   {
     question: "Berapa harga tiket masuk Playground Happy Kids?",
-    answer: "Harga tiket masuk adalah Rp 25.000 per anak. Setiap tiket sudah termasuk gratis 1 pendamping dewasa. Anak bisa bermain sepuasnya tanpa batas waktu.",
+    answer: "Harga tiket masuk adalah Rp 10.000 per anak. Setiap tiket sudah termasuk gratis 1 pendamping dewasa. Anak bisa bermain sepuasnya tanpa batas waktu.",
   },
   {
     question: "Jam operasional Playground Happy Kids?",
@@ -95,7 +95,7 @@ export default function PlaygroundPage() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const ticketPrice = 25000; // Harga tiket
+  const ticketPrice = 10000; // Harga tiket
 
   const isValidIndonesianPhone = (phone: string) => {
     const cleaned = phone.replace(/[\s\-\.]/g, "");
@@ -197,7 +197,7 @@ export default function PlaygroundPage() {
               </h3>
               <div className="flex items-end gap-2 mb-2">
                 <span className="text-4xl font-black text-brand-600 dark:text-brand-400">
-                  Rp 25.000
+                  Rp 10.000
                 </span>
                 <span className="text-[#7A4A2A] dark:text-[#A87050] mb-1">
                   / anak (sepuasnya)

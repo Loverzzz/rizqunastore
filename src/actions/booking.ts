@@ -3,7 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-const TICKET_PRICE = 25000;
+const TICKET_PRICE = 10000;
 
 export async function createBooking(data: {
   customerName: string;
