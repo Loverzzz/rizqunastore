@@ -263,11 +263,11 @@ export default function PlaygroundPage() {
                   },
                 ].map((facility, i) => (
                   <div key={i} className="group rounded-2xl overflow-hidden border border-brand-100 dark:border-brand-900/30 bg-[#FDF6EF]/50 dark:bg-[#1A0800]/20 hover:shadow-md transition-all flex flex-col">
-                    <div className="relative aspect-video w-full overflow-hidden bg-brand-50">
+                    <div className="relative aspect-video w-full overflow-hidden bg-brand-50 dark:bg-[#1A0800] flex items-center justify-center">
                       <img
                         src={facility.img}
                         alt={facility.title}
-                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                        className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
                         loading="lazy"
                       />
                     </div>
