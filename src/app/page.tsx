@@ -168,7 +168,7 @@ function TestimonialSection() {
             className="bg-[#FDF6EF] dark:bg-[#2D1506] rounded-3xl p-8 md:p-12 border border-[#F0D5C8] dark:border-brand-900/40 shadow-xl relative"
           >
             {/* Quote icon */}
-            <div className="absolute top-8 right-8 opacity-10">
+            <div className="absolute top-8 right-8 opacity-10" aria-hidden="true">
               <Quote className="w-16 h-16 text-brand-600" />
             </div>
 
@@ -278,7 +278,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden" aria-label="Hero">
         <div className="absolute inset-0 z-[-1] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-100 via-[#FDF6EF] to-[#FDF6EF] dark:from-brand-900/40 dark:via-[#1A0800] dark:to-[#1A0800]"></div>
 
         {/* Decorative floating blobs */}
@@ -355,7 +355,7 @@ export default function Home() {
       </section>
 
       {/* Shop by Category Section */}
-      <section className="py-12 bg-[#F5EDE4] dark:bg-[#2D1506]/40">
+      <section className="py-12 bg-[#F5EDE4] dark:bg-[#2D1506]/40" aria-label="Belanja per kategori">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
@@ -429,7 +429,7 @@ export default function Home() {
       </section>
 
       {/* Stat Counters Section */}
-      <section className="py-16 bg-white dark:bg-[#1A0800]">
+      <section className="py-16 bg-white dark:bg-[#1A0800]" aria-label="Statistik toko">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -486,7 +486,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-20 bg-[#F5EDE4]/30 dark:bg-[#2D1506]/10">
+      <section className="py-20 bg-[#F5EDE4]/30 dark:bg-[#2D1506]/10" aria-label="Keunggulan Rizquna">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -565,10 +565,10 @@ export default function Home() {
       <TestimonialSection />
 
       {/* Promo Banner */}
-      <section className="py-10">
+      <section className="py-10" aria-label="Promo tiket playground">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="rounded-3xl bg-[#2D1506] dark:bg-[#3D1F0A] p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
-            <div className="absolute top-0 right-0 opacity-10 pointer-events-none">
+            <div className="absolute top-0 right-0 opacity-10 pointer-events-none" aria-hidden="true">
               <Sparkles className="w-72 h-72 text-accent-400" />
             </div>
             <div className="relative z-10">
@@ -599,7 +599,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-20 bg-[#F5EDE4] dark:bg-[#2D1506]/30">
+      <section className="py-20 bg-[#F5EDE4] dark:bg-[#2D1506]/30" aria-label="Layanan utama">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
@@ -681,7 +681,7 @@ export default function Home() {
       </section>
 
       {/* Info / Hours Section */}
-      <section className="py-20 relative overflow-hidden">
+      <section className="py-20 relative overflow-hidden" aria-label="Jam operasional">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -689,7 +689,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="bg-gradient-to-br from-brand-600 to-brand-800 rounded-4xl p-10 md:p-14 text-white shadow-2xl relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 -mr-20 -mt-20 opacity-10 select-none">
+            <div className="absolute top-0 right-0 -mr-20 -mt-20 opacity-10 select-none" aria-hidden="true">
               <Clock className="w-96 h-96" />
             </div>
 

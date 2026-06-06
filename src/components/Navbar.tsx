@@ -51,7 +51,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 glass shadow-sm">
+    <nav className="sticky top-0 z-50 glass shadow-sm" aria-label="Navigasi utama">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -96,7 +96,7 @@ export default function Navbar() {
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg text-[#1C0A00] dark:text-[#F5E6D3] hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-all"
-                aria-label="Toggle dark mode"
+                aria-label={darkMode ? "Aktifkan mode terang" : "Aktifkan mode gelap"}
               >
                 {darkMode ? (
                   <Sun className="w-5 h-5" />
@@ -109,13 +109,14 @@ export default function Navbar() {
             {/* Cart */}
             <Link
               href="/cart"
+              aria-label={`Keranjang belanja${mounted && totalItems > 0 ? `, ${totalItems} item` : ""}`}
               className={`relative p-2 rounded-lg transition-all ${
                 pathname === "/cart"
                   ? "text-brand-600 dark:text-brand-400 bg-brand-50/80 dark:bg-brand-900/20"
                   : "text-[#1C0A00] dark:text-[#F5E6D3] hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20"
               }`}
             >
-              <ShoppingCart className="w-6 h-6" />
+              <ShoppingCart className="w-6 h-6" aria-hidden="true" />
               {mounted && totalItems > 0 && (
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-brand-600 rounded-full transform translate-x-1/4 -translate-y-1/4">
                   {totalItems}
@@ -135,7 +136,8 @@ export default function Navbar() {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="sm:hidden p-2 rounded-lg text-[#1C0A00] dark:text-[#F5E6D3] hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-all"
-              aria-label="Menu"
+              aria-label={isOpen ? "Tutup menu navigasi" : "Buka menu navigasi"}
+              aria-expanded={isOpen}
             >
               {isOpen ? (
                 <X className="w-6 h-6" />

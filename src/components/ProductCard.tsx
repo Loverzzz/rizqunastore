@@ -115,7 +115,8 @@ export default function ProductCard({ product }: { product: Product }) {
         <button
           onClick={() => toggleItem(product.id)}
           className="absolute top-4 right-4 p-2 bg-white/80 dark:bg-[#1A0800]/80 backdrop-blur-md rounded-full border border-[#F0D5C8] dark:border-brand-900/50 hover:scale-110 transition-transform z-10"
-          aria-label="Wishlist"
+          aria-label={wishlisted ? `Hapus ${product.name} dari wishlist` : `Tambah ${product.name} ke wishlist`}
+          aria-pressed={wishlisted}
         >
           <Heart
             className={`w-4 h-4 ${wishlisted ? "fill-red-500 text-red-500" : "text-gray-400"}`}
@@ -143,6 +144,8 @@ export default function ProductCard({ product }: { product: Product }) {
                   key={v.id}
                   onClick={() => setSelectedVariant(v)}
                   disabled={v.stock === 0}
+                  aria-label={`Ukuran ${v.label}${v.stock === 0 ? " (habis)" : ""}`}
+                  aria-pressed={selectedVariant?.id === v.id}
                   className={`px-2.5 py-1 text-xs font-medium rounded-lg border transition-all ${
                     selectedVariant?.id === v.id
                       ? "bg-brand-600 text-white border-brand-600 shadow-sm"
@@ -178,7 +181,7 @@ export default function ProductCard({ product }: { product: Product }) {
             onClick={handleAddToCart}
             disabled={currentStock === 0}
             className={`p-3 ${added ? "bg-green-500 text-white shadow-md shadow-green-500/30" : currentStock === 0 ? "bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-slate-700 dark:text-slate-500" : "bg-brand-600 hover:bg-brand-500 text-white dark:bg-brand-700 dark:hover:bg-brand-500 shadow-md shadow-brand-600/20 hover:shadow-brand-500/40"} rounded-full transition-all flex mt-1 items-center gap-1 active:scale-95 cursor-pointer z-10`}
-            aria-label="Tambah ke keranjang"
+            aria-label={added ? `${product.name} ditambahkan ke keranjang` : currentStock === 0 ? `${product.name} stok habis` : `Tambah ${product.name} ke keranjang`}
           >
             {added ? (
               <Check className="w-5 h-5" />

@@ -26,9 +26,10 @@ export default function Footer() {
             href="https://wa.me/6281915967694"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Hubungi kami via WhatsApp"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold text-sm transition-all shadow-md hover:shadow-green-500/30"
           >
-            <MessageCircle className="w-4 h-4" />
+            <MessageCircle className="w-4 h-4" aria-hidden="true" />
             Chat WhatsApp
           </a>
         </div>
@@ -129,6 +130,7 @@ export default function Footer() {
                   href="https://wa.me/6281915967694"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Hubungi via WhatsApp: 0819-1596-7694"
                   className="text-[#5C2A10] dark:text-[#D4A882] hover:text-brand-600 transition-colors"
                 >
                   0819-1596-7694
@@ -138,6 +140,7 @@ export default function Footer() {
                 <Mail className="w-4 h-4 text-accent-500 shrink-0" />
                 <a
                   href="mailto:reynaldmlbb4@gmail.com"
+                  aria-label="Kirim email ke reynaldmlbb4@gmail.com"
                   className="text-[#5C2A10] dark:text-[#D4A882] hover:text-accent-600 transition-colors break-words text-sm"
                 >
                   reynaldmlbb4@gmail.com
