@@ -244,22 +244,17 @@ export default function PlaygroundPage() {
                   {
                     title: "Mandi Bola & Perosotan",
                     desc: "Kolam bola luas dengan perosotan ganda aman untuk melatih ketangkasan anak.",
-                    img: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=400&auto=format&fit=crop",
+                    img: "/mandi-bola.png",
                   },
                   {
                     title: "Trampolin Ketangkasan",
                     desc: "Melatih keseimbangan dan motorik kasar anak secara aktif dengan melompat ceria.",
-                    img: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=400&auto=format&fit=crop",
-                  },
-                  {
-                    title: "Pojok Kreatif & Edukatif",
-                    desc: "Menyusun balok, mainan lego, dan aneka aktivitas motorik halus yang melatih kreativitas.",
-                    img: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?q=80&w=400&auto=format&fit=crop",
+                    img: "/trampolin.png",
                   },
                   {
                     title: "Wahana Rintangan Mini",
                     desc: "Jembatan mini dan rintangan lunak yang dirancang aman untuk sensori anak.",
-                    img: "https://images.unsplash.com/photo-1566418361715-ddc6375a0224?q=80&w=400&auto=format&fit=crop",
+                    img: "/wahana-rintangan-mini.png",
                   },
                 ].map((facility, i) => (
                   <div key={i} className="group rounded-2xl overflow-hidden border border-brand-100 dark:border-brand-900/30 bg-[#FDF6EF]/50 dark:bg-[#1A0800]/20 hover:shadow-md transition-all flex flex-col">
