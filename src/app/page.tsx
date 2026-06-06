@@ -82,7 +82,7 @@ const testimonials = [
     role: "Ayah dari 2 anak",
     avatar: "👨",
     rating: 5,
-    text: "Anak saya sangat suka Playground Happy Kids. Fasilitasnya bersih, aman, dan petugasnya ramah. Tiket Rp 10.000 sudah termasuk pendamping, sangat worth it!",
+    text: "Anak saya sangat suka Playground Happy Kids. Fasilitasnya bersih, aman, dan petugasnya ramah. Tiket Rp 25.000 sudah termasuk pendamping, sangat worth it!",
     badge: "Pelanggan Playground",
   },
   {
@@ -585,7 +585,7 @@ export default function Home() {
             </div>
             <div className="relative z-10 flex flex-col items-center md:items-end gap-3 select-none">
               <div className="text-4xl font-extrabold text-accent-400">
-                Rp 10.000
+                Rp 25.000
               </div>
               <Link
                 href="/playground"
