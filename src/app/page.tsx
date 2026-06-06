@@ -344,7 +344,7 @@ export default function Home() {
                   fill
                   className="object-cover opacity-80"
                   priority
-                  quality={80}
+                  quality={75}
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-black/20" />
