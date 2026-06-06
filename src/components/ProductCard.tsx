@@ -81,7 +81,7 @@ export default function ProductCard({ product }: { product: Product }) {
             <img
               src={product.imageUrl}
               alt={product.name}
-              className="absolute inset-0 w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
+              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
           ) : (
@@ -90,7 +90,7 @@ export default function ProductCard({ product }: { product: Product }) {
               alt={product.name}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-              className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-500 p-6"
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
               loading="lazy"
             />
           )
