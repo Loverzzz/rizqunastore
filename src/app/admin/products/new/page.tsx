@@ -7,7 +7,6 @@ import {
   Save,
   Sparkles,
   Upload,
-  ImageIcon,
   Plus,
   Trash2,
 } from "lucide-react";
@@ -54,7 +53,6 @@ export default function NewProductPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Preview
     const reader = new FileReader();
     reader.onloadend = () => setImagePreview(reader.result as string);
     reader.readAsDataURL(file);
@@ -108,20 +106,27 @@ export default function NewProductPage() {
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/40 bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow";
+  const smallInputClass =
+    "px-3 py-2 rounded-lg border border-[#E8C9B0] dark:border-brand-900/40 bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] text-sm focus:ring-2 focus:ring-brand-500 outline-none";
+  const labelClass =
+    "block text-sm font-semibold text-[#5C2A10] dark:text-[#D4A882]";
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/products"
-          className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white bg-white dark:bg-slate-800 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors border border-gray-200 dark:border-slate-700"
+          className="p-2 text-[#7A3B1E] hover:text-[#1C0A00] dark:text-[#C4946A] dark:hover:text-[#F5E6D3] bg-white dark:bg-[#2D1506] rounded-lg hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] transition-colors border border-[#F0D5C8] dark:border-brand-900/40"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
             Tambah Produk Baru
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-1">
             Masukkan informasi detail produk yang akan dijual.
           </p>
         </div>
@@ -137,7 +142,7 @@ export default function NewProductPage() {
           Produk berhasil dibuat! Mengalihkan...
         </div>
       )}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden p-6 md:p-8">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 overflow-hidden p-6 md:p-8">
         <form onSubmit={async (e) => {
           e.preventDefault();
           setSaving(true);
@@ -157,10 +162,7 @@ export default function NewProductPage() {
         }} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label
-                htmlFor="name"
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-              >
+              <label htmlFor="name" className={labelClass}>
                 Nama Produk *
               </label>
               <input
@@ -168,23 +170,20 @@ export default function NewProductPage() {
                 id="name"
                 name="name"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                className={inputClass}
                 placeholder="Contoh: Beras Premium 5Kg"
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="category"
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-              >
+              <label htmlFor="category" className={labelClass}>
                 Kategori *
               </label>
               <select
                 id="category"
                 name="category"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                className={inputClass}
               >
                 <option value="">Pilih Kategori</option>
                 <option value="Tas">Tas</option>
@@ -200,17 +199,14 @@ export default function NewProductPage() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label
-                htmlFor="description"
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-              >
+              <label htmlFor="description" className={labelClass}>
                 Deskripsi
               </label>
               <button
                 type="button"
                 onClick={generateDescription}
                 disabled={aiLoading}
-                className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-purple-50 hover:bg-purple-100 dark:bg-purple-900/30 dark:hover:bg-purple-900/50 text-purple-600 dark:text-purple-400 rounded-lg transition-colors disabled:opacity-50"
+                className="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/30 dark:hover:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-lg transition-colors disabled:opacity-50"
               >
                 <Sparkles className="w-3 h-3" />
                 {aiLoading ? "Generating..." : "AI Generate"}
@@ -222,17 +218,14 @@ export default function NewProductPage() {
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow resize-none"
+              className={`${inputClass} resize-none`}
               placeholder="Jelaskan detail produk ini..."
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label
-                htmlFor="price"
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-              >
+              <label htmlFor="price" className={labelClass}>
                 Harga (Rp) *
               </label>
               <input
@@ -241,16 +234,13 @@ export default function NewProductPage() {
                 name="price"
                 min="0"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                className={inputClass}
                 placeholder="Contoh: 15000"
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="stock"
-                className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-              >
+              <label htmlFor="stock" className={labelClass}>
                 Stok Awal *
               </label>
               <input
@@ -259,7 +249,7 @@ export default function NewProductPage() {
                 name="stock"
                 min="0"
                 required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                className={inputClass}
                 placeholder="Contoh: 50"
               />
             </div>
@@ -267,9 +257,7 @@ export default function NewProductPage() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Varian Ukuran (Opsional)
-              </label>
+              <label className={labelClass}>Varian Ukuran (Opsional)</label>
               <button
                 type="button"
                 onClick={addVariant}
@@ -296,7 +284,7 @@ export default function NewProductPage() {
             )}
             {variants.length > 0 && (
               <div className="space-y-2">
-                <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 px-1">
+                <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-xs font-medium text-[#7A3B1E] dark:text-[#C4946A] px-1">
                   <span>Label</span>
                   <span>Harga (Rp)</span>
                   <span>Stok</span>
@@ -314,7 +302,7 @@ export default function NewProductPage() {
                       onChange={(e) =>
                         updateVariant(i, "label", e.target.value)
                       }
-                      className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                      className={smallInputClass}
                     />
                     <input
                       type="number"
@@ -324,7 +312,7 @@ export default function NewProductPage() {
                       onChange={(e) =>
                         updateVariant(i, "price", e.target.value)
                       }
-                      className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                      className={smallInputClass}
                     />
                     <input
                       type="number"
@@ -334,7 +322,7 @@ export default function NewProductPage() {
                       onChange={(e) =>
                         updateVariant(i, "stock", e.target.value)
                       }
-                      className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                      className={smallInputClass}
                     />
                     <button
                       type="button"
@@ -348,7 +336,7 @@ export default function NewProductPage() {
               </div>
             )}
             {variants.length === 0 && (
-              <p className="text-xs text-gray-400 dark:text-gray-500">
+              <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A]">
                 Tambahkan varian jika produk memiliki beberapa ukuran dengan
                 harga/stok berbeda.
               </p>
@@ -357,9 +345,7 @@ export default function NewProductPage() {
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-                Gambar Produk (Opsional)
-              </label>
+              <label className={labelClass}>Gambar Produk (Opsional)</label>
               <button
                 type="button"
                 onClick={() => {
@@ -382,11 +368,11 @@ export default function NewProductPage() {
                     setImageUrl(e.target.value);
                     setImagePreview(e.target.value || null);
                   }}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                  className={inputClass}
                   placeholder="https://example.com/image.jpg"
                 />
                 {imagePreview && (
-                  <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+                  <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-[#E8C9B0] dark:border-brand-900/40">
                     <img
                       src={imagePreview}
                       alt="Preview"
@@ -396,7 +382,7 @@ export default function NewProductPage() {
                 )}
               </div>
             ) : imagePreview ? (
-              <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+              <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-[#E8C9B0] dark:border-brand-900/40">
                 <img
                   src={imagePreview}
                   alt="Preview"
@@ -419,12 +405,12 @@ export default function NewProductPage() {
                 </button>
               </div>
             ) : (
-              <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
-                <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                <span className="text-sm text-gray-500">
+              <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[#E8C9B0] dark:border-brand-900/40 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] transition-colors">
+                <Upload className="w-8 h-8 text-[#7A3B1E] dark:text-[#C4946A] mb-2" />
+                <span className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
                   Klik untuk upload gambar
                 </span>
-                <span className="text-xs text-gray-400 mt-1">
+                <span className="text-xs text-[#7A3B1E]/60 dark:text-[#C4946A]/60 mt-1">
                   JPG, PNG, WebP (maks 5MB)
                 </span>
                 <input
@@ -437,10 +423,10 @@ export default function NewProductPage() {
             )}
           </div>
 
-          <div className="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-4">
+          <div className="pt-6 border-t border-[#F0D5C8] dark:border-brand-900/40 flex justify-end gap-4">
             <Link
               href="/admin/products"
-              className="px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+              className="px-6 py-3 bg-[#FDF6EF] dark:bg-[#3D1F0A] text-[#5C2A10] dark:text-[#D4A882] font-medium rounded-xl hover:bg-[#F0E4D4] dark:hover:bg-[#4A2810] transition-colors"
             >
               Batal
             </Link>

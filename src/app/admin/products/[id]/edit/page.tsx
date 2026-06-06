@@ -29,15 +29,15 @@ export default async function EditProductPage({
       <div className="flex items-center gap-4 mb-8">
         <Link
           href="/admin/products"
-          className="p-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white bg-white dark:bg-slate-800 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors border border-gray-200 dark:border-slate-700"
+          className="p-2 text-[#7A3B1E] hover:text-[#1C0A00] dark:text-[#C4946A] dark:hover:text-[#F5E6D3] bg-white dark:bg-[#2D1506] rounded-lg hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] transition-colors border border-[#F0D5C8] dark:border-brand-900/40"
         >
           <ArrowLeft className="w-5 h-5" />
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
             Edit Produk
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-1">
             Perbarui informasi produk {product.name}.
           </p>
         </div>

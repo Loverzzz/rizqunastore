@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex">
+    <div className="min-h-screen bg-[#FDF6EF] dark:bg-[#1A0800] flex">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div 
@@ -39,11 +39,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside 
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#2D1506] border-r border-[#F0D5C8] dark:border-brand-900/40 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } flex flex-col`}
       >
-        <div className="h-16 flex items-center px-6 border-b border-gray-200 dark:border-slate-700">
+        <div className="h-16 flex items-center px-6 border-b border-[#F0D5C8] dark:border-brand-900/40">
           <Link href="/admin" className="text-2xl font-black text-brand-600 dark:text-brand-400">
             Rizquna<span className="text-gray-900 dark:text-white">Admin</span>
           </Link>
@@ -61,7 +61,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${
                   isActive 
                   ? "bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400" 
-                  : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700 hover:text-gray-900 dark:hover:text-white"
+                  : "text-[#5C2A10] dark:text-[#C4946A] hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] hover:text-[#1C0A00] dark:hover:text-[#F5E6D3]"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -71,7 +71,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           })}
         </nav>
 
-        <div className="p-4 border-t border-gray-200 dark:border-slate-700">
+        <div className="p-4 border-t border-[#F0D5C8] dark:border-brand-900/40">
           <form action={logoutAdmin}>
             <button type="submit" className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
               <LogOut className="w-5 h-5" />
@@ -84,15 +84,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-w-0">
         {/* Top Header */}
-        <header className="h-16 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 sticky top-0">
+        <header className="h-16 bg-white dark:bg-[#2D1506] border-b border-[#F0D5C8] dark:border-brand-900/40 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 sticky top-0">
           <div className="flex items-center">
             <button 
               onClick={() => setIsSidebarOpen(true)}
-              className="p-2 -ml-2 mr-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white lg:hidden rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
+              className="p-2 -ml-2 mr-2 text-[#7A3B1E] hover:text-[#1C0A00] dark:text-[#C4946A] dark:hover:text-[#F5E6D3] lg:hidden rounded-lg hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A]"
             >
               <Menu className="w-6 h-6" />
             </button>
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white lg:hidden">
+            <h2 className="text-lg font-semibold text-[#1C0A00] dark:text-[#F5E6D3] lg:hidden">
               Admin Panel
             </h2>
           </div>

@@ -49,7 +49,7 @@ export default function AdminProductsTable({ products }: Props) {
           className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
             !filterNoImage
               ? "bg-brand-600 text-white shadow-sm"
-              : "bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600"
+              : "bg-[#FDF6EF] dark:bg-[#3D1F0A] text-[#5C2A10] dark:text-[#C4946A] hover:bg-[#F0E4D4] dark:hover:bg-[#4A2810]"
           }`}
         >
           Semua ({products.length})
@@ -68,37 +68,37 @@ export default function AdminProductsTable({ products }: Props) {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-gray-50 dark:bg-slate-900/50 border-b border-gray-200 dark:border-slate-700">
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              <tr className="bg-[#FDF6EF] dark:bg-[#1A0800]/50 border-b border-[#F0D5C8] dark:border-brand-900/40">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider">
                   Gambar
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider">
                   Nama Produk
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider">
                   Kategori
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider">
                   Harga
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider">
                   Stok
                 </th>
-                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">
+                <th className="px-6 py-4 text-xs font-semibold text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider text-right">
                   Aksi
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-slate-700">
+            <tbody className="divide-y divide-[#F0D5C8] dark:divide-brand-900/30">
               {displayed.length === 0 ? (
                 <tr>
                   <td
                     colSpan={6}
-                    className="px-6 py-12 text-center text-gray-500"
+                    className="px-6 py-12 text-center text-[#7A3B1E] dark:text-[#C4946A]"
                   >
                     {filterNoImage
                       ? "Semua produk sudah memiliki gambar."
@@ -109,14 +109,14 @@ export default function AdminProductsTable({ products }: Props) {
                 displayed.map((product) => (
                   <tr
                     key={product.id}
-                    className={`hover:bg-gray-50/50 dark:hover:bg-slate-700/30 transition-colors ${
+                    className={`hover:bg-[#FDF6EF]/50 dark:hover:bg-[#3D1F0A]/30 transition-colors ${
                       !product.imageUrl
                         ? "bg-orange-50/30 dark:bg-orange-900/10"
                         : ""
                     }`}
                   >
                     <td className="px-6 py-4">
-                      <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-slate-700 overflow-hidden flex items-center justify-center p-1 border border-gray-200 dark:border-slate-600">
+                      <div className="w-12 h-12 rounded-lg bg-[#FDF6EF] dark:bg-[#3D1F0A] overflow-hidden flex items-center justify-center p-1 border border-[#E8C9B0] dark:border-brand-900/40">
                         {product.imageUrl ? (
                           <img
                             src={product.imageUrl}
@@ -129,7 +129,7 @@ export default function AdminProductsTable({ products }: Props) {
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div className="font-medium text-gray-900 dark:text-white line-clamp-2">
+                      <div className="font-medium text-[#1C0A00] dark:text-[#F5E6D3] line-clamp-2">
                         {product.name}
                       </div>
                     </td>
@@ -138,10 +138,10 @@ export default function AdminProductsTable({ products }: Props) {
                         {product.category}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    <td className="px-6 py-4 font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
                       {formatRupiah(product.price)}
                     </td>
-                    <td className="px-6 py-4 text-gray-600 dark:text-gray-300">
+                    <td className="px-6 py-4 text-[#5C2A10] dark:text-[#C4946A]">
                       {product.variants.length > 0
                         ? `${product.variants.reduce((s, v) => s + v.stock, 0)} (${product.variants.length} ukuran)`
                         : product.stock}
@@ -149,7 +149,7 @@ export default function AdminProductsTable({ products }: Props) {
                     <td className="px-6 py-4 text-right space-x-2">
                       <Link
                         href={`/admin/products/${product.id}/edit`}
-                        className="inline-flex p-2 text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                        className="inline-flex p-2 text-brand-600 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-[#3D1F0A] rounded-lg transition-colors"
                       >
                         <Edit className="w-5 h-5" />
                       </Link>

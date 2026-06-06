@@ -186,21 +186,21 @@ export default async function AdminDashboard({
       value: totalProducts.toString(),
       icon: Package,
       trend: "Tersedia",
-      color: "bg-blue-500",
+      color: "bg-brand-500",
     },
     {
       name: "Total Pesanan",
       value: totalOrders.toString(),
       icon: ShoppingBag,
       trend: "Toko",
-      color: "bg-green-500",
+      color: "bg-accent-500",
     },
     {
       name: "Tiket Playground",
       value: totalBookings.toString(),
       icon: Ticket,
       trend: "Booking",
-      color: "bg-purple-500",
+      color: "bg-brand-400",
     },
     {
       name: "Pendapatan kotor",
@@ -215,10 +215,10 @@ export default async function AdminDashboard({
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
             Dashboard Overview
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-1">
             Menampilkan data:{" "}
             <span className="font-semibold text-brand-600 dark:text-brand-400">
               {periodLabel}
@@ -237,24 +237,24 @@ export default async function AdminDashboard({
           return (
             <div
               key={i}
-              className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm"
+              className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
                 <div
-                  className={`p-3 rounded-xl ${stat.color} bg-opacity-10 dark:bg-opacity-20`}
+                  className={`p-3 rounded-xl bg-[#FDF6EF] dark:bg-brand-900/30`}
                 >
                   <Icon
-                    className={`w-6 h-6 text-${stat.color.replace("bg-", "")}`}
+                    className={`w-6 h-6 text-brand-600 dark:text-brand-400`}
                   />
                 </div>
-                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400">
+                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-[#FDF6EF] dark:bg-brand-900/30 text-brand-600 dark:text-brand-400">
                   {stat.trend}
                 </span>
               </div>
-              <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">
+              <h3 className="text-[#7A3B1E] dark:text-[#C4946A] text-sm font-medium">
                 {stat.name}
               </h3>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+              <p className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mt-1">
                 {stat.value}
               </p>
             </div>
@@ -264,8 +264,8 @@ export default async function AdminDashboard({
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Orders Placeholder */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
+          <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6">
             Pesanan Terbaru
           </h2>
 
@@ -274,13 +274,13 @@ export default async function AdminDashboard({
               {recentOrders.map((order) => (
                 <div
                   key={order.id}
-                  className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-xl transition-colors"
+                  className="flex items-center justify-between p-3 hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors"
                 >
                   <div>
-                    <p className="font-semibold text-gray-900 dark:text-white text-sm">
+                    <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] text-sm">
                       {order.customerName}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A]">
                       {new Date(order.createdAt).toLocaleDateString("id-ID")}
                     </p>
                   </div>
@@ -299,22 +299,24 @@ export default async function AdminDashboard({
             </div>
           ) : (
             <div className="text-center py-12">
-              <ShoppingBag className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-gray-500">Belum ada pesanan masuk.</p>
+              <ShoppingBag className="w-12 h-12 mx-auto text-[#E8C9B0] dark:text-brand-800 mb-3" />
+              <p className="text-[#7A3B1E] dark:text-[#C4946A]">
+                Belum ada pesanan masuk.
+              </p>
             </div>
           )}
         </div>
 
         {/* Revenue Chart - 7 Days */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
+          <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6">
             Pendapatan{" "}
             {chartDays === 1 ? "Hari Ini" : `${chartDays} Hari Terakhir`}
           </h2>
           <div className="flex items-end gap-2 h-48">
             {dailyRevenue.map((day, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-2">
-                <span className="text-[10px] text-gray-500 font-medium">
+                <span className="text-[10px] text-[#7A3B1E] dark:text-[#C4946A] font-medium">
                   {day.amount > 0 ? formatRupiah(day.amount) : "-"}
                 </span>
                 <div
@@ -328,7 +330,7 @@ export default async function AdminDashboard({
                     }}
                   />
                 </div>
-                <span className="text-[10px] text-gray-500 font-medium">
+                <span className="text-[10px] text-[#7A3B1E] dark:text-[#C4946A] font-medium">
                   {day.date}
                 </span>
               </div>
@@ -337,8 +339,8 @@ export default async function AdminDashboard({
         </div>
 
         {/* Top Products */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
+        <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
+          <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-6">
             Produk Terlaris
           </h2>
           {topProductsWithNames.length > 0 ? (
@@ -346,17 +348,17 @@ export default async function AdminDashboard({
               {topProductsWithNames.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-slate-700/50 rounded-xl transition-colors"
+                  className="flex items-center justify-between p-3 hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors"
                 >
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-brand-100 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-xs font-bold flex items-center justify-center">
                       {i + 1}
                     </span>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white text-sm">
+                      <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3] text-sm">
                         {item.product?.name || "Produk dihapus"}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A]">
                         {formatRupiah(item.product?.price || 0)}
                       </p>
                     </div>
@@ -369,8 +371,10 @@ export default async function AdminDashboard({
             </div>
           ) : (
             <div className="text-center py-12">
-              <Package className="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" />
-              <p className="text-gray-500">Belum ada data penjualan.</p>
+              <Package className="w-12 h-12 mx-auto text-[#E8C9B0] dark:text-brand-800 mb-3" />
+              <p className="text-[#7A3B1E] dark:text-[#C4946A]">
+                Belum ada data penjualan.
+              </p>
             </div>
           )}
         </div>

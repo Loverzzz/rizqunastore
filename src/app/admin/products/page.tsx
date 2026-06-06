@@ -21,10 +21,10 @@ export default async function AdminProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
             Manajemen Produk
           </h1>
-          <p className="text-gray-500 mt-1">
+          <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-1">
             Atur katalog produk toko fisik dan online Anda.
           </p>
         </div>

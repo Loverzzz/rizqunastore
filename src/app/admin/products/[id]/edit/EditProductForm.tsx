@@ -97,7 +97,6 @@ export default function EditProductForm({
     try {
       await action(formData);
       setSuccess(true);
-      // Redirect setelah berhasil
       setTimeout(() => {
         window.location.href = "/admin/products";
       }, 500);
@@ -107,8 +106,15 @@ export default function EditProductForm({
     }
   };
 
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-[#E8C9B0] dark:border-brand-900/40 bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 outline-none transition-shadow";
+  const smallInputClass =
+    "px-3 py-2 rounded-lg border border-[#E8C9B0] dark:border-brand-900/40 bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] text-sm focus:ring-2 focus:ring-brand-500 outline-none";
+  const labelClass =
+    "block text-sm font-semibold text-[#5C2A10] dark:text-[#D4A882]";
+
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden p-6 md:p-8">
+    <div className="bg-white dark:bg-[#2D1506] rounded-2xl shadow-sm border border-[#F0D5C8] dark:border-brand-900/40 overflow-hidden p-6 md:p-8">
       {error && (
         <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl text-sm text-red-600 dark:text-red-400">
           {error}
@@ -122,10 +128,7 @@ export default function EditProductForm({
       <form action={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label
-              htmlFor="name"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="name" className={labelClass}>
               Nama Produk *
             </label>
             <input
@@ -134,15 +137,12 @@ export default function EditProductForm({
               name="name"
               defaultValue={product.name}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+              className={inputClass}
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="category"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="category" className={labelClass}>
               Kategori *
             </label>
             <select
@@ -150,7 +150,7 @@ export default function EditProductForm({
               name="category"
               defaultValue={product.category}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+              className={inputClass}
             >
               <option value="Tas">Tas</option>
               <option value="Seragam Sekolah">Seragam Sekolah</option>
@@ -164,10 +164,7 @@ export default function EditProductForm({
         </div>
 
         <div className="space-y-2">
-          <label
-            htmlFor="description"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-          >
+          <label htmlFor="description" className={labelClass}>
             Deskripsi
           </label>
           <textarea
@@ -175,16 +172,13 @@ export default function EditProductForm({
             name="description"
             rows={4}
             defaultValue={product.description}
-            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow resize-none"
+            className={`${inputClass} resize-none`}
           />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <label
-              htmlFor="price"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="price" className={labelClass}>
               Harga (Rp) *
             </label>
             <input
@@ -194,15 +188,12 @@ export default function EditProductForm({
               min="0"
               defaultValue={product.price}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+              className={inputClass}
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="stock"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300"
-            >
+            <label htmlFor="stock" className={labelClass}>
               Stok *
             </label>
             <input
@@ -212,16 +203,14 @@ export default function EditProductForm({
               min="0"
               defaultValue={product.stock}
               required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+              className={inputClass}
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Varian Ukuran (Opsional)
-            </label>
+            <label className={labelClass}>Varian Ukuran (Opsional)</label>
             <button
               type="button"
               onClick={addVariant}
@@ -249,7 +238,7 @@ export default function EditProductForm({
           )}
           {variants.length > 0 && (
             <div className="space-y-2">
-              <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-xs font-medium text-gray-500 dark:text-gray-400 px-1">
+              <div className="grid grid-cols-[1fr_1fr_1fr_auto] gap-2 text-xs font-medium text-[#7A3B1E] dark:text-[#C4946A] px-1">
                 <span>Label</span>
                 <span>Harga (Rp)</span>
                 <span>Stok</span>
@@ -265,7 +254,7 @@ export default function EditProductForm({
                     placeholder="Uk 3"
                     value={v.label}
                     onChange={(e) => updateVariant(i, "label", e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                    className={smallInputClass}
                   />
                   <input
                     type="number"
@@ -273,7 +262,7 @@ export default function EditProductForm({
                     min="0"
                     value={v.price}
                     onChange={(e) => updateVariant(i, "price", e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                    className={smallInputClass}
                   />
                   <input
                     type="number"
@@ -281,7 +270,7 @@ export default function EditProductForm({
                     min="0"
                     value={v.stock}
                     onChange={(e) => updateVariant(i, "stock", e.target.value)}
-                    className="px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 outline-none"
+                    className={smallInputClass}
                   />
                   <button
                     type="button"
@@ -295,7 +284,7 @@ export default function EditProductForm({
             </div>
           )}
           {variants.length === 0 && (
-            <p className="text-xs text-gray-400 dark:text-gray-500">
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A]">
               Tambahkan varian jika produk memiliki beberapa ukuran dengan
               harga/stok berbeda.
             </p>
@@ -304,9 +293,7 @@ export default function EditProductForm({
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Gambar Produk (Opsional)
-            </label>
+            <label className={labelClass}>Gambar Produk (Opsional)</label>
             <button
               type="button"
               onClick={() => {
@@ -329,11 +316,11 @@ export default function EditProductForm({
                   setImageUrl(e.target.value);
                   setImagePreview(e.target.value || null);
                 }}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-700/50 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 outline-none transition-shadow"
+                className={inputClass}
                 placeholder="https://example.com/image.jpg"
               />
               {imagePreview && (
-                <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+                <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-[#E8C9B0] dark:border-brand-900/40">
                   <img
                     src={imagePreview}
                     alt="Preview"
@@ -343,7 +330,7 @@ export default function EditProductForm({
               )}
             </div>
           ) : imagePreview ? (
-            <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-600">
+            <div className="relative w-40 h-40 rounded-xl overflow-hidden border border-[#E8C9B0] dark:border-brand-900/40">
               <img
                 src={imagePreview}
                 alt="Preview"
@@ -366,12 +353,12 @@ export default function EditProductForm({
               </button>
             </div>
           ) : (
-            <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-gray-300 dark:border-slate-600 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-colors">
-              <Upload className="w-8 h-8 text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">
+            <label className="flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-[#E8C9B0] dark:border-brand-900/40 rounded-xl cursor-pointer hover:border-brand-500 hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] transition-colors">
+              <Upload className="w-8 h-8 text-[#7A3B1E] dark:text-[#C4946A] mb-2" />
+              <span className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
                 Klik untuk upload gambar
               </span>
-              <span className="text-xs text-gray-400 mt-1">
+              <span className="text-xs text-[#7A3B1E]/60 dark:text-[#C4946A]/60 mt-1">
                 JPG, PNG, WebP (maks 5MB)
               </span>
               <input
@@ -384,10 +371,10 @@ export default function EditProductForm({
           )}
         </div>
 
-        <div className="pt-6 border-t border-gray-100 dark:border-slate-700 flex justify-end gap-4">
+        <div className="pt-6 border-t border-[#F0D5C8] dark:border-brand-900/40 flex justify-end gap-4">
           <Link
             href="/admin/products"
-            className="px-6 py-3 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-slate-600 transition-colors"
+            className="px-6 py-3 bg-[#FDF6EF] dark:bg-[#3D1F0A] text-[#5C2A10] dark:text-[#D4A882] font-medium rounded-xl hover:bg-[#F0E4D4] dark:hover:bg-[#4A2810] transition-colors"
           >
             Batal
           </Link>

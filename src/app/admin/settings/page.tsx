@@ -50,57 +50,57 @@ export default function AdminSettingsPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
           Pengaturan
         </h1>
-        <p className="text-gray-500 mt-1">
+        <p className="text-[#7A3B1E] dark:text-[#C4946A] mt-1">
           Konfigurasi dan informasi admin panel.
         </p>
       </div>
 
       {/* Info Toko */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 rounded-xl bg-brand-50 dark:bg-brand-900/30">
             <Store className="w-6 h-6 text-brand-600 dark:text-brand-400" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
               Informasi Toko
             </h2>
-            <p className="text-sm text-gray-500">Detail toko Rizquna.</p>
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">Detail toko Rizquna.</p>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
+          <div className="p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl">
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider font-semibold mb-1">
               Nama Toko
             </p>
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               Rizquna Store
             </p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
+          <div className="p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl">
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider font-semibold mb-1">
               Payment Gateway
             </p>
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               Midtrans (Sandbox)
             </p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
+          <div className="p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl">
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider font-semibold mb-1">
               Database
             </p>
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               PostgreSQL
             </p>
           </div>
-          <div className="p-4 bg-gray-50 dark:bg-slate-900/50 rounded-xl">
-            <p className="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">
+          <div className="p-4 bg-[#FDF6EF] dark:bg-[#1A0800]/50 rounded-xl">
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] uppercase tracking-wider font-semibold mb-1">
               Framework
             </p>
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               Next.js 15
             </p>
           </div>
@@ -108,23 +108,23 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Keamanan */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 rounded-xl bg-amber-50 dark:bg-amber-900/30">
             <Shield className="w-6 h-6 text-amber-600 dark:text-amber-400" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
               Keamanan
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
               Verifikasi password admin saat ini.
             </p>
           </div>
         </div>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2">
               Verifikasi Password Admin
             </label>
             <div className="flex gap-3">
@@ -133,7 +133,7 @@ export default function AdminSettingsPage() {
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="Masukkan password admin..."
-                className="flex-1 px-4 py-3 border border-gray-200 dark:border-slate-600 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
+                className="flex-1 px-4 py-3 border border-[#E8C9B0] dark:border-brand-900/40 rounded-xl bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
               />
               <button
                 onClick={handleVerifyPassword}
@@ -145,7 +145,7 @@ export default function AdminSettingsPage() {
               </button>
             </div>
             {loginMessage && (
-              <p className="mt-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+              <p className="mt-3 text-sm font-medium text-[#5C2A10] dark:text-[#D4A882]">
                 {loginMessage}
               </p>
             )}
@@ -154,16 +154,16 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Aksi Cepat */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-gray-100 dark:border-slate-700 shadow-sm">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-[#F0D5C8] dark:border-brand-900/40 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 rounded-xl bg-green-50 dark:bg-green-900/30">
             <RefreshCw className="w-6 h-6 text-green-600 dark:text-green-400" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            <h2 className="text-lg font-bold text-[#1C0A00] dark:text-[#F5E6D3]">
               Aksi Cepat
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
               Tindakan admin yang tersedia.
             </p>
           </div>
@@ -171,41 +171,41 @@ export default function AdminSettingsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
             onClick={() => router.push("/admin")}
-            className="p-4 text-left bg-gray-50 dark:bg-slate-900/50 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors border border-gray-200 dark:border-slate-600"
+            className="p-4 text-left bg-[#FDF6EF] dark:bg-[#1A0800]/50 hover:bg-[#F0E4D4] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors border border-[#E8C9B0] dark:border-brand-900/40"
           >
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               🏠 Kembali ke Dashboard
             </p>
-            <p className="text-sm text-gray-500 mt-1">Lihat overview toko.</p>
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mt-1">Lihat overview toko.</p>
           </button>
           <button
             onClick={() => router.push("/admin/products")}
-            className="p-4 text-left bg-gray-50 dark:bg-slate-900/50 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors border border-gray-200 dark:border-slate-600"
+            className="p-4 text-left bg-[#FDF6EF] dark:bg-[#1A0800]/50 hover:bg-[#F0E4D4] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors border border-[#E8C9B0] dark:border-brand-900/40"
           >
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               📦 Kelola Produk
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mt-1">
               Tambah, edit, atau hapus produk.
             </p>
           </button>
           <button
             onClick={() => router.push("/admin/orders")}
-            className="p-4 text-left bg-gray-50 dark:bg-slate-900/50 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors border border-gray-200 dark:border-slate-600"
+            className="p-4 text-left bg-[#FDF6EF] dark:bg-[#1A0800]/50 hover:bg-[#F0E4D4] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors border border-[#E8C9B0] dark:border-brand-900/40"
           >
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               🛒 Lihat Pesanan
             </p>
-            <p className="text-sm text-gray-500 mt-1">Kelola pesanan masuk.</p>
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mt-1">Kelola pesanan masuk.</p>
           </button>
           <button
             onClick={() => router.push("/admin/bookings")}
-            className="p-4 text-left bg-gray-50 dark:bg-slate-900/50 hover:bg-gray-100 dark:hover:bg-slate-700 rounded-xl transition-colors border border-gray-200 dark:border-slate-600"
+            className="p-4 text-left bg-[#FDF6EF] dark:bg-[#1A0800]/50 hover:bg-[#F0E4D4] dark:hover:bg-[#3D1F0A] rounded-xl transition-colors border border-[#E8C9B0] dark:border-brand-900/40"
           >
-            <p className="font-semibold text-gray-900 dark:text-white">
+            <p className="font-semibold text-[#1C0A00] dark:text-[#F5E6D3]">
               🎫 Lihat Booking
             </p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mt-1">
               Kelola reservasi playground.
             </p>
           </button>
@@ -213,7 +213,7 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Reset Data */}
-      <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 border border-red-200 dark:border-red-900/50 shadow-sm">
+      <div className="bg-white dark:bg-[#2D1506] rounded-2xl p-6 border border-red-200 dark:border-red-900/50 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
           <div className="p-3 rounded-xl bg-red-50 dark:bg-red-900/30">
             <Trash2 className="w-6 h-6 text-red-600 dark:text-red-400" />
@@ -222,7 +222,7 @@ export default function AdminSettingsPage() {
             <h2 className="text-lg font-bold text-red-600 dark:text-red-400">
               Reset Data
             </h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
               Hapus data testing. Data yang dihapus tidak bisa dikembalikan.
             </p>
           </div>
@@ -231,7 +231,7 @@ export default function AdminSettingsPage() {
         <div className="space-y-4">
           {/* Target Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2">
               Pilih data yang ingin dihapus
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -254,15 +254,15 @@ export default function AdminSettingsPage() {
                   className={`p-4 text-left rounded-xl border-2 transition-colors ${
                     resetTarget === opt.key
                       ? "border-red-500 bg-red-50 dark:bg-red-900/20 dark:border-red-500"
-                      : "border-gray-200 dark:border-slate-600 hover:border-gray-300 dark:hover:border-slate-500"
+                      : "border-[#E8C9B0] dark:border-brand-900/40 hover:border-[#D4A882] dark:hover:border-brand-800"
                   }`}
                 >
                   <p
-                    className={`font-semibold text-sm ${resetTarget === opt.key ? "text-red-600 dark:text-red-400" : "text-gray-900 dark:text-white"}`}
+                    className={`font-semibold text-sm ${resetTarget === opt.key ? "text-red-600 dark:text-red-400" : "text-[#1C0A00] dark:text-[#F5E6D3]"}`}
                   >
                     {opt.label}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">{opt.desc}</p>
+                  <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] mt-1">{opt.desc}</p>
                 </button>
               ))}
             </div>
@@ -270,7 +270,7 @@ export default function AdminSettingsPage() {
 
           {/* Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-[#5C2A10] dark:text-[#D4A882] mb-2">
               Masukkan password admin untuk konfirmasi
             </label>
             <input
@@ -278,7 +278,7 @@ export default function AdminSettingsPage() {
               value={resetPassword}
               onChange={(e) => setResetPassword(e.target.value)}
               placeholder="Password admin..."
-              className="w-full px-4 py-3 border border-gray-200 dark:border-slate-600 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+              className="w-full px-4 py-3 border border-[#E8C9B0] dark:border-brand-900/40 rounded-xl bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
             />
           </div>
 
@@ -305,7 +305,7 @@ export default function AdminSettingsPage() {
           </button>
 
           {resetMessage && (
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <p className="text-sm font-medium text-[#5C2A10] dark:text-[#D4A882]">
               {resetMessage}
             </p>
           )}
@@ -319,17 +319,17 @@ export default function AdminSettingsPage() {
           onClick={() => setShowResetConfirm(false)}
         >
           <div
-            className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full border border-red-200 dark:border-red-900/50"
+            className="bg-white dark:bg-[#2D1506] rounded-2xl shadow-2xl max-w-md w-full border border-red-200 dark:border-red-900/50"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6 text-center">
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-bold text-[#1C0A00] dark:text-[#F5E6D3] mb-2">
                 Konfirmasi Reset Data
               </h3>
-              <p className="text-sm text-gray-500 mb-4">
+              <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A] mb-4">
                 Tindakan ini akan menghapus{" "}
                 <span className="font-bold text-red-600">
                   {resetTarget === "orders"
@@ -341,7 +341,7 @@ export default function AdminSettingsPage() {
                 secara permanen. Data tidak bisa dikembalikan.
               </p>
               <div className="mb-4">
-                <label className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
+                <label className="block text-sm text-[#5C2A10] dark:text-[#C4946A] mb-2">
                   Ketik{" "}
                   <span className="font-mono font-bold text-red-600">
                     HAPUS
@@ -353,7 +353,7 @@ export default function AdminSettingsPage() {
                   value={confirmText}
                   onChange={(e) => setConfirmText(e.target.value)}
                   placeholder="Ketik HAPUS..."
-                  className="w-full px-4 py-3 border border-red-200 dark:border-red-800 rounded-xl bg-gray-50 dark:bg-slate-900 text-gray-900 dark:text-white text-center font-mono font-bold focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
+                  className="w-full px-4 py-3 border border-red-200 dark:border-red-800 rounded-xl bg-[#FDF6EF] dark:bg-[#1A0800] text-[#1C0A00] dark:text-[#F5E6D3] text-center font-mono font-bold focus:ring-2 focus:ring-red-500 focus:border-transparent outline-none"
                 />
               </div>
               <div className="flex gap-3">
@@ -362,7 +362,7 @@ export default function AdminSettingsPage() {
                     setShowResetConfirm(false);
                     setConfirmText("");
                   }}
-                  className="flex-1 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-700 dark:text-gray-200 font-medium rounded-xl transition-colors"
+                  className="flex-1 py-3 bg-[#FDF6EF] hover:bg-[#F0E4D4] dark:bg-[#3D1F0A] dark:hover:bg-[#4A2810] text-[#5C2A10] dark:text-[#D4A882] font-medium rounded-xl transition-colors"
                 >
                   Batal
                 </button>
