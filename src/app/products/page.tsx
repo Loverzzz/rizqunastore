@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 
 // Force dynamic rendering - avoid prerender database errors
 export const dynamic = "force-dynamic";
-// Cache 24 jam - hemat ISR writes
-export const revalidate = 0;
 
 export default async function ProductsPage() {
-  let products;
+  let products: Parameters<typeof ProductList>[0]["products"] = [];
   try {
     const rawProducts = await prisma.product.findMany({
       orderBy: { name: "asc" },
@@ -40,17 +38,8 @@ export default async function ProductsPage() {
       updatedAt: p.updatedAt.toISOString(),
     }));
   } catch (e) {
-    console.error("Failed to fetch products with variants:", e);
-    // Fallback: fetch without variants
-    const rawProducts = await prisma.product.findMany({
-      orderBy: { createdAt: "desc" },
-    });
-    products = rawProducts.map((p) => ({
-      ...p,
-      variants: [],
-      createdAt: p.createdAt.toISOString(),
-      updatedAt: p.updatedAt.toISOString(),
-    }));
+    console.error("Failed to fetch products:", e);
+    products = [];
   }
 
   return (
