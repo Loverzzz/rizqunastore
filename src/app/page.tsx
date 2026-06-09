@@ -12,6 +12,7 @@ import {
 import Image from "next/image";
 import HomeCounter from "@/components/HomeCounter";
 import HomeTestimonial from "@/components/HomeTestimonial";
+import ParallaxZoomReveal from "@/components/ParallaxZoomReveal";
 
 export default function Home() {
   return (
@@ -460,6 +461,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Parallax Zoom Reveal Section */}
+      <ParallaxZoomReveal />
 
       {/* Info / Hours Section */}
       <section
