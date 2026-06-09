@@ -75,9 +75,9 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/playground"
-                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white/80 dark:bg-[#2D1506]/90 text-[#1C0A00] dark:text-[#F5E6D3] border border-white/80 dark:border-brand-800 hover:border-accent-500 dark:hover:border-accent-500 font-medium transition-all shadow-lg shadow-brand-500/10 backdrop-blur hover:shadow-accent-500/30 animate-pulse-glow-accent"
+                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-accent-500 hover:bg-accent-400 text-[#1C0A00] font-semibold transition-all shadow-xl shadow-accent-700/20 hover:shadow-accent-500/40 animate-pulse-glow-accent"
                 >
-                  <Gamepad2 className="w-5 h-5 text-accent-500" />
+                  <Gamepad2 className="w-5 h-5" />
                   Pesan Tiket Playground
                 </Link>
               </div>
