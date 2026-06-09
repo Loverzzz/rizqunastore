@@ -129,6 +129,17 @@ body {
   }
 }
 
+/* Pulse glow accent variant for playground CTA */
+@keyframes pulse-glow-accent {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(240, 165, 0, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(240, 165, 0, 0);
+  }
+}
+
 /* Spin slow for decorative elements */
 @keyframes spin-slow {
   from {
@@ -196,6 +207,9 @@ body {
 }
 .animate-pulse-glow {
   animation: pulse-glow 2.5s ease-in-out infinite;
+}
+.animate-pulse-glow-accent {
+  animation: pulse-glow-accent 2.5s ease-in-out infinite;
 }
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
