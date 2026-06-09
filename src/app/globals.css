@@ -139,6 +139,54 @@ body {
   }
 }
 
+@keyframes aurora-drift {
+  0%,
+  100% {
+    background-position:
+      0% 50%,
+      100% 50%,
+      50% 0%;
+  }
+  50% {
+    background-position:
+      100% 50%,
+      0% 50%,
+      50% 100%;
+  }
+}
+
+@keyframes soft-pan {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 1%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+}
+
+@keyframes orbit-spark {
+  0% {
+    transform: rotate(0deg) translateX(14px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(14px) rotate(-360deg);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -151,6 +199,78 @@ body {
 }
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
+}
+.animate-aurora-drift {
+  animation: aurora-drift 18s ease-in-out infinite;
+  background-size:
+    180% 180%,
+    160% 160%,
+    140% 140%;
+}
+.animate-soft-pan {
+  animation: soft-pan 12s ease-in-out infinite;
+}
+.animate-orbit-spark {
+  animation: orbit-spark 9s linear infinite;
+}
+.animate-reveal-up {
+  animation: reveal-up 0.7s ease-out both;
+}
+.delay-120 {
+  animation-delay: 120ms;
+}
+.delay-240 {
+  animation-delay: 240ms;
+}
+
+.hero-mesh {
+  background:
+    radial-gradient(
+      circle at 18% 24%,
+      rgba(255, 122, 61, 0.22),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(249, 193, 58, 0.28),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 52% 78%,
+      rgba(34, 197, 94, 0.14),
+      transparent 32%
+    ),
+    linear-gradient(135deg, #fff7ed 0%, #fdf6ef 45%, #fff3d9 100%);
+}
+
+.dark .hero-mesh {
+  background:
+    radial-gradient(
+      circle at 18% 24%,
+      rgba(232, 93, 32, 0.24),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      rgba(240, 165, 0, 0.18),
+      transparent 26%
+    ),
+    radial-gradient(circle at 52% 78%, rgba(34, 197, 94, 0.1), transparent 32%),
+    linear-gradient(135deg, #1a0800 0%, #2d1506 48%, #3d1f0a 100%);
+}
+
+.playful-grid {
+  background-image:
+    linear-gradient(rgba(194, 70, 26, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(194, 70, 26, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.dark .playful-grid {
+  background-image:
+    linear-gradient(rgba(255, 229, 208, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 229, 208, 0.06) 1px, transparent 1px);
 }
 
 /* Gradient text utility */
