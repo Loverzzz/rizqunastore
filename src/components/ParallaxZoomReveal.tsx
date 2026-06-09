@@ -14,12 +14,6 @@ export default function ParallaxZoomReveal() {
 
   // Image zooms from 1.0 → 1.25 as user scrolls through
   const scale = useTransform(scrollYProgress, [0, 0.6], [1.0, 1.25]);
-  // Overlay — keep subtle, avoid dark patches
-  const overlayOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.3, 0.5, 0.7],
-    [0.5, 0.15, 0.1, 0.4],
-  );
   // Text fades in at 30-50% scroll
   const textOpacity = useTransform(
     scrollYProgress,
@@ -50,11 +44,8 @@ export default function ParallaxZoomReveal() {
         />
       </motion.div>
 
-      {/* Dark overlay that fades */}
-      <motion.div
-        className="absolute inset-0 bg-black/70"
-        style={{ opacity: overlayOpacity }}
-      />
+      {/* Static dark overlay — consistent, no animation */}
+      <div className="absolute inset-0 bg-black/40" />
 
       {/* Gradient edges for blending */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[#F5EDE4] to-transparent dark:from-[#2D1506]/30" />
@@ -65,9 +56,6 @@ export default function ParallaxZoomReveal() {
         className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
         style={{ opacity: textOpacity, y: textY }}
       >
-        {/* Semi-transparent backdrop for readability */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
-
         <div className="relative z-10 flex flex-col items-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 text-white text-sm font-bold mb-6 border border-white/25 backdrop-blur-lg select-none shadow-lg">
             <Sparkles className="w-4 h-4 text-accent-300" />
@@ -77,7 +65,7 @@ export default function ParallaxZoomReveal() {
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
             Lebih Dari Sekadar{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-brand-300">
-              Toko Biasa
+              TokoBiasa
             </span>
           </h2>
 
