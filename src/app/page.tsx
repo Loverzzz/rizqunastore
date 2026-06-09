@@ -29,12 +29,12 @@ export default function Home() {
         <div className="absolute top-16 right-8 w-80 h-80 bg-brand-200/30 dark:bg-brand-700/10 rounded-full blur-3xl pointer-events-none animate-float" />
         <div className="absolute bottom-8 left-4 w-64 h-64 bg-accent-200/40 dark:bg-accent-700/10 rounded-full blur-3xl pointer-events-none animate-float-delay" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-brand-100/20 dark:bg-brand-900/5 rounded-full blur-3xl pointer-events-none" />
-        <div
-          className="absolute left-[8%] top-28 hidden h-14 w-14 rounded-2xl border border-white/70 bg-white/45 shadow-lg shadow-brand-500/10 backdrop-blur md:block animate-orbit-spark"
+        <Sparkles
+          className="absolute left-[8%] top-28 hidden h-10 w-10 text-accent-300/60 drop-shadow-lg md:block animate-orbit-spark"
           aria-hidden="true"
         />
-        <div
-          className="absolute right-[10%] bottom-24 hidden h-16 w-16 rounded-full border-8 border-accent-300/50 md:block animate-spin-slow"
+        <Gamepad2
+          className="absolute right-[10%] bottom-24 hidden h-12 w-12 text-accent-300/50 drop-shadow-lg md:block animate-float-delay"
           aria-hidden="true"
         />
 
@@ -75,7 +75,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/playground"
-                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white/80 dark:bg-[#2D1506]/90 text-[#1C0A00] dark:text-[#F5E6D3] border border-white/80 dark:border-brand-800 hover:border-brand-500 dark:hover:border-brand-500 font-medium transition-all shadow-lg shadow-brand-500/10 backdrop-blur hover:shadow-md"
+                  className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white/80 dark:bg-[#2D1506]/90 text-[#1C0A00] dark:text-[#F5E6D3] border border-white/80 dark:border-brand-800 hover:border-accent-500 dark:hover:border-accent-500 font-medium transition-all shadow-lg shadow-brand-500/10 backdrop-blur hover:shadow-accent-500/30 animate-pulse-glow"
                 >
                   <Gamepad2 className="w-5 h-5 text-accent-500" />
                   Pesan Tiket Playground
