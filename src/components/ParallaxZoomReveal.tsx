@@ -14,22 +14,22 @@ export default function ParallaxZoomReveal() {
 
   // Image zooms from 1.0 → 1.25 as user scrolls through
   const scale = useTransform(scrollYProgress, [0, 0.6], [1.0, 1.25]);
-  // Overlay fades from dark to transparent then back
+  // Overlay — keep subtle, avoid dark patches
   const overlayOpacity = useTransform(
     scrollYProgress,
-    [0, 0.25, 0.5, 0.75],
-    [0.7, 0.3, 0.15, 0.6]
+    [0, 0.3, 0.5, 0.7],
+    [0.5, 0.15, 0.1, 0.4],
   );
   // Text fades in at 30-50% scroll
   const textOpacity = useTransform(
     scrollYProgress,
     [0.15, 0.35, 0.55, 0.75],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
   );
   const textY = useTransform(
     scrollYProgress,
     [0.15, 0.35, 0.55, 0.75],
-    [60, 0, 0, -40]
+    [60, 0, 0, -40],
   );
 
   return (
@@ -66,12 +66,12 @@ export default function ParallaxZoomReveal() {
         style={{ opacity: textOpacity, y: textY }}
       >
         {/* Semi-transparent backdrop for readability */}
-        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
         <div className="relative z-10 flex flex-col items-center max-w-3xl">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 text-white text-sm font-bold mb-6 border border-white/25 backdrop-blur-lg select-none shadow-lg">
             <Sparkles className="w-4 h-4 text-accent-300" />
-            <span>Sudah Sejak 2023 Melayani Keluarga</span>
+            <span>Sudah Sejak 2020 Melayani Keluarga</span>
           </div>
 
           <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
@@ -89,7 +89,11 @@ export default function ParallaxZoomReveal() {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/20 border border-white/25 backdrop-blur-lg text-white text-sm font-semibold shadow-lg [text-shadow:0_1px_8px_rgba(0,0,0,0.4)]">
               <MapPin className="w-4 h-4 text-accent-300 shrink-0" />
-              <span className="text-left">Jl. Raya Plumpang, Tanggungan,<br/>Kec. Plumpang, Kab. Tuban</span>
+              <span className="text-left">
+                Jl. Raya Plumpang, Tanggungan,
+                <br />
+                Kec. Plumpang, Kab. Tuban
+              </span>
             </div>
             <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-accent-500/90 backdrop-blur-lg text-[#1C0A00] text-sm font-bold shadow-lg">
               <Sparkles className="w-4 h-4" />
