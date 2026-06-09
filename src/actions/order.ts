@@ -196,7 +196,7 @@ export async function updateOrderStatus(orderId: string, status: string) {
     }
 
     // Update status order
-    const result = await prisma.order.update({
+    await prisma.order.update({
       where: { id: orderId },
       data: { status },
     });

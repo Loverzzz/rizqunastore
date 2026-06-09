@@ -44,10 +44,47 @@ Aturan:
 - Jika setelah dicari stoknya habis atau produk tidak ditemukan, beritahu dengan ramah dan arahkan ke WhatsApp jika butuh bantuan lebih lanjut.
 - Untuk pertanyaan di luar kemampuan atau di luar prosedur, arahkan ke WhatsApp.`;
 
+type ChatRole = "system" | "user" | "assistant" | "tool";
+
+type ChatMessage = {
+  role: ChatRole;
+  content: string | null;
+  tool_call_id?: string;
+  name?: string;
+  tool_calls?: ToolCall[];
+};
+
+type ToolCall = {
+  id: string;
+  type: "function";
+  function: {
+    name: string;
+    arguments: string;
+  };
+};
+
+type IncomingMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+function isIncomingMessage(value: unknown): value is IncomingMessage {
+  if (!value || typeof value !== "object") return false;
+  const message = value as Record<string, unknown>;
+  return (
+    (message.role === "user" || message.role === "assistant") &&
+    typeof message.content === "string"
+  );
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    let chatMessages = body.messages;
+    let chatMessages: IncomingMessage[] | undefined = Array.isArray(
+      body.messages,
+    )
+      ? body.messages.filter(isIncomingMessage)
+      : undefined;
 
     // Fallback for legacy requests sending { message: "text" }
     if (!chatMessages && body.message) {
@@ -69,9 +106,9 @@ export async function POST(request: Request) {
     }
 
     // Build message array for Groq starting with system prompt
-    const apiMessages: any[] = [
+    const apiMessages: ChatMessage[] = [
       { role: "system", content: systemPrompt },
-      ...chatMessages.map((m: any) => ({ role: m.role, content: m.content })),
+      ...chatMessages.map((m) => ({ role: m.role, content: m.content })),
     ];
 
     const modelName = "llama-3.1-8b-instant"; // Higher rate limits on Groq free tier
@@ -158,7 +195,7 @@ export async function POST(request: Request) {
             // Remove the raw text so it's not forwarded to 2nd call
             responseMessage.content = null;
           }
-        } catch (_) {
+        } catch {
           // Could not parse – fall through to normal reply
         }
       }

@@ -23,6 +23,10 @@ model Product {
 
   variants    ProductVariant[]
   orderItems  OrderItem[]
+
+  @@index([category])
+  @@index([name])
+  @@index([createdAt])
 }
 
 model ProductVariant {

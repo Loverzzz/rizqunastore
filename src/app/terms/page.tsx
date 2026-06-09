@@ -79,9 +79,9 @@ export default function TermsPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 leading-relaxed">
               <li>
-                Pesanan baru akan diproses dan diubah statusnya menjadi "PAID"
-                atau "CONFIRMED" jika kami telah menerima verifikasi sukses dari
-                penyedia gerbang pembayaran.
+                Pesanan baru akan diproses dan diubah statusnya menjadi
+                &quot;PAID&quot; atau &quot;CONFIRMED&quot; jika kami telah
+                menerima verifikasi sukses dari penyedia gerbang pembayaran.
               </li>
               <li>
                 Sistem akan menahan (mengurangi) stok sementara. Jika pembayaran

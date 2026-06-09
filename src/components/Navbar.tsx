@@ -3,32 +3,37 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingCart, Menu, X, Sun, Moon, Store } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState<boolean | null>(null);
   const totalItems = useCartStore((state) => state.getTotalItems());
   const pathname = usePathname();
+  const isClient = typeof window !== "undefined";
+  const mounted = darkMode !== null;
 
-  useEffect(() => {
-    setMounted(true);
+  const initialDarkMode = useMemo(() => {
+    if (!isClient) return false;
     const stored = localStorage.getItem("theme");
-    if (
+    return (
       stored === "dark" ||
       (!stored && window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-      setDarkMode(true);
+    );
+  }, [isClient]);
+
+  useEffect(() => {
+    queueMicrotask(() => setDarkMode(initialDarkMode));
+    if (initialDarkMode) {
       document.documentElement.classList.add("dark");
     }
-  }, []);
+  }, [initialDarkMode]);
 
   // Auto-close mobile menu on route change
   useEffect(() => {
-    setIsOpen(false);
+    queueMicrotask(() => setIsOpen(false));
   }, [pathname]);
 
   const toggleDarkMode = () => {
@@ -51,7 +56,10 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 glass shadow-sm" aria-label="Navigasi utama">
+    <nav
+      className="sticky top-0 z-50 glass shadow-sm"
+      aria-label="Navigasi utama"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -96,7 +104,9 @@ export default function Navbar() {
               <button
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg text-[#1C0A00] dark:text-[#F5E6D3] hover:text-brand-600 dark:hover:text-brand-400 hover:bg-brand-50 dark:hover:bg-brand-900/20 transition-all"
-                aria-label={darkMode ? "Aktifkan mode terang" : "Aktifkan mode gelap"}
+                aria-label={
+                  darkMode ? "Aktifkan mode terang" : "Aktifkan mode gelap"
+                }
               >
                 {darkMode ? (
                   <Sun className="w-5 h-5" />

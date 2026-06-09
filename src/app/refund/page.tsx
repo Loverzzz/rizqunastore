@@ -115,8 +115,8 @@ export default function RefundPolicyPage() {
                 <strong>reynaldmlbb4@gmail.com</strong>.
               </li>
               <li>
-                Sertakan "Order ID" (misal: ORDER-xxxx), foto barang, nota, dan
-                video unboxing.
+                Sertakan &quot;Order ID&quot; (misal: ORDER-xxxx), foto barang,
+                nota, dan video unboxing.
               </li>
               <li>
                 Tim kami akan langsung meninjau klaim dan membalas dalam kurun

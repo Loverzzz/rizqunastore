@@ -14,10 +14,9 @@ import {
   Truck,
 } from "lucide-react";
 import { useCartStore } from "@/store/cartStore";
-import { useState, useEffect, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { createOrder } from "@/actions/order";
 import { useRouter } from "next/navigation";
-
 
 // Koordinat toko Rizquna
 const STORE_LAT = -7.0267455;
@@ -56,7 +55,7 @@ function calculateOngkir(distanceKm: number): number {
 export default function CartPage() {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } =
     useCartStore();
-  const [mounted, setMounted] = useState(false);
+  const mounted = typeof window !== "undefined";
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -79,10 +78,6 @@ export default function CartPage() {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [isLocating, setIsLocating] = useState(false);
   const [locationError, setLocationError] = useState("");
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const detectLocation = () => {
     if (!navigator.geolocation) {

@@ -68,7 +68,7 @@ export async function updateBookingStatus(bookingId: string, status: string) {
     });
     revalidatePath("/admin/bookings");
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Gagal mengubah status booking." };
   }
 }

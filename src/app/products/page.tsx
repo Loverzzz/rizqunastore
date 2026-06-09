@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Temukan berbagai kebutuhan harian Anda di Rizquna Store. Alat tulis, sembako, jajanan, dan lainnya.",
 };
 
-// Force dynamic rendering - avoid prerender database errors
-export const dynamic = "force-dynamic";
+// Cache page for 60 seconds, then revalidate in background
+export const revalidate = 60;
 
 export default async function ProductsPage() {
   let products: Parameters<typeof ProductList>[0]["products"] = [];

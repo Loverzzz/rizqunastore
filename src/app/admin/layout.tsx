@@ -3,19 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logoutAdmin } from "@/actions/auth";
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingBag, 
-  Ticket, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  Ticket,
+  Settings,
   LogOut,
   Menu,
-  X
 } from "lucide-react";
 import { useState } from "react";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
@@ -31,20 +34,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-[#FDF6EF] dark:bg-[#1A0800] flex">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white dark:bg-[#2D1506] border-r border-[#F0D5C8] dark:border-brand-900/40 transform transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } flex flex-col`}
       >
         <div className="h-16 flex items-center px-6 border-b border-[#F0D5C8] dark:border-brand-900/40">
-          <Link href="/admin" className="text-2xl font-black text-brand-600 dark:text-brand-400">
+          <Link
+            href="/admin"
+            className="text-2xl font-black text-brand-600 dark:text-brand-400"
+          >
             Rizquna<span className="text-gray-900 dark:text-white">Admin</span>
           </Link>
         </div>
@@ -59,9 +65,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 href={item.href}
                 onClick={() => setIsSidebarOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${
-                  isActive 
-                  ? "bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400" 
-                  : "text-[#5C2A10] dark:text-[#C4946A] hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] hover:text-[#1C0A00] dark:hover:text-[#F5E6D3]"
+                  isActive
+                    ? "bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400"
+                    : "text-[#5C2A10] dark:text-[#C4946A] hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A] hover:text-[#1C0A00] dark:hover:text-[#F5E6D3]"
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -73,7 +79,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <div className="p-4 border-t border-[#F0D5C8] dark:border-brand-900/40">
           <form action={logoutAdmin}>
-            <button type="submit" className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+            <button
+              type="submit"
+              className="flex items-center gap-3 px-4 py-3 w-full text-left rounded-xl font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+            >
               <LogOut className="w-5 h-5" />
               Keluar
             </button>
@@ -86,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Top Header */}
         <header className="h-16 bg-white dark:bg-[#2D1506] border-b border-[#F0D5C8] dark:border-brand-900/40 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-30 sticky top-0">
           <div className="flex items-center">
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(true)}
               className="p-2 -ml-2 mr-2 text-[#7A3B1E] hover:text-[#1C0A00] dark:text-[#C4946A] dark:hover:text-[#F5E6D3] lg:hidden rounded-lg hover:bg-[#FDF6EF] dark:hover:bg-[#3D1F0A]"
             >

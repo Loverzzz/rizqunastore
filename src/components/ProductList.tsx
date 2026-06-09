@@ -1,12 +1,9 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import {
-  PackageSearch,
-  Search,
-} from "lucide-react";
+import { PackageSearch, Search } from "lucide-react";
 
 interface Variant {
   id: string;
@@ -28,21 +25,12 @@ interface Product {
 
 function ProductListContent({ products }: { products: Product[] }) {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "Semua";
+  const categoryParam = searchParams.get("category") || "Semua";
 
-  const [activeCategory, setActiveCategory] = useState(initialCategory);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("terbaru");
-
-  // Sync category if search params change (e.g. from homepage category clicks)
-  useEffect(() => {
-    const categoryParam = searchParams.get("category");
-    if (categoryParam) {
-      setActiveCategory(categoryParam);
-    } else {
-      setActiveCategory("Semua");
-    }
-  }, [searchParams]);
+  const activeCategory = selectedCategory ?? categoryParam;
 
   const categories = [
     "Semua",
@@ -51,7 +39,8 @@ function ProductListContent({ products }: { products: Product[] }) {
 
   const filteredProducts = products.filter((p) => {
     const matchCategory =
-      activeCategory === "Semua" || p.category.toLowerCase() === activeCategory.toLowerCase();
+      activeCategory === "Semua" ||
+      p.category.toLowerCase() === activeCategory.toLowerCase();
     const query = searchQuery.toLowerCase();
     const matchSearch =
       !query ||
@@ -88,7 +77,7 @@ function ProductListContent({ products }: { products: Product[] }) {
         {categories.map((cat, i) => (
           <button
             key={i}
-            onClick={() => setActiveCategory(cat)}
+            onClick={() => setSelectedCategory(cat)}
             className={`flex-shrink-0 px-5 py-2.5 rounded-full text-sm font-medium transition-all cursor-pointer ${
               activeCategory.toLowerCase() === cat.toLowerCase()
                 ? "bg-[#2D1506] text-white shadow-md dark:bg-brand-600"
@@ -103,10 +92,19 @@ function ProductListContent({ products }: { products: Product[] }) {
       {/* Sort & Count Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 pb-4 border-b border-[#F0D5C8]/40 dark:border-brand-900/20">
         <p className="text-sm text-[#7A3B1E] dark:text-[#C4946A]">
-          Menampilkan <span className="font-semibold text-brand-600 dark:text-brand-400">{sortedProducts.length}</span> produk
+          Menampilkan{" "}
+          <span className="font-semibold text-brand-600 dark:text-brand-400">
+            {sortedProducts.length}
+          </span>{" "}
+          produk
         </p>
         <div className="flex items-center gap-2 select-none">
-          <label htmlFor="sort-select" className="text-xs font-semibold text-[#5C2A10] dark:text-[#D4A882] whitespace-nowrap">Urutkan:</label>
+          <label
+            htmlFor="sort-select"
+            className="text-xs font-semibold text-[#5C2A10] dark:text-[#D4A882] whitespace-nowrap"
+          >
+            Urutkan:
+          </label>
           <select
             id="sort-select"
             value={sortBy}
@@ -157,12 +155,16 @@ export default function ProductList({ products }: { products: Product[] }) {
         </div>
       </div>
 
-      <Suspense fallback={
-        <div className="text-center py-20 select-none">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-600 mx-auto"></div>
-          <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] mt-2">Memuat katalog...</p>
-        </div>
-      }>
+      <Suspense
+        fallback={
+          <div className="text-center py-20 select-none">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-brand-600 mx-auto"></div>
+            <p className="text-xs text-[#7A3B1E] dark:text-[#C4946A] mt-2">
+              Memuat katalog...
+            </p>
+          </div>
+        }
+      >
         <ProductListContent products={products} />
       </Suspense>
     </>
