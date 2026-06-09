@@ -65,31 +65,36 @@ export default function ParallaxZoomReveal() {
         className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
         style={{ opacity: textOpacity, y: textY }}
       >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-white/90 text-sm font-bold mb-6 border border-white/20 backdrop-blur-md select-none">
-          <Sparkles className="w-4 h-4 text-accent-300" />
-          <span>Sudah Sejak 2023 Melayani Keluarga</span>
-        </div>
+        {/* Semi-transparent backdrop for readability */}
+        <div className="absolute inset-0 bg-black/30 pointer-events-none" />
 
-        <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg">
-          Lebih Dari Sekadar{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-brand-300">
-            Toko Biasa
-          </span>
-        </h2>
-
-        <p className="text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed mb-8 drop-shadow-md">
-          Rizquna adalah tempat di mana kebutuhan harian keluarga bertemu
-          keceriaan anak-anak. Satu lokasi, dua pengalaman tak terlupakan.
-        </p>
-
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/15 border border-white/20 backdrop-blur-md text-white text-sm font-medium">
-            <MapPin className="w-4 h-4 text-accent-300" />
-            Jl. P. Diponegoro, Bima
+        <div className="relative z-10 flex flex-col items-center max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/20 text-white text-sm font-bold mb-6 border border-white/25 backdrop-blur-lg select-none shadow-lg">
+            <Sparkles className="w-4 h-4 text-accent-300" />
+            <span>Sudah Sejak 2023 Melayani Keluarga</span>
           </div>
-          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-accent-500/80 backdrop-blur-md text-[#1C0A00] text-sm font-bold">
-            <Sparkles className="w-4 h-4" />
-            Store + Playground
+
+          <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-4 leading-tight [text-shadow:0_2px_20px_rgba(0,0,0,0.6)]">
+            Lebih Dari Sekadar{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent-300 to-brand-300">
+              Toko Biasa
+            </span>
+          </h2>
+
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl leading-relaxed mb-8 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
+            Rizquna adalah tempat di mana kebutuhan harian keluarga bertemu
+            keceriaan anak-anak. Satu lokasi, dua pengalaman tak terlupakan.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/20 border border-white/25 backdrop-blur-lg text-white text-sm font-semibold shadow-lg [text-shadow:0_1px_8px_rgba(0,0,0,0.4)]">
+              <MapPin className="w-4 h-4 text-accent-300 shrink-0" />
+              <span className="text-left">Jl. Raya Plumpang, Tanggungan,<br/>Kec. Plumpang, Kab. Tuban</span>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-accent-500/90 backdrop-blur-lg text-[#1C0A00] text-sm font-bold shadow-lg">
+              <Sparkles className="w-4 h-4" />
+              Store + Playground
+            </div>
           </div>
         </div>
       </motion.div>
