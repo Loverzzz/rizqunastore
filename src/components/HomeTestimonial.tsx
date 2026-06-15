@@ -53,11 +53,30 @@ export default function HomeTestimonial() {
   const total = testimonials.length;
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setDirection(1);
-      setActive((prev) => (prev + 1) % total);
-    }, 5000);
-    return () => clearInterval(timer);
+    let timer: ReturnType<typeof setInterval>;
+
+    const start = () => {
+      timer = setInterval(() => {
+        setDirection(1);
+        setActive((prev) => (prev + 1) % total);
+      }, 5000);
+    };
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        clearInterval(timer);
+      } else {
+        start();
+      }
+    };
+
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [total]);
 
   const goTo = (idx: number) => {

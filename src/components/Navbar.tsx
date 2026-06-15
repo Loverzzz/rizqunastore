@@ -10,7 +10,9 @@ import { useCartStore } from "@/store/cartStore";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean | null>(null);
-  const totalItems = useCartStore((state) => state.getTotalItems());
+  const totalItems = useCartStore((state) =>
+    state.items.reduce((total, item) => total + item.quantity, 0),
+  );
   const pathname = usePathname();
   const isClient = typeof window !== "undefined";
   const mounted = darkMode !== null;
@@ -51,6 +53,7 @@ export default function Navbar() {
   const navLinks = [
     { href: "/", label: "Beranda" },
     { href: "/products", label: "Toko" },
+    { href: "/about", label: "Tentang Kami" },
     { href: "/store", label: "Lokasi" },
     { href: "/playground", label: "Playground" },
   ];

@@ -1,7 +1,6 @@
 "use client";
 
 import { ShoppingCart, Check, Heart, ImageOff } from "lucide-react";
-import { motion } from "framer-motion";
 import { useCartStore } from "@/store/cartStore";
 import { useWishlistStore } from "@/store/wishlistStore";
 import { useState } from "react";
@@ -71,9 +70,8 @@ export default function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <motion.div
-      whileHover={{ y: -5 }}
-      className="bg-white dark:bg-[#2D1506] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 transition-all flex flex-col h-full group"
+    <div
+      className="bg-white dark:bg-[#2D1506] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-[#F0D5C8] dark:border-brand-900/40 transition-all flex flex-col h-full group hover:-translate-y-1"
     >
       <div className="relative aspect-square bg-gradient-to-br from-[#FDF6EF] to-[#F0E4D4] dark:from-[#2D1506]/60 dark:to-[#1A0800] flex items-center justify-center overflow-hidden">
         {product.imageUrl ? (
@@ -191,6 +189,6 @@ export default function ProductCard({ product }: { product: Product }) {
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
